@@ -54,6 +54,11 @@
     // —— 屏幕（壁纸＋滚动区）——
     '#mmPhScreenWrap{flex:1;min-height:0;position:relative;border-radius:27px;overflow:hidden;',
     'background:radial-gradient(120% 85% at 20% -6%,#252e47 0%,#161b2b 42%,#0b0e17 80%),radial-gradient(50% 30% at 88% 106%,rgba(230,98,98,.075),transparent 70%),radial-gradient(40% 22% at 10% 108%,rgba(208,178,120,.05),transparent 70%)}',
+    // v0.2.0 移动端锚定修正：ST 移动端给 <html> 挂 transform+perspective（键盘处理），transformed 根会成为
+    // position:fixed 后代的包含块 → FAB/面板的 bottom 解析到视口外（真机实测 FAB top=-130 完全不可见）。
+    // 该类环境下改挂 absolute：ST 移动端 body 为 position:fixed 全屏盒，absolute 子元素反而正确锚定视口。
+    '#mmPhoneFab.mm-anchor-abs{position:absolute!important}',
+    '#mmPhoneRoot.mm-anchor-abs{position:absolute!important}',
     '#mmPhoneScreen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:30px;scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}',
     '#mmPhoneScreen::-webkit-scrollbar{width:3px}#mmPhoneScreen::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}',
     // —— 桌面图标网格（5 列）——
@@ -147,14 +152,14 @@
     // —— 战斗（保留类，桌面战况条也用）——
     '#mmPhoneRoot .mm-pip{color:#e66d6d;letter-spacing:2px}',
     // —— 按钮（胶囊＋按压反馈＋金 tint 主按钮）——
-    '#mmPhoneRoot .mm-btn{min-height:27px;display:inline-flex;align-items:center;justify-content:center;padding:3px 14px;min-width:28px;text-align:center;',
-    'background:rgba(255,255,255,.07);border:none;border-radius:999px;color:#ecebe6;cursor:pointer;user-select:none;font-size:11.5px;font-weight:500;transition:transform .14s ease,background .14s,color .14s}',
-    '#mmPhoneRoot .mm-btn:hover{background:rgba(255,255,255,.1)}',
+    '#mmPhoneRoot .mm-btn{min-height:29px;display:inline-flex;align-items:center;justify-content:center;padding:5px 16px;min-width:30px;text-align:center;',
+    'background:rgba(255,255,255,.07);border:none;border-radius:999px;color:#f0efe9;cursor:pointer;user-select:none;font-size:12px;font-weight:500;white-space:nowrap;transition:transform .14s ease,background .14s,color .14s}',
+    '#mmPhoneRoot .mm-btn:hover{background:rgba(255,255,255,.11)}',
     '#mmPhoneRoot .mm-btn:active{transform:scale(.94);opacity:.85}',
-    '#mmPhoneRoot .mm-stat .mm-btn{min-width:30px;min-height:30px;padding:0;border-radius:50%;background:rgba(255,255,255,.08);font-size:14px;font-weight:600}',
+    '#mmPhoneRoot .mm-stat .mm-btn{min-width:32px;min-height:32px;padding:0;border-radius:50%;background:rgba(255,255,255,.08);font-size:14px;font-weight:600}',
     '#mmPhoneRoot .mm-stat .mm-btn:hover{background:rgba(230,98,98,.18);color:#ef9d9d}',
-    '#mmPhoneRoot .mm-btn.mm-go{background:rgba(230,98,98,.15);color:#ef9d9d;font-weight:600;letter-spacing:.14em}',
-    '#mmPhoneRoot .mm-btn.mm-go:hover{background:rgba(230,98,98,.24)}',
+    '#mmPhoneRoot .mm-btn.mm-go{background:rgba(230,98,98,.24);color:#f5b8b8;font-weight:600;letter-spacing:.08em;box-shadow:inset 0 0 0 1px rgba(230,98,98,.35)}',
+    '#mmPhoneRoot .mm-btn.mm-go:hover{background:rgba(230,98,98,.34)}',
     // —— 输入（沉浸黑面＋金细环聚焦）——
     '#mmPhoneRoot input,#mmPhoneRoot select,#mmPhoneRoot textarea{background:rgba(0,0,0,.32);color:#ecebe6;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:5px 10px;font-size:12px;font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s}',
     '#mmPhoneRoot input:focus{border-color:rgba(208,178,120,.45);box-shadow:0 0 0 1px rgba(208,178,120,.18)}',
@@ -192,7 +197,7 @@
     '#mmPhoneRoot [data-mm-vmrels]>div:first-child,#mmPhoneRoot [data-mm-vmeq]>div:first-child,#mmPhoneRoot [data-mm-vmwk]>div:first-child,#mmPhoneRoot [data-mm-vmev]>div:first-child,#mmPhoneRoot [data-mm-vmst]>div:first-child,#mmPhoneRoot [data-mm-vmskill]>div:first-child{color:#8b887c!important;letter-spacing:.2em!important;font-size:9.5px!important;font-weight:600!important;border-bottom:1px solid rgba(255,255,255,.055)!important;margin:14px 2px 7px!important;padding-bottom:2px!important}',
     '#mmPhoneRoot [data-mm-vmrels]>div:first-child:before,#mmPhoneRoot [data-mm-vmeq]>div:first-child:before,#mmPhoneRoot [data-mm-vmwk]>div:first-child:before,#mmPhoneRoot [data-mm-vmskill]>div:first-child:before{content:"";display:inline-block;width:3px;height:9px;background:linear-gradient(180deg,#e62429,#8f1d22);margin-right:8px;border-radius:1px;transform:skewX(-14deg);vertical-align:-1px}',
     '#mmPhoneRoot [data-mm-vmrels]>div+div,#mmPhoneRoot [data-mm-vmeq]>div+div,#mmPhoneRoot [data-mm-vmwk]>div+div,#mmPhoneRoot [data-mm-vmev]>div+div,#mmPhoneRoot [data-mm-vmst]>div+div,#mmPhoneRoot [data-mm-vmskill]>div+div{background:rgba(255,255,255,.04);border-radius:11px;padding:6px 10px;margin:5px 0}',
-    '#mmPhoneRoot span[data-mm-a^="vm-"]{border-radius:999px!important;border-color:rgba(255,255,255,.14)!important;color:#d9d4c7!important;background:rgba(255,255,255,.05)!important;transition:background .14s,border-color .14s,color .14s}',
+    '#mmPhoneRoot span[data-mm-a^="vm-"]{border-radius:999px!important;border-color:rgba(255,255,255,.14)!important;color:#f0efe9!important;background:rgba(255,255,255,.06)!important;padding:3px 13px!important;min-height:26px;transition:background .14s,border-color .14s,color .14s}',
     '#mmPhoneRoot span[data-mm-a^="vm-"]:hover{border-color:rgba(230,98,98,.5)!important;color:#ef9d9d!important;background:rgba(230,98,98,.1)!important}'
   ].join('');
   topDoc.head.appendChild(style);
@@ -334,6 +339,21 @@
   fab.setAttribute('data-ph-a', 'ph-toggle');
   fab.title = '美漫手机';
   topDoc.body.appendChild(fab);
+
+  // —— 移动端锚定模式（v0.2.0）：根元素被 transform/perspective 变换时，fixed 的包含块被改写 →
+  // 改挂 absolute（ST 移动端 body 是全屏 fixed 盒，absolute 锚定视口正确）。启动＋窗口变化时重判。
+  function 同步锚定模式() {
+    try {
+      const cs = (topWin.getComputedStyle || getComputedStyle)(topDoc.documentElement);
+      const 根被变换 = (cs.transform && cs.transform !== 'none') || (cs.perspective && cs.perspective !== 'none');
+      const 用绝对 = !!根被变换;
+      fab.classList.toggle('mm-anchor-abs', 用绝对);
+      root.classList.toggle('mm-anchor-abs', 用绝对);
+      return 用绝对;
+    } catch (_) { return false; }
+  }
+  topWin.__mm锚定 = 同步锚定模式();
+  try { topWin.addEventListener('resize', 同步锚定模式); topWin.addEventListener('orientationchange', 同步锚定模式); } catch (_) { }
 
   // ---------- 导航 ----------
   const headBk = root.querySelector('#mmPhAppbar .bk');
