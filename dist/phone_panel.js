@@ -591,5 +591,5 @@
     topWin.__mmPhoneClockIv = setInterval(tick, 20000);
   })();
 
-  console.info(TAG, '手机面板 v0.2.0 就绪（手机拟真版·五应用＋桌面组件·第二作用域架构）');
+  console.info(TAG, '手机面板 v0.2.1 就绪（手机拟真版·五应用＋桌面组件·第二作用域架构）');
 })();
