@@ -187,7 +187,7 @@
     'clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);transition:transform .14s ease,background .14s,color .14s,box-shadow .14s}',
     '#mmPhoneRoot .mm-btn:hover{background:rgba(248,200,48,.14);color:#ffd75e}',
     '#mmPhoneRoot .mm-btn:active{transform:scale(.95)}',
-    '#mmPhoneRoot .mm-stat .mm-btn{min-width:36px;min-height:36px;padding:0;background:rgba(255,255,255,.08);font-size:17px;font-weight:800;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
+    '#mmPhoneRoot .mm-stat .mm-btn[data-mm-a="stat"]{min-width:36px;min-height:36px;padding:0;background:rgba(255,255,255,.08);font-size:17px;font-weight:800;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
     '#mmPhoneRoot .mm-stat .mm-btn:hover{background:rgba(248,200,48,.2);color:#ffd75e}',
     '#mmPhoneRoot .mm-btn.mm-go{background:linear-gradient(160deg,#ffd75e,#f8c830);color:#0a0f1c;font-weight:800;letter-spacing:.06em;box-shadow:0 6px 20px rgba(248,200,48,.3)}',
     '#mmPhoneRoot .mm-btn.mm-go:hover{background:linear-gradient(160deg,#ffe484,#ffd04a)}',
@@ -846,5 +846,5 @@
     topWin.__mmPhoneClockIv = setInterval(tick, 20000);
   })();
 
-  console.info(TAG, '手机面板 v0.2.9 就绪（收件箱＋日程＋聊天二期·七图标收口）');
+  console.info(TAG, '手机面板 v0.2.10 就绪（真机修订：设字缩号＋卡片按钮归位＋事件页重排）');
 })();
