@@ -83,17 +83,18 @@
     '#mmPhWorldWg:active,#mmPhWidget:active{transform:scale(.98)}',
     // —— 世界速览小组件 ——
     '#mmPhWorldWg .wgcap{font-size:9.5px;color:#f8c830;letter-spacing:.24em;margin-right:8px;font-weight:800}',
-    '#mmPhWorldWg .wgline{margin-top:6px;font-size:11.5px;color:#9aa3b5;display:flex;align-items:center}',
+    '#mmPhWorldWg .wgline{margin-top:6px;font-size:11.5px;color:#9aa3b5;display:flex;align-items:center;gap:7px}',
     '#mmPhWorldWg .wgline b{color:#eef2f8;font-weight:700;font-variant-numeric:tabular-nums}',
-    '#mmPhWorldWg .wt2{flex:1;height:4px;background:rgba(255,255,255,.08);overflow:hidden;margin-left:8px;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%)}',
+    '#mmPhWorldWg .wt2{flex:1;height:4px;background:rgba(255,255,255,.08);overflow:hidden;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%)}',
     '#mmPhWorldWg .wf2{display:block;height:100%;width:0;transition:width .5s cubic-bezier(.22,.61,.36,1)}',
     // —— 桌面底部战况条 ——
+    '#mmPhFightbar{align-items:center;gap:10px}',
     '#mmPhFightbar .fbic{width:32px;height:32px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(230,36,41,.2);clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
     '@keyframes mmHudPulse{0%,100%{filter:drop-shadow(0 0 0 rgba(230,36,41,0))}50%{filter:drop-shadow(0 0 8px rgba(230,36,41,.6))}}',
     '#mmPhFightbar.live .fbic{animation:mmHudPulse 2s ease-in-out infinite}',
-    '#mmPhFightbar .fblb{font-size:9.5px;color:#f8c830;letter-spacing:.24em;white-space:nowrap;font-weight:800}',
+    '#mmPhFightbar .fblb{font-size:11px;color:#f8c830;letter-spacing:.14em;white-space:nowrap;font-weight:800}',
     '#mmPhFightbar .fbt{font-size:12.5px;color:#eef2f8;font-weight:700;white-space:nowrap}',
-    '#mmPhFightbar .fbd{font-size:11.5px;color:#9aa3b5;white-space:normal;word-break:break-all}',
+    '#mmPhFightbar .fbd{flex:1;font-size:11.5px;color:#9aa3b5;white-space:normal;word-break:break-all}',
     // —— 角色"速览"小组件 ——
     '#mmPhWidget .wgnm{font-weight:800;font-size:16px;color:#f4f6fa;letter-spacing:.06em;transform:skewX(-6deg);display:inline-block}',
     '#mmPhWidget .wglv{font-size:10.5px;color:#0a0f1c;background:linear-gradient(160deg,#ffd75e,#f8c830);padding:2px 10px;font-variant-numeric:tabular-nums;font-weight:800;clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px)}',
@@ -139,6 +140,7 @@
     '#mmPhoneRoot .mm-sectitle:first-child{margin-top:4px}',
     // —— 行式键值（label 金灰＋发丝底线）——
     '#mmPhoneRoot .mm-kv{margin:0;padding:9px 2px;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px;color:#e8ecf4}',
+    '#mmPhoneRoot .mm-kv b{margin-right:7px}',
     '#mmPhoneRoot .mm-kv:last-of-type{border-bottom:none}',
     '#mmPhoneRoot .mm-kv b{color:#f8c830;font-weight:650;margin-right:10px;font-size:11px;letter-spacing:.08em}',
     '#mmPhoneRoot .mm-hint{font-size:11px;color:#79818f;line-height:1.7;margin:6px 2px 2px}',
@@ -149,7 +151,7 @@
     '#mmPhoneRoot .mm-idrow span[style*="margin-left:auto"]{background:linear-gradient(160deg,#ffd75e,#f8c830);border:none;color:#0a0f1c!important;font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);padding:3px 11px}',
     // —— 四维瓦片（切角深面＋白数字＋金标签）——
     '#mmPhoneRoot .mm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0 4px}',
-    '#mmPhoneRoot .mm-cell{padding:12px 4px;text-align:center;background:linear-gradient(165deg,#131a2c,#0a0f1c);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);box-shadow:inset 0 0 0 1px rgba(248,200,48,.16);transition:transform .15s ease}',
+    '#mmPhoneRoot .mm-cell{padding:12px 6px;text-align:center;background:linear-gradient(165deg,#131a2c,#0a0f1c);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);box-shadow:inset 0 0 0 1px rgba(248,200,48,.16);transition:transform .15s ease}',
     '#mmPhoneRoot .mm-cell b{display:block;font-size:20px;color:#f4f6fa;font-variant-numeric:tabular-nums;font-weight:800;line-height:1.2}',
     '#mmPhoneRoot .mm-cell span{font-size:9.5px;color:#f8c830;letter-spacing:.2em;font-weight:700}',
     // —— 加点/设值行 ——
@@ -164,7 +166,7 @@
     'clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);transition:transform .14s ease,background .14s,color .14s,box-shadow .14s}',
     '#mmPhoneRoot .mm-btn:hover{background:rgba(248,200,48,.14);color:#ffd75e}',
     '#mmPhoneRoot .mm-btn:active{transform:scale(.95)}',
-    '#mmPhoneRoot .mm-stat .mm-btn{min-width:34px;min-height:34px;padding:0;background:rgba(255,255,255,.08);font-size:15px;font-weight:800;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
+    '#mmPhoneRoot .mm-stat .mm-btn{min-width:36px;min-height:36px;padding:0;background:rgba(255,255,255,.08);font-size:17px;font-weight:800;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
     '#mmPhoneRoot .mm-stat .mm-btn:hover{background:rgba(248,200,48,.2);color:#ffd75e}',
     '#mmPhoneRoot .mm-btn.mm-go{background:linear-gradient(160deg,#ffd75e,#f8c830);color:#0a0f1c;font-weight:800;letter-spacing:.06em;box-shadow:0 6px 20px rgba(248,200,48,.3)}',
     '#mmPhoneRoot .mm-btn.mm-go:hover{background:linear-gradient(160deg,#ffe484,#ffd04a)}',
@@ -257,8 +259,8 @@
     // 桌面小组件：世界速览（点开＝事件页，世界详情行都在那边）
     '  <div id="mmPhWorldWg" data-ph-a="ph-open" data-ph-tgt="events" title="打开事件与详情">',
     '    <div style="display:flex;align-items:center;gap:8px"><span class="wgcap" style="margin-left:0">世界</span><span class="wgnm" style="font-size:12.5px" id="mmPh电影">…</span></div>',
-    '    <div class="wgline">节点 <b id="mmPh节点">…</b>｜阶段 <b id="mmPh阶段">…</b></div>',
-    '    <div class="wgline" style="align-items:center;display:flex">干预度 <b id="mmPh干预度">…</b><span class="wt2"><span class="wf2" id="mmPh干预条" style="background:repeating-linear-gradient(-55deg,#f8c830 0 6px,#c79a1e 6px 12px)"></span></span></div>',
+    '    <div class="wgline"><span>节点</span><b id="mmPh节点">…</b><span style="color:rgba(255,255,255,.22)">｜</span><span>阶段</span><b id="mmPh阶段">…</b></div>',
+    '    <div class="wgline"><span>干预度</span><b id="mmPh干预度">…</b><span class="wt2"><span class="wf2" id="mmPh干预条" style="background:repeating-linear-gradient(-55deg,#f8c830 0 6px,#c79a1e 6px 12px)"></span></span></div>',
     '  </div>',
     // 桌面小组件：角色速览（点开＝人物 App）
     '  <div id="mmPhWidget" data-ph-a="ph-open" data-ph-tgt="persona" title="打开人物">',
@@ -571,10 +573,10 @@
         const 负 = /判定\s*-|-[\d]|伤害|流血|毒|衰|弱|惧|裂|痛|灼|冻|晕|哑|盲/.test((f.名 || '') + (f.述 || ''));
         const 正 = /\+[\d]|增益|强化|回复|恢复|加速/.test((f.名 || '') + (f.述 || ''));
         const c = 负 ? 色v.红 : (正 ? 色v.金 : 色v.青);
-        return '<div style="position:relative;background:linear-gradient(165deg,rgba(19,26,44,.65),rgba(8,12,22,.75));box-shadow:inset 0 0 0 1px rgba(248,200,48,.14);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);padding:8px 10px 8px 15px;margin:5px 0">'
+        return '<div style="position:relative;background:linear-gradient(165deg,rgba(19,26,44,.65),rgba(8,12,22,.75));box-shadow:inset 0 0 0 1px rgba(248,200,48,.14);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);padding:10px 12px 10px 16px;margin:5px 0">'
           + '<i style="position:absolute;left:0;top:0;bottom:0;width:3px;background:' + c + '"></i>'
           + '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><b style="color:#f4f6fa;font-size:12px">' + esc(f.名 || '状态') + '</b>'
-          + (f.持 ? '<span style="margin-left:auto;font-size:10px;color:#ffd75e;background:rgba(248,200,48,.12);padding:1px 8px;white-space:nowrap">持续：' + esc(f.持) + '</span>' : '')
+          + (f.持 ? '<span style="margin-left:auto;font-size:10px;color:#ffd75e;background:rgba(248,200,48,.12);padding:2px 9px;white-space:nowrap">持续：' + esc(f.持) + '</span>' : '')
           + '</div>'
           + (f.述 ? '<div style="color:#9aa3b5;font-size:11px;line-height:1.5;margin-top:3px">' + esc(f.述) + '</div>' : '')
           + '</div>';
@@ -732,5 +734,5 @@
     topWin.__mmPhoneClockIv = setInterval(tick, 20000);
   })();
 
-  console.info(TAG, '手机面板 v0.2.4 就绪（争锋 UI＋词条卡＋聊天一期·联系人私聊主钮排版）');
+  console.info(TAG, '手机面板 v0.2.5 就绪（争锋 UI＋词条卡＋聊天一期·贴边定量＋战况条对齐）');
 })();
