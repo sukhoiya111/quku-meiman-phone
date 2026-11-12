@@ -65,7 +65,7 @@
     '#mmPhoneScreen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:30px;scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(248,200,48,.25) transparent}',
     '#mmPhoneScreen::-webkit-scrollbar{width:3px}#mmPhoneScreen::-webkit-scrollbar-thumb{background:rgba(248,200,48,.28);border-radius:2px}',
     // —— 桌面图标网格（5 列，切角金框瓦片）——
-    '#mmDesktop{display:grid;grid-template-columns:repeat(5,1fr);gap:18px 2px;padding:22px 10px 6px}',
+    '#mmDesktop{display:grid;grid-template-columns:repeat(7,1fr);gap:14px 2px;padding:22px 8px 6px}',
     '#mmDesktop .app{cursor:pointer;user-select:none;text-align:center;transition:transform .18s cubic-bezier(.34,1.3,.5,1)}',
     '#mmDesktop .app:hover{transform:translateY(-2px)}',
     '#mmDesktop .app:active{transform:scale(.9)}',
@@ -75,6 +75,26 @@
     'box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}',
     '#mmDesktop .app .ic svg{display:block}',
     '#mmDesktop .app .nm{font-size:10px;color:rgba(238,242,248,.92);letter-spacing:.06em;margin-top:7px;font-weight:600;white-space:nowrap}',
+    '#mmDesktop .ic{position:relative}',
+    '#mmDesktop .tbdg{position:absolute;top:-6px;right:-8px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:#e62429;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums;z-index:2}',
+    '#mmPhoneFab .fabdg{position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:#e62429;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:2}',
+    '#mmPhoneRoot .mm-inrow{display:flex;align-items:center;gap:10px;padding:10px 12px;margin:6px 0;background:linear-gradient(165deg,rgba(19,26,44,.65),rgba(8,12,22,.75));box-shadow:inset 0 0 0 1px rgba(248,200,48,.14);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);cursor:pointer}',
+    '#mmPhoneRoot .mm-inrow:active{transform:scale(.985)}',
+    '#mmPhoneRoot .mm-inrow .av{width:30px;height:30px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;background:rgba(248,200,48,.12);color:#f8c830;font-weight:800;font-size:14px;clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px)}',
+    '#mmPhoneRoot .mm-inrow .pv{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:11.5px;color:#9aa3b5;text-align:left}',
+    '#mmPhoneRoot .mm-inrow .pv b{color:#eef2f8;font-size:12.5px;margin-right:6px}',
+    '#mmPhoneRoot .mm-inrow .dot{flex:0 0 auto;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#e62429;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}',
+    '#mmPhoneRoot .mm-inrow .tm{flex:0 0 auto;font-size:10px;color:#6e7788;font-variant-numeric:tabular-nums}',
+    '#mmPhoneRoot .mm-scrow{display:flex;align-items:center;gap:8px;padding:10px 12px;margin:6px 0;background:linear-gradient(165deg,rgba(19,26,44,.65),rgba(8,12,22,.75));box-shadow:inset 0 0 0 1px rgba(248,200,48,.14);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);flex-wrap:wrap}',
+    '#mmPhoneRoot .mm-scrow .sd{flex:0 0 auto;font-size:11px;color:#f8c830;font-weight:700;font-variant-numeric:tabular-nums;min-width:56px}',
+    '#mmPhoneRoot .mm-scrow .st2{flex:1;min-width:110px;font-size:12.5px;color:#eef2f8;text-align:left}',
+    '#mmPhoneRoot .mm-scrow .who{font-size:10.5px;color:#9aa3b5}',
+    '#mmPhoneRoot .mm-scrow.over{box-shadow:inset 0 0 0 1px rgba(230,36,41,.55)}',
+    '#mmPhoneRoot .mm-scrow.over .sd{color:#ff8a8e}',
+    '#mmPhoneRoot .mm-scrow.done{opacity:.5}',
+    '#mmPhoneRoot .mm-med{max-width:80%;padding:10px 12px;margin:4px 0;background:linear-gradient(165deg,rgba(24,32,54,.9),rgba(10,14,26,.92));box-shadow:inset 0 0 0 1px rgba(248,200,48,.35);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}',
+    '#mmPhoneRoot .mm-med .mk{font-size:9.5px;color:#f8c830;letter-spacing:.14em;font-weight:800;margin-bottom:4px}',
+    '#mmPhoneRoot .mm-med .md{font-size:12px;color:#eef2f8;line-height:1.5;text-align:left}',
     // —— 玻璃组件通用面（切角面板＋金发丝框）——
     '#mmPhWorldWg,#mmPhWidget,#mmPhFightbar{margin:7px 14px 0;padding:12px 16px;border-radius:2px;',
     'clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);',
@@ -236,15 +256,15 @@
   root.setAttribute('data-mm-active-tab', '');
   // v0.2.0 信息架构重组（驾驶员令）：五应用——世界/战斗上桌面（组件/战况条），日志并入人物，
   // 加点/资源设值/技能并入设置；桌面（网格∪Dock）不放重复应用。
-  const APPS = [
-    ['persona', '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M5.5 19c.8-3.6 3.4-5.4 6.5-5.4s5.7 1.8 6.5 5.4"/></svg>', '人物'], ['bag', '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-.9 11.2A1.8 1.8 0 0 1 15.3 21H8.7a1.8 1.8 0 0 1-1.8-1.8L6 8Z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg>', '背包'], ['contacts', '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3"/><path d="M3.5 19c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6"/><path d="M15.5 6.6a3 3 0 0 1 0 4.8M17.5 14.6c1.7.7 2.7 2.2 3 4.4"/></svg>', '联系人'],
-    ['events', '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="15" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg>', '事件'], ['settings', '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.6M12 18.6v2.6M4.9 4.9l1.9 1.9M17.2 17.2l1.9 1.9M2.8 12h2.6M18.6 12h2.6M4.9 19.1l1.9-1.9M17.2 6.8l1.9-1.9"/></svg>', '设置'],
+    const APPS = [
+    ['persona', '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M5.5 19c.8-3.6 3.4-5.4 6.5-5.4s5.7 1.8 6.5 5.4"/></svg>', '人物'], ['bag', '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-.9 11.2A1.8 1.8 0 0 1 15.3 21H8.7a1.8 1.8 0 0 1-1.8-1.8L6 8Z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg>', '背包'], ['contacts', '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3"/><path d="M3.5 19c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6"/><path d="M15.5 6.6a3 3 0 0 1 0 4.8M17.5 14.6c1.7.7 2.7 2.2 3 4.4"/></svg>', '联系人'], ['messages', '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v9.5H10l-4.5 4v-4H4V6Z"/></svg>', '消息'],
+    ['events', '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="15" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg>', '事件'], ['schedule', '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="15" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/><path d="M9 14.5l2.2 2.2 4-4.4"/></svg>', '日程'], ['settings', '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.6M12 18.6v2.6M4.9 4.9l1.9 1.9M17.2 17.2l1.9 1.9M2.8 12h2.6M18.6 12h2.6M4.9 19.1l1.9-1.9M17.2 6.8l1.9-1.9"/></svg>', '设置'],
   ];
   // 图标块色板（现实手机 App 图标＝彩色圆角块＋压暗渐变）
   // v0.2.0 斯塔克·暗面：五瓦片统一漫威红渐变（官方 App 白 on 红瓦片语言；emoji glyph 自带色相在红底上成立）
   const 瓦红 = 'linear-gradient(180deg,#ee2a2f 0%,#d01f24 100%)'; // v3：扁平红面（去 3D 压暗渐变）
-  const 色板 = { persona: 瓦红, bag: 瓦红, contacts: 瓦红, events: 瓦红, settings: 瓦红 };
-  const 瓦 = k => { const a = APPS.find(x => x[0] === k); return '<div class="app" data-ph-app="' + k + '"><div class="ic" style="background:' + 色板[k] + '">' + a[1] + '</div><div class="nm">' + a[2] + '</div></div>'; };
+  const 色板 = { persona: 瓦红, bag: 瓦红, contacts: 瓦红, messages: 瓦红, events: 瓦红, schedule: 瓦红, settings: 瓦红 };
+  const 瓦 = k => { const a = APPS.find(x => x[0] === k); const 角 = (k === 'messages' || k === 'schedule') ? '<span class="tbdg" id="mmBdg-' + k + '" style="display:none"></span>' : ''; return '<div class="app" data-ph-app="' + k + '"><div class="ic" style="background:' + 色板[k] + '">' + a[1] + 角 + '</div><div class="nm">' + a[2] + '</div></div>'; };
   const SVG信号 = '<svg width="15" height="11" viewBox="0 0 15 11"><rect x="0" y="7" width="2.6" height="4" rx="0.8" fill="currentColor"/><rect x="4" y="4.6" width="2.6" height="6.4" rx="0.8" fill="currentColor"/><rect x="8" y="2.4" width="2.6" height="8.6" rx="0.8" fill="currentColor"/><rect x="12" y="0" width="2.6" height="11" rx="0.8" fill="currentColor" opacity=".4"/></svg>';
   const SVGwifi = '<svg width="14" height="11" viewBox="0 0 14 11"><path d="M7 9.8 4.7 7.3a3.6 3.6 0 0 1 4.6 0Z" fill="currentColor"/><path d="M2.7 5.2a6.5 6.5 0 0 1 8.6 0L10 6.6a4.5 4.5 0 0 0-6 0Z" fill="currentColor" opacity=".78"/><path d="M.6 3a9.7 9.7 0 0 1 12.8 0l-1.3 1.4a7.8 7.8 0 0 0-10.2 0Z" fill="currentColor" opacity=".55"/></svg>';
   const SVG电池 = '<svg width="23" height="11" viewBox="0 0 23 11"><rect x="0.5" y="0.5" width="19" height="10" rx="3" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="14.5" height="7" rx="1.8" fill="currentColor"/><path d="M21 3.4v4.2a2.1 2.1 0 0 0 0-4.2Z" fill="currentColor" opacity=".45"/></svg>';
@@ -315,6 +335,21 @@
     '    <div data-mm-vmev></div>',
     '    <div class="mm-kv" style="white-space:pre-line;color:#b3ad9f;font-size:11.5px;margin-top:8px"><b>最近偏移记录</b><span id="mmPh偏移"></span></div>',
     '  </div>',
+    // ⑥ 消息（收件箱：谁发来消息、未读、一键进聊天）
+    '  <div class="mm-app" data-ph-page="messages">',
+    '    <div class="mm-hint">最近聊过的人都在这——点一行直接回话。红点是没读的条数。</div>',
+    '    <div id="mmPhInbox"><span style="color:#6e6c68;font-size:11px">（还没有私信往来）</span></div>',
+    '  </div>',
+    // ⑦ 日程（小本本：说定了的事都在这；可改可勾可删）
+    '  <div class="mm-app" data-ph-page="schedule">',
+    '    <div class="mm-hint">你答应过的事都在这——聊天里说定了会自动记一条；这里也能记一笔、改时间、勾掉、删掉。拖过头的会标红顶到最上面。</div>',
+    '    <div style="display:flex;gap:6px;margin:8px 0;flex-wrap:wrap">',
+    '      <input id="mmSchedD" placeholder="时间（如 周六下午／待定）" style="flex:1 1 120px;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11.5px;padding:7px 9px">',
+    '      <input id="mmSchedT" placeholder="做什么" style="flex:1 1 120px;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11.5px;padding:7px 9px">',
+    '      <span tabindex="0" role="button" class="mm-btn mm-go" data-ph-a="sched-add" style="min-width:64px">＋ 记一笔</span>',
+    '    </div>',
+    '    <div id="mmPhSched"><span style="color:#6e6c68;font-size:11px">（日程是空的）</span></div>',
+    '  </div>',
     // ⑧ 设置（并成长加点／资源设值：查看在人物页，改动全归设置）
     '  <div class="mm-app" data-ph-page="settings">',
     '    <details open>',
@@ -328,6 +363,10 @@
     '        <div class="mm-echo" id="mmApiEcho"></div>',
     '      </div>',
     '    </details>',
+    '    <div class="mm-sectitle" id="mmPhPrefAnchor">手机偏好</div>',
+    '    <div class="mm-mode-row"><span class="ml">主动消息</span><span class="seg" id="mmPmSeg"></span></div>',
+    '    <div class="mm-mode-row"><span class="ml">自动记日程</span><span class="seg" id="mmCalSeg"></span></div>',
+    '    <div class="mm-hint">主动消息＝NPC 有时自己来信（挡位越高越常来，连续失败会自动暂停，换一下挡位即重开）；自动记日程＝聊天里说定了的事自动进日程应用，记错了去日程里改。</div>',
     '    <div class="mm-sectitle" style="margin-top:10px">成长与加点（0-10，升级自动获得的点数在此分配）</div>',
     '    <div class="mm-xprow">',
     '      <span class="xl">升级</span>',
@@ -371,7 +410,7 @@
   // FAB 启动钮
   const fab = topDoc.createElement('div');
   fab.id = 'mmPhoneFab';
-  fab.textContent = '📱';
+  fab.innerHTML = '📱<span class="fabdg" id="mmPhFabBdg" style="display:none"></span>';
   fab.setAttribute('data-ph-a', 'ph-toggle');
   fab.title = '美漫手机';
   topDoc.body.appendChild(fab);
@@ -411,8 +450,10 @@
     root.querySelector('#mmPhoneScreen').scrollTop = 0;
     if (app === 'persona') { fill人物(); fill日志(); } // 日志并入人物页
     else if (app === 'events') { fill容器(); fill世界(); } // 世界详情两行（一览/偏移）在事件页
-    else if (app === 'settings') { fill容器(); fill加点区(); } // 成长数字首开填充（加点并入设置页）
+    else if (app === 'settings') { fill容器(); fill加点区(); fill偏好(); } // 成长数字首开填充（加点并入设置页）＋手机偏好
     else if (app === 'chat') { fill聊天(); } // v3.53c 聊天页（线程由 fill聊天 实读）
+    else if (app === 'messages') { fill消息(); } // v4.10 收件箱
+    else if (app === 'schedule') { fill日程(); } // v4.10 日程
     else fill容器(); // bag/contacts：懒渲染全容器（渲染变量管理一次过）
   }
   function 回桌面() {
@@ -454,6 +495,13 @@
       else if (a === 'ph-chat') { 开聊天页(b.getAttribute('data-ph-k') || ''); } // v3.53c 联系人卡「私聊」入口
       else if (a === 'ph-invite') { const inp = topDoc.getElementById('mmPhChatIn'); if (inp) { inp.value = '「' + (b.getAttribute('data-ph-t') || '') + '」——'; inp.focus(); } }
       else if (a === 'ph-chatsend') { 发私信流程(); }
+      else if (a === 'sched-add') { const d = topDoc.getElementById('mmSchedD'), t = topDoc.getElementById('mmSchedT'); const dv = ((d && d.value) || '').trim() || '待定', tv = ((t && t.value) || '').trim(); if (!tv) { try { topWin.toastr ? topWin.toastr.info('先写要做什么。', '美漫 · 日程') : 0; } catch (_) { } return; } Promise.resolve(桥.日程增(dv, tv, '', '手动')).then(r => { if (r && r.err) { try { topWin.toastr ? topWin.toastr.warning(r.err, '美漫 · 日程') : 0; } catch (_) { } } if (d) d.value = ''; if (t) t.value = ''; fill日程(); }); }
+      else if (a === 'sched-del') { Promise.resolve(桥.日程操作('del', b.getAttribute('data-i'))).then(() => fill日程()); }
+      else if (a === 'sched-done') { Promise.resolve(桥.日程操作('done', b.getAttribute('data-i'))).then(() => fill日程()); }
+      else if (a === 'sched-edit') { 日程编辑中 = Number(b.getAttribute('data-i')); fill日程(); }
+      else if (a === 'sched-save') { const i = b.getAttribute('data-i'); const d = topDoc.getElementById('mmSeD' + i), t = topDoc.getElementById('mmSeT' + i); Promise.resolve(桥.日程操作('edit', i, d && d.value, t && t.value)).then(() => { 日程编辑中 = -1; fill日程(); }); }
+      else if (a === 'pref-pm') { const k = b.getAttribute('data-k'); Promise.resolve(桥.写偏好(k, undefined)).then(() => { fill偏好(); try { topWin.toastr ? topWin.toastr.success('主动消息：' + k, '美漫 · 手机') : 0; } catch (_) { } }); }
+      else if (a === 'pref-cal') { Promise.resolve(桥.读偏好()).then(p => 桥.写偏好(p.pm, b.getAttribute('data-k') === '1')).then(() => fill偏好()); }
     } catch (e) { console.warn(TAG, 'click 处理', e); }
   };
   function 收起() { root.style.display = 'none'; }
@@ -468,6 +516,7 @@
     if (!当前聊天名) return;
     开app('chat');
     headTitle.textContent = 当前聊天名;
+    try { const 桥2 = topWin.__mmPhone桥; if (桥2 && 桥2.已读私信) Promise.resolve(桥2.已读私信(当前聊天名)).then(() => 刷角标()).catch(() => { }); } catch (_) { }
   }
   function fill聊天() {
     const 桥 = topWin.__mmPhone桥;
@@ -477,8 +526,9 @@
       const 线 = (r && r.线程) || [];
       线程盒.innerHTML = 线.length ? 线.map(x => {
         if (x.s === '系') return '<div class="mm-bub sys">' + esc(x.t) + '</div>';
+        if (x.m) return '<div class="mm-med"><div class="mk">' + (x.m === '图片' ? '📷 图片' : '🎬 视频') + '</div><div class="md">' + esc(x.t) + '</div></div>';
         const 类 = x.s === '我' ? 'me' : 'ta';
-        const 文 = String(x.t || '').replace(/<好感\s*[|｜]?\s*[+-]?\d+\s*>/g, '').trim(); // 渲染兜底剥标记
+        const 文 = String(x.t || '').replace(/<好感\s*[|｜]?\s*[+-]?\d+\s*>/g, '').replace(/<约定\s*[|｜][^>]*>/g, '').replace(/<(图片|视频)\s*[|｜][^>]*>/g, '').trim(); // 渲染兜底剥标记
         const 前缀 = x.k ? '<div style="font-size:9.5px;color:rgba(255,255,255,.55);margin-bottom:2px">✉ ' + esc(x.k) + '邀约</div>' : '';
         return '<div class="mm-bub ' + 类 + '">' + 前缀 + esc(文 || x.t) + '</div>';
       }).join('') : '<span style="color:#6e6c68;font-size:11px">（还没有对话——发第一条私信）</span>';
@@ -540,7 +590,67 @@
     fill日志();
     fill加点区();
     fill容器();
+    fill消息();
+    fill日程();
+    fill偏好();
   }
+
+  // ---------- v4.10 收件箱／日程／偏好 ----------
+  async function 刷角标() {
+    const 桥 = topWin.__mmPhone桥;
+    if (!桥 || !桥.读私信总览) return;
+    try {
+      const r = await 桥.读私信总览();
+      const 未读总 = ((r && r.rows) || []).reduce((a, x) => a + (x.未读 || 0), 0);
+      const mb = topDoc.getElementById('mmBdg-messages'); if (mb) { mb.style.display = 未读总 ? 'flex' : 'none'; mb.textContent = String(未读总); }
+      const fb = topDoc.getElementById('mmPhFabBdg'); if (fb) { fb.style.display = 未读总 ? 'flex' : 'none'; fb.textContent = String(未读总); }
+      if (桥.读日程) { const sc = await 桥.读日程(); const 逾 = ((sc && sc.表) || []).filter(x => x && x.s === '逾期').length; const sb = topDoc.getElementById('mmBdg-schedule'); if (sb) { sb.style.display = 逾 ? 'flex' : 'none'; sb.textContent = String(逾); } }
+    } catch (e) { console.warn(TAG, '角标', e); }
+  }
+  topWin.__mmPhone刷角标 = 刷角标;
+  function fill消息() {
+    const 桥 = topWin.__mmPhone桥; const 盒 = topDoc.getElementById('mmPhInbox');
+    if (!桥 || !盒 || !桥.读私信总览) return;
+    Promise.resolve(桥.读私信总览()).then(r => {
+      const rows = (r && r.rows) || [];
+      盒.innerHTML = rows.length ? rows.map(x => {
+        const 末 = x.末 || {};
+        const 预 = 末.m ? (末.m === '图片' ? '📷 发来一张图片' : '🎬 发来一段视频') : String(末.t || '').replace(/<好感\s*[|｜]?\s*[+-]?\d+\s*>/g, '').replace(/<约定\s*[|｜][^>]*>/g, '');
+        const 时间 = x.ts ? new Date(x.ts).toTimeString().slice(0, 5) : '';
+        return '<div class="mm-inrow" data-ph-a="ph-chat" data-ph-k="' + esc(x.名) + '"><span class="av">' + esc(x.名.slice(0, 1)) + '</span><span class="pv"><b>' + esc(x.名) + '</b>' + esc((预 || '…').slice(0, 34)) + '</span>' + (x.未读 ? '<span class="dot">' + x.未读 + '</span>' : '') + '<span class="tm">' + 时间 + '</span></div>';
+      }).join('') : '<span style="color:#6e6c68;font-size:11px">（还没有私信往来——去联系人页点「私聊」）</span>';
+      刷角标();
+    }).catch(e => console.warn(TAG, 'fill消息', e));
+  }
+  let 日程编辑中 = -1;
+  function fill日程() {
+    const 桥 = topWin.__mmPhone桥; const 盒 = topDoc.getElementById('mmPhSched');
+    if (!桥 || !盒 || !桥.读日程) return;
+    Promise.resolve(桥.日程巡检 ? 桥.日程巡检() : null).catch(() => { });
+    Promise.resolve(桥.读日程()).then(r => {
+      const 表 = (r && r.表) || [];
+      const 行 = x => {
+        if (日程编辑中 === x.i) return '<div class="mm-scrow"><input id="mmSeD' + x.i + '" value="' + esc(x.d) + '" style="flex:0 1 96px;min-width:0;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11px;padding:5px 7px"><input id="mmSeT' + x.i + '" value="' + esc(x.t) + '" style="flex:1 1 110px;min-width:0;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11px;padding:5px 7px"><span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-save" data-i="' + x.i + '" style="min-width:34px;padding:0 8px">存</span></div>';
+        const 源 = x.src === '约定' ? '（聊天约定）' : x.src === '任务' ? '（事件接下）' : x.src === '手动' ? '（手动）' : '';
+        return '<div class="mm-scrow' + (x.s === '逾期' ? ' over' : '') + (x.s === '完成' ? ' done' : '') + '"><span class="sd">' + esc(x.d || '待定') + '</span><span class="st2">' + esc(x.t) + (x.w ? ' <span class="who">·' + esc(x.w) + '</span>' : '') + ' <span class="who">' + 源 + '</span></span>'
+          + '<span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-edit" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">改</span>'
+          + '<span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-done" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">' + (x.s === '完成' ? '恢复' : '勾') + '</span>'
+          + '<span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-del" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">删</span></div>';
+      };
+      盒.innerHTML = 表.length ? 表.map((x, i) => 行(Object.assign({}, x, { i }))).join('') : '<span style="color:#6e6c68;font-size:11px">（日程是空的——聊天里说定了的事会自动出现）</span>';
+      刷角标();
+    }).catch(e => console.warn(TAG, 'fill日程', e));
+  }
+  function fill偏好() {
+    const 桥 = topWin.__mmPhone桥;
+    const 段 = topDoc.getElementById('mmPmSeg'), 段2 = topDoc.getElementById('mmCalSeg');
+    if (!桥 || !桥.读偏好 || !段 || !段2) return;
+    Promise.resolve(桥.读偏好()).then(p => {
+      段.innerHTML = ['关', '低', '正常'].map(k => '<span tabindex="0" role="button" class="mm-btn' + (p.pm === k ? ' mm-go' : '') + '" data-ph-a="pref-pm" data-k="' + k + '" style="min-width:0;padding:0 12px">' + k + '</span>').join('');
+      段2.innerHTML = '<span tabindex="0" role="button" class="mm-btn' + (p.cal ? ' mm-go' : '') + '" data-ph-a="pref-cal" data-k="' + (p.cal ? '0' : '1') + '" style="min-width:0;padding:0 14px">' + (p.cal ? '开' : '关') + '</span>';
+    }).catch(e => console.warn(TAG, '偏好', e));
+  }
+  setInterval(() => { try { if (root.style.display === 'flex') 刷角标(); } catch (_) { } }, 20000);
 
   // ---------- 各应用填充（数据面＝__mmPhone桥，显示面＝JS 填，不靠宏） ----------
   function fill人物() {
@@ -734,5 +844,5 @@
     topWin.__mmPhoneClockIv = setInterval(tick, 20000);
   })();
 
-  console.info(TAG, '手机面板 v0.2.5 就绪（争锋 UI＋词条卡＋聊天一期·贴边定量＋战况条对齐）');
+  console.info(TAG, '手机面板 v0.2.6 就绪（消息收件箱＋日程应用＋聊天二期·主动消息/媒体卡/约定入日程）');
 })();
