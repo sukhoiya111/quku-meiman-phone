@@ -304,7 +304,7 @@
     '    <div class="mm-hint">这里列出全部关系记录——一次性路人删掉不影响剧情；带「注册」标的是花名册剧情人物、好感≥40 是重要关系，删除要点两次确认。好感框填数字后点「设」（-100～100，封顶 100）。</div>',
     '    <div data-mm-vmrels></div>',
     '    <div style="margin-top:6px"><span tabindex="0" role="button" class="mm-btn mm-go" data-mm-a="vm-rel-clean">一键清路人</span><span class="mm-hint" data-mm-vmcleancount style="margin-left:8px"></span></div>',
-    '    <div class="mm-hint" style="margin-top:8px;color:#c9a86a">📷 私信聊天（二期）将在这里接入。</div>',
+    '    <div class="mm-hint" style="margin-top:8px;color:#f8c830">💬 私信已上线：点上方关系卡的「私聊」直接开聊（走设置页独立 API，对话影响好感）。</div>',
     '  </div>',
     // ⑦ 事件（并世界详情：一览＋偏移记录）
     '  <div class="mm-app" data-ph-page="events">',
