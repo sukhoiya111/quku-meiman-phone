@@ -233,6 +233,12 @@
     // —— 聊天页（v3.53c 一期：玩家主动发起/邀约）——
     '#mmPhThread{display:flex;flex-direction:column;gap:7px;padding:4px 2px 10px;min-height:200px}',
     '#mmPhThread .mm-bub{max-width:82%;padding:9px 13px;font-size:12px;line-height:1.55;white-space:pre-line;word-break:break-word;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
+    '#mmPhThread .mm-bub{position:relative}',
+    '#mmPhThread .mm-bub.me.mm-pend{opacity:.72;box-shadow:inset 0 0 0 1px rgba(248,200,48,.55)}',
+    '#mmPhThread .mm-pendtag{font-size:9.5px;color:#f8c830;margin-bottom:3px;letter-spacing:.08em}',
+    '#mmPhThread .mm-pendx{position:absolute;top:3px;right:5px;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#ffd75e;cursor:pointer}',
+    '#mmPhThread .mm-sendall{display:flex;align-items:center;gap:10px;margin:6px 0;padding:11px 14px;background:linear-gradient(160deg,#ffd75e,#f8c830);color:#0a0f1c;font-weight:800;font-size:13px;cursor:pointer;clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}',
+    '#mmPhThread .mm-sendall .n{background:#0a0f1c;color:#f8c830;border-radius:9px;min-width:20px;text-align:center;padding:2px 6px;font-size:12px;font-variant-numeric:tabular-nums}',
     '#mmPhThread .mm-bub.me{align-self:flex-end;background:linear-gradient(160deg,#e62429,#a8161a);color:#fff;border-bottom-right-radius:2px}',
     '#mmPhThread .mm-bub.ta{align-self:flex-start;background:#171b28;color:#e8ecf4;border-bottom-left-radius:2px;box-shadow:inset 0 0 0 1px rgba(248,200,48,.18)}',
     '#mmPhThread .mm-bub.sys{align-self:center;background:none;color:#f8c830;font-size:10px;padding:2px 6px;letter-spacing:.06em}',
@@ -605,6 +611,8 @@
       else if (a === 'sched-save') { const i = b.getAttribute('data-i'); const d = topDoc.getElementById('mmSeD' + i), t = topDoc.getElementById('mmSeT' + i); Promise.resolve(桥.日程操作('edit', i, d && d.value, t && t.value)).then(() => { 日程编辑中 = -1; fill日程(); }); }
       else if (a === 'pref-pm') { const k = b.getAttribute('data-k'); Promise.resolve(桥.写偏好(k, undefined)).then(() => { fill偏好(); try { topWin.toastr ? topWin.toastr.success('主动消息：' + k, '美漫 · 手机') : 0; } catch (_) { } }); }
       else if (a === 'pref-cal') { Promise.resolve(桥.读偏好()).then(p => 桥.写偏好(p.pm, b.getAttribute('data-k') === '1')).then(() => fill偏好()); }
+      else if (a === 'sendall') { 确定发送(); }
+      else if (a === 'pend-del') { const i = Number(b.getAttribute('data-i')); const 名 = 当前聊天名; 待发读().then(待 => { const 行 = 待[名] || []; if (行[i]) { 行.splice(i, 1); if (!行.length) delete 待[名]; 待发缓存 = 待; 待发存(); } fill聊天(); }); }
     } catch (e) { console.warn(TAG, 'click 处理', e); }
   };
   function 收起() { root.style.display = 'none'; }
@@ -619,9 +627,10 @@
     if (!当前聊天名) return;
     开app('chat');
     headTitle.textContent = 当前聊天名;
-    try { const 桥2 = topWin.__mmPhone桥; if (桥2 && 桥2.已读私信) Promise.resolve(桥2.已读私信(当前聊天名)).then(() => 刷角标()).catch(() => { }); } catch (_) { }
+    try { const 桥2 = topWin.__mmPhone桥; if (桥2 && 桥2.读私信) Promise.resolve(桥2.读私信(当前聊天名)).then(r2 => 已读写(当前聊天名, ((r2 && r2.线程) || []).length)).then(() => 刷角标()).catch(() => { }); } catch (_) { }
   }
   function fill聊天() {
+    if (!topDoc.body.contains(root)) return; // v0.2.12：旧实例闭包（root 已被新实例重建移除）不再渲染——双实例双追加根源
     const 桥 = topWin.__mmPhone桥;
     const 线程盒 = topDoc.getElementById('mmPhThread');
     if (!线程盒 || !桥 || !当前聊天名) return;
@@ -635,10 +644,19 @@
         const 前缀 = x.k ? '<div style="font-size:9.5px;color:rgba(255,255,255,.55);margin-bottom:2px">✉ ' + esc(x.k) + '邀约</div>' : '';
         return '<div class="mm-bub ' + 类 + '">' + 前缀 + esc(文 || x.t) + '</div>';
       }).join('') : '<span style="color:#6e6c68;font-size:11px">（还没有对话——发第一条私信）</span>';
+      // v0.2.12 待发气泡（渲染层追加，不入线程真源；先异步装载再渲染；渲染序号防旧回调双追加）
+      const 序 = ++待发渲染序;
+      待发读().then(待 => {
+        if (序 !== 待发渲染序) return; // 已有更新的一次渲染＝本回调作废
+        const 待行 = (待[当前聊天名]) || [];
+        if (!待行.length) return;
+        const 空 = 线程盒.querySelector('span'); if (空 && 空.textContent.includes('还没有对话')) 空.remove();
+        线程盒.querySelectorAll('.mm-pend, [data-mm-pendhint]').forEach(x => x.remove()); // 双保险：追加前清旧待发块（双闭包场景幂等）
+        线程盒.insertAdjacentHTML('beforeend', 待行.map((x, i) => '<div class="mm-bub me mm-pend"><div class="mm-pendtag">✍️ 待发</div>' + esc(String(x.t)) + '<span tabindex="0" role="button" class="mm-pendx" data-ph-a="pend-del" data-i="' + i + '" title="撤回">✕</span></div>').join('') + '<div class="mm-hint" data-mm-pendhint>有 ' + 待行.length + ' 条待发——回「消息」页点「确定发送」一次性发出。</div>');
+        const sc3 = root.querySelector('#mmPhoneScreen'); if (sc3) sc3.scrollTop = sc3.scrollHeight;
+      }).catch(() => { });
       const sc = root.querySelector('#mmPhoneScreen'); if (sc) sc.scrollTop = sc.scrollHeight;
       const 输 = topDoc.getElementById('mmPhChatIn');
-      const 发 = topDoc.getElementById('mmPhChatSend');
-      if (发) 发.disabled = !!聊天发送中;
       if (输入占位更新) 输入占位更新();
     }).catch(e => console.warn(TAG, '读私信', e));
   }
@@ -649,33 +667,73 @@
     输.placeholder = (桥 && 桥.私信生成中 && 桥.私信生成中()) ? '对方正在回复…' : '输入私信…（Enter 发送）';
   }
   function 发私信流程() {
-    const 桥 = topWin.__mmPhone桥;
+    // v0.2.12 待发队列制（批条 outbox 同构）：发送＝入队，不立即调 API——
+    // 多条合成一次请求（省配额/限速不卡）＋发出前可撤回改错＋没配 API 消息安全留在箱里
     const 输 = topDoc.getElementById('mmPhChatIn');
-    if (!桥 || !当前聊天名) return;
+    if (!当前聊天名) return;
     const 文 = (输 && 输.value ? 输.value : '').trim();
     if (!文) return;
     const 邀约 = /^「[^」]+」——/.test(文) ? 文.match(/^「([^」]+)」/)[1] : '';
-    if (聊天发送中) return;
-    聊天发送中 = true;
-    const 发 = topDoc.getElementById('mmPhChatSend'); if (发) { 发.disabled = true; 发.textContent = '…'; }
-    // 本地先显示玩家气泡（乐观渲染；落库由引擎写线程）
-    const 线程盒 = topDoc.getElementById('mmPhThread');
-    if (线程盒) {
-      const 空 = 线程盒.querySelector('span'); if (空 && 空.textContent.includes('还没有对话')) 空.remove();
-      const 泡 = topDoc.createElement('div');
-      泡.className = 'mm-bub me ta-wait';
-      泡.textContent = 文;
-      线程盒.appendChild(泡);
-      const sc = root.querySelector('#mmPhoneScreen'); if (sc) sc.scrollTop = sc.scrollHeight;
-    }
-    if (输) 输.value = '';
-    Promise.resolve(桥.发私信(当前聊天名, 文, 邀约 || '')).then(r => {
-      if (r && r.err) { try { topWin.toastr ? topWin.toastr.warning(r.err, '美漫 · 私信') : 0; } catch (_) { } }
-    }).catch(e => console.warn(TAG, '发私信', e)).finally(() => {
-      聊天发送中 = false;
-      const 发2 = topDoc.getElementById('mmPhChatSend'); if (发2) { 发2.disabled = false; 发2.textContent = '发送'; }
-      fill聊天(); // 实读真源重渲（含对方回复＋好感系统行）
+    待发读().then(待 => {
+      (待[当前聊天名] = 待[当前聊天名] || []).push({ t: 文, k: 邀约 || '' });
+      待发缓存 = 待;
+      if (输) 输.value = '';
+      待发存();
+      fill聊天();
+      try { topWin.toastr ? topWin.toastr.info('已放入待发（' + (待[当前聊天名] || []).length + ' 条）——回「消息」页点「确定发送」', '美漫 · 私信') : 0; } catch (_) { }
     });
+  }
+  // ---------- v0.2.12 待发箱（批条 outbox 同构） ----------
+  let 待发缓存 = null; let 待发缓存键 = '';
+  const 待发键 = () => 'mmOutbox:' + ((topWin.SillyTavern && topWin.SillyTavern.getContext().chatId) || 'default');
+  async function 待发读() {
+    const 键 = 待发键();
+    if (待发缓存 && 待发缓存键 === 键) return 待发缓存;
+    try { 待发缓存 = JSON.parse(topWin.localStorage.getItem(键) || '{}') || {}; } catch (_) { 待发缓存 = {}; }
+    待发缓存键 = 键;
+    return 待发缓存;
+  }
+  async function 待发存() {
+    try { topWin.localStorage.setItem(待发键(), JSON.stringify(待发缓存 || {})); } catch (_) { }
+  }
+  // ---------- 已读记号（同 localStorage 按档键；未读＝线长−已读，面板侧算） ----------
+  const 已读键 = () => 'mmRead:' + ((topWin.SillyTavern && topWin.SillyTavern.getContext().chatId) || 'default');
+  let 已读缓存 = null; let 已读缓存键 = '';
+  async function 已读写(名, 线长) {
+    const 键 = 已读键();
+    if (!已读缓存 || 已读缓存键 !== 键) { try { 已读缓存 = JSON.parse(topWin.localStorage.getItem(键) || '{}') || {}; } catch (_) { 已读缓存 = {}; } 已读缓存键 = 键; }
+    已读缓存[名] = 线长;
+    try { topWin.localStorage.setItem(键, JSON.stringify(已读缓存)); } catch (_) { }
+  }
+  async function 已读值() {
+    const 键 = 已读键();
+    if (!已读缓存 || 已读缓存键 !== 键) { try { 已读缓存 = JSON.parse(topWin.localStorage.getItem(键) || '{}') || {}; } catch (_) { 已读缓存 = {}; } 已读缓存键 = 键; }
+    return 已读缓存;
+  }
+  let 待发渲染序 = 0;
+  let 群发中 = false;
+  async function 确定发送() {
+    if (群发中) { try { topWin.toastr ? topWin.toastr.info('正在发送…', '美漫 · 私信') : 0; } catch (_) { } return; }
+    const 桥 = topWin.__mmPhone桥;
+    if (!桥 || !桥.发私信) return;
+    const 待 = await 待发读();
+    const 名单 = Object.keys(待).filter(k => (待[k] || []).length);
+    if (!名单.length) { try { topWin.toastr ? topWin.toastr.info('队列为空', '美漫 · 私信') : 0; } catch (_) { } return; }
+    群发中 = true;
+    let 成功 = 0; const 失败 = [];
+    for (const 名 of 名单) {
+      const 行 = 待[名];
+      const 合并 = 行.map(x => x.t).join('\n');
+      const k0 = (行.find(x => x.k) || {}).k || '';
+      const r = await Promise.resolve(桥.发私信(名, 合并, k0));
+      if (r && r.err) { 失败.push(名); continue; } // M18：失败原样留在箱里，绝不静默吞
+      delete 待[名]; 成功++;
+      if (当前app === 'chat' && 当前聊天名 === 名) fill聊天();
+    }
+    待发缓存 = 待; await 待发存();
+    群发中 = false;
+    fill消息(); fill聊天(); 刷角标();
+    try { topWin.toastr ? topWin.toastr[失败.length ? 'warning' : 'success'](失败.length ? '已发 ' + 成功 + ' 人；失败（已放回待发）：' + 失败.join('、') : '📨 已发出，等他们回复…', '美漫 · 私信') : 0; } catch (_) { }
   }
   // Enter 发送（Shift+Enter 换行）
   topDoc.addEventListener('keydown', ev => {
@@ -704,7 +762,8 @@
     if (!桥 || !桥.读私信总览) return;
     try {
       const r = await 桥.读私信总览();
-      const 未读总 = ((r && r.rows) || []).reduce((a, x) => a + (x.未读 || 0), 0);
+      const 已读 = await 已读值();
+      const 未读总 = ((r && r.rows) || []).reduce((a, x) => a + Math.max(0, (x.线长 || 0) - (Number(已读[x.名]) || 0)), 0);
       const mb = topDoc.getElementById('mmBdg-messages'); if (mb) { mb.style.display = 未读总 ? 'flex' : 'none'; mb.textContent = String(未读总); }
       const fb = topDoc.getElementById('mmPhFabBdg'); if (fb) { fb.style.display = 未读总 ? 'flex' : 'none'; fb.textContent = String(未读总); }
       if (桥.读日程) { const sc = await 桥.读日程(); const 逾 = ((sc && sc.表) || []).filter(x => x && x.s === '逾期').length; const sb = topDoc.getElementById('mmBdg-schedule'); if (sb) { sb.style.display = 逾 ? 'flex' : 'none'; sb.textContent = String(逾); } }
@@ -715,14 +774,19 @@
   function fill消息() {
     const 桥 = topWin.__mmPhone桥; const 盒 = topDoc.getElementById('mmPhInbox');
     if (!桥 || !盒 || !桥.读私信总览) return;
-    Promise.resolve(桥.读私信总览()).then(r => {
+    Promise.all([Promise.resolve(桥.读私信总览()), 待发读(), Promise.resolve(群发中), 已读值()]).then(([r, 待, 群发, 已读]) => {
       const rows = (r && r.rows) || [];
-      盒.innerHTML = rows.length ? rows.map(x => {
+      rows.forEach(x => { x.未读 = Math.max(0, (x.线长 || 0) - (Number(已读[x.名]) || 0)); });
+      const 待条数 = Object.keys(待).reduce((a, k) => a + (待[k] || []).length, 0);
+      const 横幅 = 待条数 ? '<div tabindex="0" role="button" data-ph-a="sendall" style="display:flex;align-items:center;gap:10px;margin:6px 0;padding:11px 14px;background:linear-gradient(160deg,#ffd75e,#f8c830);color:#0a0f1c;font-weight:800;font-size:13px;cursor:pointer;clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)"><span style="background:#0a0f1c;color:#f8c830;border-radius:9px;min-width:20px;text-align:center;padding:2px 6px;font-size:12px;font-variant-numeric:tabular-nums">' + 待条数 + '</span>' + (群发 ? '📨 发送中…' : '📨 确定发送，等他们回复') + '</div>' : '';
+      盒.innerHTML = 横幅 + (rows.length || 待条数 ? rows.map(x => {
         const 末 = x.末 || {};
-        const 预 = 末.m ? (末.m === '图片' ? '📷 发来一张图片' : '🎬 发来一段视频') : String(末.t || '').replace(/<好感\s*[|｜]?\s*[+-]?\d+\s*>/g, '').replace(/<约定\s*[|｜][^>]*>/g, '');
+        const 待N = ((待[x.名] || []).length) || 0;
+        const 预 = 待N ? '' : (末.m ? (末.m === '图片' ? '📷 发来一张图片' : '🎬 发来一段视频') : String(末.t || '').replace(/<好感\s*[|｜]?\s*[+-]?\d+\s*>/g, '').replace(/<约定\s*[|｜][^>]*>/g, ''));
+        const 待段 = 待N ? '<span style="color:#f8c830;font-weight:800;">✍️ 待发' + 待N + '条 </span>' : '';
         const 时间 = x.ts ? new Date(x.ts).toTimeString().slice(0, 5) : '';
-        return '<div class="mm-inrow" data-ph-a="ph-chat" data-ph-k="' + esc(x.名) + '"><span class="av">' + esc(x.名.slice(0, 1)) + '</span><span class="pv"><b>' + esc(x.名) + '</b>' + esc((预 || '…').slice(0, 34)) + '</span>' + (x.未读 ? '<span class="dot">' + x.未读 + '</span>' : '') + '<span class="tm">' + 时间 + '</span></div>';
-      }).join('') : '<span style="color:#6e6c68;font-size:11px">（还没有私信往来——去联系人页点「私聊」）</span>';
+        return '<div class="mm-inrow" data-ph-a="ph-chat" data-ph-k="' + esc(x.名) + '"><span class="av">' + esc(x.名.slice(0, 1)) + '</span><span class="pv"><b>' + esc(x.名) + '</b>' + 待段 + esc((预 || (待N ? '…' : '')).slice(0, 30)) + '</span>' + (x.未读 ? '<span class="dot">' + x.未读 + '</span>' : '') + '<span class="tm">' + 时间 + '</span></div>';
+      }).join('') : '<span style="color:#6e6c68;font-size:11px">（还没有私信往来——去联系人页点「私聊」）</span>');
       刷角标();
     }).catch(e => console.warn(TAG, 'fill消息', e));
   }
@@ -948,5 +1012,5 @@
     topWin.__mmPhoneClockIv = setInterval(tick, 20000);
   })();
 
-  console.info(TAG, '手机面板 v0.2.11 就绪（真机修订＋悬浮球拖动·批条同款拖动系统）');
+  console.info(TAG, '手机面板 v0.2.12 就绪（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
