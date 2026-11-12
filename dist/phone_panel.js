@@ -65,16 +65,16 @@
     '#mmPhoneScreen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:30px;scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(248,200,48,.25) transparent}',
     '#mmPhoneScreen::-webkit-scrollbar{width:3px}#mmPhoneScreen::-webkit-scrollbar-thumb{background:rgba(248,200,48,.28);border-radius:2px}',
     // —— 桌面图标网格（5 列，切角金框瓦片）——
-    '#mmDesktop{display:grid;grid-template-columns:repeat(7,1fr);gap:14px 2px;padding:22px 8px 6px}',
+    '#mmDesktop{display:grid;grid-template-columns:repeat(7,1fr);gap:14px 1px;padding:22px 6px 6px}',
     '#mmDesktop .app{cursor:pointer;user-select:none;text-align:center;transition:transform .18s cubic-bezier(.34,1.3,.5,1)}',
     '#mmDesktop .app:hover{transform:translateY(-2px)}',
     '#mmDesktop .app:active{transform:scale(.9)}',
-    '#mmDesktop .app .ic{width:46px;height:46px;margin:0 auto;display:flex;align-items:center;justify-content:center;',
+    '#mmDesktop .app .ic{width:40px;height:40px;margin:0 auto;display:flex;align-items:center;justify-content:center;',
     'clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);',
     'background:linear-gradient(160deg,#e62429 0%,#9c1216 100%);',
     'box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}',
     '#mmDesktop .app .ic svg{display:block}',
-    '#mmDesktop .app .nm{font-size:10px;color:rgba(238,242,248,.92);letter-spacing:.06em;margin-top:7px;font-weight:600;white-space:nowrap}',
+    '#mmDesktop .app .nm{font-size:9px;color:rgba(238,242,248,.92);letter-spacing:.04em;margin-top:5px;font-weight:600;white-space:nowrap}',
     '#mmDesktop .ic{position:relative}',
     '#mmDesktop .tbdg{position:absolute;top:-6px;right:-8px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:#e62429;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums;z-index:2}',
     '#mmPhoneFab .fabdg{position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:#e62429;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:2}',
@@ -846,5 +846,5 @@
     topWin.__mmPhoneClockIv = setInterval(tick, 20000);
   })();
 
-  console.info(TAG, '手机面板 v0.2.8 就绪（收件箱＋日程＋聊天二期·日程行重排）');
+  console.info(TAG, '手机面板 v0.2.9 就绪（收件箱＋日程＋聊天二期·七图标收口）');
 })();
