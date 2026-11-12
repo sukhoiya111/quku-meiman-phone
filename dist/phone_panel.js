@@ -159,7 +159,7 @@
     // —— 战斗（保留类）——
     '#mmPhoneRoot .mm-pip{color:#f8c830;letter-spacing:2px}',
     // —— 按钮（斜切平行四边形：主金/次深/危红）——
-    '#mmPhoneRoot .mm-btn{min-height:34px;display:inline-flex;align-items:center;justify-content:center;padding:0 18px;min-width:32px;text-align:center;',
+    '#mmPhoneRoot .mm-btn{min-height:36px;display:inline-flex;align-items:center;justify-content:center;padding:0 20px;min-width:34px;text-align:center;',
     'background:rgba(255,255,255,.07);border:none;color:#eef2f8;cursor:pointer;user-select:none;font-size:13px;font-weight:700;white-space:nowrap;',
     'clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);transition:transform .14s ease,background .14s,color .14s,box-shadow .14s}',
     '#mmPhoneRoot .mm-btn:hover{background:rgba(248,200,48,.14);color:#ffd75e}',
@@ -209,13 +209,13 @@
     '#mmPhoneRoot span[data-mm-a^="vm-"]:hover{background:rgba(248,200,48,.18)!important;color:#ffd75e!important}',
     // —— 聊天页（v3.53c 一期：玩家主动发起/邀约）——
     '#mmPhThread{display:flex;flex-direction:column;gap:7px;padding:4px 2px 10px;min-height:200px}',
-    '#mmPhThread .mm-bub{max-width:82%;padding:7px 11px;font-size:12px;line-height:1.55;white-space:pre-line;word-break:break-word;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
+    '#mmPhThread .mm-bub{max-width:82%;padding:9px 13px;font-size:12px;line-height:1.55;white-space:pre-line;word-break:break-word;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
     '#mmPhThread .mm-bub.me{align-self:flex-end;background:linear-gradient(160deg,#e62429,#a8161a);color:#fff;border-bottom-right-radius:2px}',
     '#mmPhThread .mm-bub.ta{align-self:flex-start;background:#171b28;color:#e8ecf4;border-bottom-left-radius:2px;box-shadow:inset 0 0 0 1px rgba(248,200,48,.18)}',
     '#mmPhThread .mm-bub.sys{align-self:center;background:none;color:#f8c830;font-size:10px;padding:2px 6px;letter-spacing:.06em}',
     '#mmPhThread .mm-bub.me.ta-wait{opacity:.65}',
     '#mmPhInvites{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 6px}',
-    '#mmPhInvites .mm-inv{font-size:11px;padding:4px 12px;color:#ffd75e;background:rgba(248,200,48,.1);cursor:pointer;user-select:none;clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);transition:background .14s}',
+    '#mmPhInvites .mm-inv{font-size:11.5px;padding:6px 14px;color:#ffd75e;background:rgba(248,200,48,.1);cursor:pointer;user-select:none;clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);transition:background .14s}',
     '#mmPhInvites .mm-inv:hover{background:rgba(248,200,48,.2)}',
     '#mmPhChatRow{display:flex;gap:7px;align-items:stretch}',
     '#mmPhChatIn{flex:1;background:#0d1220;color:#e8ecf4;border:1px solid rgba(255,255,255,.14);border-radius:2px;padding:9px 11px;font-size:12.5px;font-family:inherit;outline:none;resize:none;min-height:38px}',
@@ -304,7 +304,6 @@
     '    <div class="mm-hint">这里列出全部关系记录——一次性路人删掉不影响剧情；带「注册」标的是花名册剧情人物、好感≥40 是重要关系，删除要点两次确认。好感框填数字后点「设」（-100～100，封顶 100）。</div>',
     '    <div data-mm-vmrels></div>',
     '    <div style="margin-top:6px"><span tabindex="0" role="button" class="mm-btn mm-go" data-mm-a="vm-rel-clean">一键清路人</span><span class="mm-hint" data-mm-vmcleancount style="margin-left:8px"></span></div>',
-    '    <div class="mm-hint" style="margin-top:8px;color:#f8c830">💬 私信已上线：点上方关系卡的「私聊」直接开聊（走设置页独立 API，对话影响好感）。</div>',
     '  </div>',
     // ⑦ 事件（并世界详情：一览＋偏移记录）
     '  <div class="mm-app" data-ph-page="events">',
@@ -340,9 +339,9 @@
     '    <div class="mm-stat"><span class="mm-k">敏捷</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="stat" data-mm-k="敏捷" data-mm-d="-1">−</span><span class="mm-v" data-mm-statv="敏捷">…</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="stat" data-mm-k="敏捷" data-mm-d="1">＋</span></div>',
     '    <div class="mm-stat"><span class="mm-k">魅力</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="stat" data-mm-k="魅力" data-mm-d="-1">−</span><span class="mm-v" data-mm-statv="魅力">…</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="stat" data-mm-k="魅力" data-mm-d="1">＋</span></div>',
     '    <div class="mm-sectitle" id="mmPhResAnchor" style="margin-top:10px">资源设值（0～上限，越界自动钳回）</div>',
-    '    <div class="mm-stat"><span class="mm-k">生命</span><input data-mm-resin="血量" style="width:60px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:1px 4px;border-radius:8px"><span tabindex="0" role="button" class="mm-btn" data-mm-a="vm-res" data-mm-k="血量">设</span><span class="mm-v" data-mm-resv="血量" style="color:#8b8676">…</span></div>',
-    '    <div class="mm-stat"><span class="mm-k">法力</span><input data-mm-resin="蓝量" style="width:60px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:1px 4px;border-radius:8px"><span tabindex="0" role="button" class="mm-btn" data-mm-a="vm-res" data-mm-k="蓝量">设</span><span class="mm-v" data-mm-resv="蓝量" style="color:#8b8676">…</span></div>',
-    '    <div class="mm-stat"><span class="mm-k">体力</span><input data-mm-resin="体力" style="width:60px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:1px 4px;border-radius:8px"><span tabindex="0" role="button" class="mm-btn" data-mm-a="vm-res" data-mm-k="体力">设</span><span class="mm-v" data-mm-resv="体力" style="color:#8b8676">…</span></div>',
+    '    <div class="mm-stat"><span class="mm-k">生命</span><input data-mm-resin="血量" style="width:64px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:3px 8px;border-radius:8px"><span tabindex="0" role="button" class="mm-btn" data-mm-a="vm-res" data-mm-k="血量">设</span><span class="mm-v" data-mm-resv="血量" style="color:#8b8676">…</span></div>',
+    '    <div class="mm-stat"><span class="mm-k">法力</span><input data-mm-resin="蓝量" style="width:64px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:3px 8px;border-radius:8px"><span tabindex="0" role="button" class="mm-btn" data-mm-a="vm-res" data-mm-k="蓝量">设</span><span class="mm-v" data-mm-resv="蓝量" style="color:#8b8676">…</span></div>',
+    '    <div class="mm-stat"><span class="mm-k">体力</span><input data-mm-resin="体力" style="width:64px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:3px 8px;border-radius:8px"><span tabindex="0" role="button" class="mm-btn" data-mm-a="vm-res" data-mm-k="体力">设</span><span class="mm-v" data-mm-resv="体力" style="color:#8b8676">…</span></div>',
     '    <div class="mm-sectitle" style="margin-top:10px">模式开关（随时可切）</div>',
     '    <div class="mm-mode-row"><span class="ml">成长节奏</span><span class="seg"><span tabindex="0" role="button" class="mm-btn" data-mm-a="growth-mode" data-mm-mode="困难">困难·原版</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="growth-mode" data-mm-mode="简单">简单·双倍</span></span></div>',
     '    <div class="mm-mode-row"><span class="ml">世界态度</span><span class="seg"><span tabindex="0" role="button" class="mm-btn" data-mm-a="hard-mode" data-mm-mode="普通">普通</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="hard-mode" data-mm-mode="困难">困难模式</span></span></div>',
@@ -733,5 +732,5 @@
     topWin.__mmPhoneClockIv = setInterval(tick, 20000);
   })();
 
-  console.info(TAG, '手机面板 v0.2.3 就绪（争锋 UI＋词条卡＋聊天一期·五应用＋桌面组件·第二作用域架构）');
+  console.info(TAG, '手机面板 v0.2.4 就绪（争锋 UI＋词条卡＋聊天一期·联系人私聊主钮排版）');
 })();
