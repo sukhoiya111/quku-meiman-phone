@@ -605,6 +605,7 @@
       const mb = topDoc.getElementById('mmBdg-messages'); if (mb) { mb.style.display = 未读总 ? 'flex' : 'none'; mb.textContent = String(未读总); }
       const fb = topDoc.getElementById('mmPhFabBdg'); if (fb) { fb.style.display = 未读总 ? 'flex' : 'none'; fb.textContent = String(未读总); }
       if (桥.读日程) { const sc = await 桥.读日程(); const 逾 = ((sc && sc.表) || []).filter(x => x && x.s === '逾期').length; const sb = topDoc.getElementById('mmBdg-schedule'); if (sb) { sb.style.display = 逾 ? 'flex' : 'none'; sb.textContent = String(逾); } }
+      if (当前app === 'chat' && !聊天发送中 && 当前聊天名) fill聊天(); // v4.10：NPC 主动消息落线程时，开着聊天页也实时刷出
     } catch (e) { console.warn(TAG, '角标', e); }
   }
   topWin.__mmPhone刷角标 = 刷角标;
@@ -844,5 +845,5 @@
     topWin.__mmPhoneClockIv = setInterval(tick, 20000);
   })();
 
-  console.info(TAG, '手机面板 v0.2.6 就绪（消息收件箱＋日程应用＋聊天二期·主动消息/媒体卡/约定入日程）');
+  console.info(TAG, '手机面板 v0.2.7 就绪（收件箱＋日程＋聊天二期·主动消息实时刷新）');
 })();
