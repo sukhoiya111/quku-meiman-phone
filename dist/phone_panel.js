@@ -86,9 +86,10 @@
     '#mmPhoneRoot .mm-inrow .dot{flex:0 0 auto;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#e62429;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}',
     '#mmPhoneRoot .mm-inrow .tm{flex:0 0 auto;font-size:10px;color:#6e7788;font-variant-numeric:tabular-nums}',
     '#mmPhoneRoot .mm-scrow{display:flex;align-items:center;gap:8px;padding:10px 12px;margin:6px 0;background:linear-gradient(165deg,rgba(19,26,44,.65),rgba(8,12,22,.75));box-shadow:inset 0 0 0 1px rgba(248,200,48,.14);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);flex-wrap:wrap}',
-    '#mmPhoneRoot .mm-scrow .sd{flex:0 0 auto;font-size:11px;color:#f8c830;font-weight:700;font-variant-numeric:tabular-nums;min-width:56px}',
-    '#mmPhoneRoot .mm-scrow .st2{flex:1;min-width:110px;font-size:12.5px;color:#eef2f8;text-align:left}',
+    '#mmPhoneRoot .mm-scrow .scmain{flex:1 1 100%;font-size:12.5px;color:#eef2f8;text-align:left;line-height:1.5}',
+    '#mmPhoneRoot .mm-scrow .sd{font-size:11px;color:#f8c830;font-weight:700;font-variant-numeric:tabular-nums;margin-right:8px}',
     '#mmPhoneRoot .mm-scrow .who{font-size:10.5px;color:#9aa3b5}',
+    '#mmPhoneRoot .mm-scrow .scbtns{margin-left:auto;display:flex;gap:6px}',
     '#mmPhoneRoot .mm-scrow.over{box-shadow:inset 0 0 0 1px rgba(230,36,41,.55)}',
     '#mmPhoneRoot .mm-scrow.over .sd{color:#ff8a8e}',
     '#mmPhoneRoot .mm-scrow.done{opacity:.5}',
@@ -633,10 +634,10 @@
       const 行 = x => {
         if (日程编辑中 === x.i) return '<div class="mm-scrow"><input id="mmSeD' + x.i + '" value="' + esc(x.d) + '" style="flex:0 1 96px;min-width:0;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11px;padding:5px 7px"><input id="mmSeT' + x.i + '" value="' + esc(x.t) + '" style="flex:1 1 110px;min-width:0;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11px;padding:5px 7px"><span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-save" data-i="' + x.i + '" style="min-width:34px;padding:0 8px">存</span></div>';
         const 源 = x.src === '约定' ? '（聊天约定）' : x.src === '任务' ? '（事件接下）' : x.src === '手动' ? '（手动）' : '';
-        return '<div class="mm-scrow' + (x.s === '逾期' ? ' over' : '') + (x.s === '完成' ? ' done' : '') + '"><span class="sd">' + esc(x.d || '待定') + '</span><span class="st2">' + esc(x.t) + (x.w ? ' <span class="who">·' + esc(x.w) + '</span>' : '') + ' <span class="who">' + 源 + '</span></span>'
-          + '<span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-edit" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">改</span>'
+        return '<div class="mm-scrow' + (x.s === '逾期' ? ' over' : '') + (x.s === '完成' ? ' done' : '') + '"><span class="scmain"><span class="sd">' + esc(x.d || '待定') + '</span>' + esc(x.t) + (x.w ? ' <span class="who">·' + esc(x.w) + '</span>' : '') + ' <span class="who">' + 源 + '</span></span>'
+          + '<span class="scbtns"><span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-edit" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">改</span>'
           + '<span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-done" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">' + (x.s === '完成' ? '恢复' : '勾') + '</span>'
-          + '<span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-del" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">删</span></div>';
+          + '<span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-del" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">删</span></span></div>';
       };
       盒.innerHTML = 表.length ? 表.map((x, i) => 行(Object.assign({}, x, { i }))).join('') : '<span style="color:#6e6c68;font-size:11px">（日程是空的——聊天里说定了的事会自动出现）</span>';
       刷角标();
@@ -845,5 +846,5 @@
     topWin.__mmPhoneClockIv = setInterval(tick, 20000);
   })();
 
-  console.info(TAG, '手机面板 v0.2.7 就绪（收件箱＋日程＋聊天二期·主动消息实时刷新）');
+  console.info(TAG, '手机面板 v0.2.8 就绪（收件箱＋日程＋聊天二期·日程行重排）');
 })();
