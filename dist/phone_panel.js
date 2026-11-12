@@ -97,6 +97,9 @@
     '#mmPhoneRoot .mm-med .mk{font-size:9.5px;color:#f8c830;letter-spacing:.14em;font-weight:800;margin-bottom:4px}',
     '#mmPhoneRoot .mm-med .md{font-size:12px;color:#eef2f8;line-height:1.5;text-align:left}',
     // —— 玻璃组件通用面（切角面板＋金发丝框）——
+    '#mmPhClock{margin:7px 14px 0;padding:10px 16px;border-radius:2px;background:linear-gradient(160deg,rgba(24,30,48,.92),rgba(10,14,26,.94));border:1px solid rgba(248,200,48,.30);display:flex;align-items:center;gap:10px;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
+    '#mmPhClock .ckcap{font-size:9.5px;color:#f8c830;letter-spacing:.24em;font-weight:800}',
+    '#mmPhClock b{color:#eef2f8;font-size:12.5px;font-weight:700;letter-spacing:.04em;font-variant-numeric:tabular-nums}',
     '#mmPhWorldWg,#mmPhWidget,#mmPhFightbar{margin:7px 14px 0;padding:12px 16px;border-radius:2px;',
     'clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);',
     'background:linear-gradient(165deg,rgba(19,26,44,.82),rgba(8,12,22,.86));backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);',
@@ -284,6 +287,7 @@
     APPS.map(a => '    ' + 瓦(a[0])).join('\n'),
     '  </div>',
     // 桌面小组件：世界速览（点开＝事件页，世界详情行都在那边）
+    '  <div id="mmPhClock"><span class="ckcap">NOW</span><b id="mmPhClockTxt">…</b></div>',
     '  <div id="mmPhWorldWg" data-ph-a="ph-open" data-ph-tgt="events" title="打开事件与详情">',
     '    <div style="display:flex;align-items:center;gap:8px"><span class="wgcap" style="margin-left:0">世界</span><span class="wgnm" style="font-size:12.5px" id="mmPh电影">…</span></div>',
     '    <div class="wgline"><span>节点</span><b id="mmPh节点">…</b><span style="color:rgba(255,255,255,.22)">｜</span><span>阶段</span><b id="mmPh阶段">…</b></div>',
@@ -897,6 +901,7 @@
       const sy = st.system || {};
       const set = (id, v) => { const el = topDoc.getElementById(id); if (el) el.textContent = v; };
       set('mmPh电影', sy.当前电影 || '—'); set('mmPh节点', sy.当前节点 || '—'); set('mmPh阶段', sy.当前阶段 || '—');
+      set('mmPhClockTxt', [sy.当前日期, sy.当前节点, sy.当前地点].filter(Boolean).join(' · ') || '—'); // v0.2.13 桌面时钟
       set('mmPhEv节点', sy.当前节点 || '—'); set('mmPhEv阶段', sy.当前阶段 || '—'); // 事件页"节点/阶段"行（独立 id 防与桌面组件重 id）
       set('mmPh事件一览', sy.事件一览 || '（暂无）'); set('mmPh偏移', st.世界线 && st.世界线.偏移记录 ? st.世界线.偏移记录 : '（无）');
       set('mmPh干预度', st.世界线 && st.世界线.干预度 !== undefined ? st.世界线.干预度 : '…');
@@ -1012,5 +1017,5 @@
     topWin.__mmPhoneClockIv = setInterval(tick, 20000);
   })();
 
-  console.info(TAG, '手机面板 v0.2.12 就绪（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.13 就绪（桌面时钟）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
