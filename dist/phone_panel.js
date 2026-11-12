@@ -23,7 +23,7 @@
   style.textContent = [
     // ================= 设计系统 v4「争锋」（Marvel Rivals HUD：深蓝黑底＋亮金强调＋斜切/切角＋重磅斜体） =================
     // —— FAB 启动钮（切角金边）——
-    '#mmPhoneFab{position:fixed;right:14px;bottom:86px;z-index:9998;width:46px;height:46px;',
+    '#mmPhoneFab{position:fixed;right:14px;bottom:86px;z-index:9998;width:46px;height:46px;touch-action:none;cursor:grab;',
     'clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);',
     'background:linear-gradient(160deg,#141b2c,#070b14);color:#f8c830;font-size:19px;line-height:46px;text-align:center;',
     'cursor:pointer;user-select:none;box-shadow:inset 0 0 0 1px rgba(248,200,48,.45);transition:transform .15s ease,box-shadow .15s}',
@@ -412,9 +412,111 @@
   const fab = topDoc.createElement('div');
   fab.id = 'mmPhoneFab';
   fab.innerHTML = '📱<span class="fabdg" id="mmPhFabBdg" style="display:none"></span>';
-  fab.setAttribute('data-ph-a', 'ph-toggle');
+  // v0.2.11：开关改由拖动系统的合成 tap 直呼（不再挂 data-ph-a——顶层捕获委托会先于 armSuppress 执行＝tap＋委托双跳净零）
   fab.title = '美漫手机';
   topDoc.body.appendChild(fab);
+
+  // v0.2.11 悬浮球拖动＝批条拖动系统整段移植（驾驶员 2026-11-12 令照抄）：
+  // 零指针捕获（pointerdown 即捕获会把后续 click 重定向进容器吞掉全部子元素点击——批条 v0.3.1 真机实锤）；
+  // document 级手势跟踪＋位移>6px 判拖、未越阈值抬起按 tap 合成（仅悬浮球用）＋拖后吞跟随 click；
+  // 夹持按元素自身尺寸整体留屏内（批条 v0.3.22 窄屏实锤）；校准只在拖拽起点一次＋视口 resize 补（v0.3.25）。
+  var lsGet = function (k) { try { return ((window.parent && window.parent.localStorage) ? window.parent.localStorage : window.localStorage).getItem(k); } catch (e) { return null; } };
+  var lsSet = function (k, v) { try { ((window.parent && window.parent.localStorage) ? window.parent.localStorage : window.localStorage).setItem(k, v); } catch (e) {} };
+  // ── 拖动系统（参考卡模式：handle 上挂指针事件，位移>6px 判拖、否则合成 tap） ──
+  var CAL = { ox: 0, oy: 0, sx: 1, sy: 1 };
+  function recalib() {
+    try {
+      var probe = topDoc.createElement('div');
+      probe.style.cssText = 'position:fixed;left:0;top:0;width:100px;height:100px;pointer-events:none;visibility:hidden;';
+      topDoc.body.appendChild(probe);
+      var r = probe.getBoundingClientRect();
+      probe.remove();
+      CAL = { ox: r.left, oy: r.top, sx: (r.width / 100) || 1, sy: (r.height / 100) || 1 };
+    } catch (e) {}
+  }
+  // v0.3.25（三席联审 J13）：校准从「每个 pointermove 一次」改为「拖拽起点一次＋视口 resize 补校准」——
+  // 旧版 move 事件里建删 DOM 探针＝每次移动强制回流，高轮询鼠标一秒上千次，拖拽发涩
+  if (topWin.visualViewport) topWin.visualViewport.addEventListener('resize', function () { recalib(); });
+  function vpW() { return (topWin.visualViewport && topWin.visualViewport.width) || topWin.innerWidth; }
+  function vpH() { return (topWin.visualViewport && topWin.visualViewport.height) || topWin.innerHeight; }
+  function setClientPos(el, cx, cy) { el.style.right = 'auto'; el.style.bottom = 'auto'; el.style.left = ((cx - CAL.ox) / CAL.sx) + 'px'; el.style.top = ((cy - CAL.oy) / CAL.sy) + 'px'; }
+  // v0.3.22（真机 390px 窄屏实测翻车）：旧夹持按固定 64px 余量算右/下边界——那是按 52px 悬浮球
+  // 调的；面板 367px 宽时左上角最多只能夹到 vpW−64，右半截 303px 全挂在屏外（同浏览器从宽窗口
+  // 缩窄必踩）。改为按元素自身宽高夹持：任何元素都以「整体留在屏内（留 8px 边距）」为界，
+  // 悬浮球行为不变（52px 与旧 64px 余量几乎重合）。
+  function clampXY(x, y, el, margin) {
+    var w = (el && el.offsetWidth) || (margin || 64);
+    var h = (el && el.offsetHeight) || (margin || 64);
+    return { x: Math.max(8, Math.min(x, vpW() - w - 8)), y: Math.max(8, Math.min(y, vpH() - h - 8)) };
+  }
+  function loadPos(key) { try { var s = lsGet(key); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
+  function savePos(key, x, y) { try { lsSet(key, JSON.stringify({ x: x, y: y })); } catch (e) {} }
+  function applyPos(el, key, defFn) {
+    recalib();
+    var pos = loadPos(key);
+    if (pos) { var c = clampXY(pos.x, pos.y, el); setClientPos(el, c.x, c.y); return; }
+    defFn();
+  }
+  // v0.3.1 修复：pointerdown 即 setPointerCapture 会把后续 click 重定向到捕获容器，
+  // 面板内部所有子元素的原生 click 监听全部落空（v0.2.5 悬浮窗同坑复发；真机真实点击复现）。
+  // 方案：完全不使用指针捕获——手势跟踪挂 document（按 pointerId 过滤，任何元素下都能收到
+  // move/up，不依赖指针停留在手柄上）；按下时仅登记待定手势且不 preventDefault，保住子元素
+  // click 与输入框 focus；位移越过 6px 才判定为拖拽，未越阈值抬起按 tap 合成（仅 FAB 用）；
+  // 拖拽/合成后吞掉跟随 click 防误触。gate：面板只允许从标题栏发起拖拽（保住列表滚动与内部交互）。
+  function makeDraggable(el, handle, storeKey, onTap, gate) {
+    var g = null; // 待定手势 {pid, sx, sy, ox, oy, moved}
+    var suppress = null;
+    function armSuppress() {
+      if (suppress) return;
+      suppress = function (ev) { ev.stopPropagation(); ev.preventDefault(); };
+      handle.addEventListener('click', suppress, { capture: true, once: true });
+      setTimeout(function () {
+        if (suppress) { handle.removeEventListener('click', suppress, { capture: true }); suppress = null; }
+      }, 350);
+    }
+    handle.addEventListener('pointerdown', function (e) {
+      // v0.3.25（三席联审 J17）：零捕获＋document 级跟踪的代价——指针在窗口外松手时 pointerup
+      // 不入 DOC，旧手势卡死会拒绝一切新拖拽。新指针按下且 pid 不同＝旧手势已死，接管。
+      if (g) { if (g.pid === e.pointerId) return; g = null; }
+      if (gate && !(e.target && e.target.closest && e.target.closest(gate))) return;
+      var r = el.getBoundingClientRect();
+      g = { pid: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top, moved: false };
+      // 此刻意不捕获、不 preventDefault：保住子元素 click 与输入框 focus
+    });
+    topDoc.addEventListener('pointermove', function (e) {
+      if (!g || e.pointerId !== g.pid) return;
+      var dx = e.clientX - g.sx, dy = e.clientY - g.sy;
+      if (!g.moved && Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+      if (!g.moved) recalib(); // v0.3.25（J13）：校准只在拖拽起点做一次，move 循环用缓存
+      g.moved = true;
+      var c = clampXY(g.ox + dx, g.oy + dy, el);
+      setClientPos(el, c.x, c.y);
+      e.preventDefault();
+    }, true);
+    function up(e) {
+      if (!g || e.pointerId !== g.pid) return;
+      var wasMoved = g.moved, tap = !wasMoved && onTap;
+      var t = e.target;
+      g = null;
+      if (wasMoved) {
+        recalib();
+        var r = el.getBoundingClientRect();
+        savePos(storeKey, r.left, r.top);
+        armSuppress();
+      } else if (tap && !(t && t.closest && t.closest('button, input, textarea, select, [data-tab], [data-conv], #piaotiao-close, #piaotiao-back, #piaotiao-sendall, #piaotiao-queue'))) {
+        armSuppress();
+        onTap(e);
+      }
+    }
+    topDoc.addEventListener('pointerup', up, true);
+    topDoc.addEventListener('pointercancel', up, true);
+  }
+
+
+  makeDraggable(fab, fab, 'mmFabPos', function () {
+    if (root.style.display === 'flex') { 收起(); } else { root.style.display = 'flex'; 回桌面(); fill全部(); }
+  });
+  applyPos(fab, 'mmFabPos', function () { }); // 启动回放记忆位置（无记忆＝CSS 默认）
 
   // —— 移动端锚定模式（v0.2.0）：根元素被 transform/perspective 变换时，fixed 的包含块被改写 →
   // 改挂 absolute（ST 移动端 body 是全屏 fixed 盒，absolute 锚定视口正确）。启动＋窗口变化时重判。
@@ -846,5 +948,5 @@
     topWin.__mmPhoneClockIv = setInterval(tick, 20000);
   })();
 
-  console.info(TAG, '手机面板 v0.2.10 就绪（真机修订：设字缩号＋卡片按钮归位＋事件页重排）');
+  console.info(TAG, '手机面板 v0.2.11 就绪（真机修订＋悬浮球拖动·批条同款拖动系统）');
 })();
