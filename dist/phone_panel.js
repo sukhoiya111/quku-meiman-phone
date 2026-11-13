@@ -42,7 +42,6 @@
     '#mmPhIsland:after{content:"";position:absolute;right:6px;top:6px;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#232c3e,#04050a 70%)}',
     // —— 状态栏（拖拽手柄）——
     '#mmPhoneHead{display:flex;align-items:center;gap:8px;height:32px;flex:0 0 auto;padding:0 18px;cursor:move;user-select:none;position:relative;z-index:11}',
-    '#mmPhoneHead .clk{font-size:12px;font-weight:700;color:#eef2f8;font-variant-numeric:tabular-nums;letter-spacing:.02em}',
     '#mmPhoneHead .st{margin-left:auto;display:flex;align-items:center;gap:5px;color:#eef2f8}',
     '#mmPhoneHead .st svg{display:block}',
     '#mmPhoneHead .btp{font-size:10.5px;color:#eef2f8;font-variant-numeric:tabular-nums}',
@@ -97,9 +96,15 @@
     '#mmPhoneRoot .mm-med .mk{font-size:9.5px;color:#f8c830;letter-spacing:.14em;font-weight:800;margin-bottom:4px}',
     '#mmPhoneRoot .mm-med .md{font-size:12px;color:#eef2f8;line-height:1.5;text-align:left}',
     // —— 玻璃组件通用面（切角面板＋金发丝框）——
-    '#mmPhClock{margin:7px 14px 0;padding:10px 16px;border-radius:2px;background:linear-gradient(160deg,rgba(24,30,48,.92),rgba(10,14,26,.94));border:1px solid rgba(248,200,48,.30);display:flex;align-items:center;gap:10px;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
-    '#mmPhClock .ckcap{font-size:9.5px;color:#f8c830;letter-spacing:.24em;font-weight:800}',
-    '#mmPhClock b{color:#eef2f8;font-size:12.5px;font-weight:700;letter-spacing:.04em;font-variant-numeric:tabular-nums}',
+    '#mmPhGameClock{margin:7px 14px 0;padding:11px 16px;border-radius:2px;background:linear-gradient(160deg,rgba(24,30,48,.92),rgba(10,14,26,.94));border:1px solid rgba(248,200,48,.30);display:flex;align-items:center;gap:10px;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);cursor:pointer;transition:transform .16s ease}',
+    '#mmPhGameClock:active{transform:scale(.985)}',
+    '#mmPhGameClock .ckcap{font-size:9.5px;color:#f8c830;letter-spacing:.24em;font-weight:800;flex:0 0 auto}',
+    '#mmPhGameClock b{color:#eef2f8;font-size:12.5px;font-weight:700;letter-spacing:.04em;font-variant-numeric:tabular-nums;flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}',
+    '#mmPhGameClock .ckadj{flex:0 0 auto;font-size:10px;font-weight:800;letter-spacing:.12em;color:#0a0f1c;background:linear-gradient(160deg,#ffd75e,#f8c830);padding:4px 11px;clip-path:polygon(4px 0,100% 0,100% calc(100% - 4px),calc(100% - 4px) 100%,0 100%,0 4px)}',
+    '#mmPhClockAdj{display:none;margin:5px 14px 0;gap:7px;flex-wrap:wrap}',
+    '#mmPhClockAdj .ckbtn{min-height:0;padding:6px 15px;border-radius:999px;border:1px solid rgba(248,200,48,.45);color:#f8c830;font-size:11px;font-weight:700;background:rgba(248,200,48,.08);cursor:pointer}',
+    '#mmPhClockAdj .ckbtn:hover{background:rgba(248,200,48,.18);color:#ffd75e}',
+    '#mmPhClockAdj .ckbtn:active{transform:scale(.95)}',
     '#mmPhWorldWg,#mmPhWidget,#mmPhFightbar{margin:7px 14px 0;padding:12px 16px;border-radius:2px;',
     'clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);',
     'background:linear-gradient(165deg,rgba(19,26,44,.82),rgba(8,12,22,.86));backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);',
@@ -279,7 +284,7 @@
   const SVGwifi = '<svg width="14" height="11" viewBox="0 0 14 11"><path d="M7 9.8 4.7 7.3a3.6 3.6 0 0 1 4.6 0Z" fill="currentColor"/><path d="M2.7 5.2a6.5 6.5 0 0 1 8.6 0L10 6.6a4.5 4.5 0 0 0-6 0Z" fill="currentColor" opacity=".78"/><path d="M.6 3a9.7 9.7 0 0 1 12.8 0l-1.3 1.4a7.8 7.8 0 0 0-10.2 0Z" fill="currentColor" opacity=".55"/></svg>';
   const SVG电池 = '<svg width="23" height="11" viewBox="0 0 23 11"><rect x="0.5" y="0.5" width="19" height="10" rx="3" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="14.5" height="7" rx="1.8" fill="currentColor"/><path d="M21 3.4v4.2a2.1 2.1 0 0 0 0-4.2Z" fill="currentColor" opacity=".45"/></svg>';
   root.innerHTML = [
-    '<div id="mmPhoneHead"><span class="clk" id="mmPhClock">…</span><span class="st">' + SVG信号 + SVGwifi + SVG电池 + '<span class="btp">87%</span></span><span class="ph-x" data-ph-a="ph-close" title="收起">✕</span><span id="mmPhIsland"></span></div>',
+    '<div id="mmPhoneHead"><span class="st">' + SVG信号 + SVGwifi + SVG电池 + '<span class="btp">87%</span></span><span class="ph-x" data-ph-a="ph-close" title="收起">✕</span><span id="mmPhIsland"></span></div>',
     '<div id="mmPhAppbar"><span class="bk" data-ph-a="ph-home" style="display:none">‹</span><span class="t" id="mmPhTitle">美漫 · 手机</span></div>',
     '<div id="mmPhScreenWrap">',
     '<div id="mmPhoneScreen">',
@@ -287,11 +292,11 @@
     APPS.map(a => '    ' + 瓦(a[0])).join('\n'),
     '  </div>',
     // 桌面小组件：世界速览（点开＝事件页，世界详情行都在那边）
-    '  <div id="mmPhGameClock" data-ph-a="clock-adj" title="点开快进按钮；参考时间每楼约半小时"><span class="ckcap">NOW</span><b id="mmPhGameClockTxt">…</b></div>',
-    '  <div id="mmPhClockAdj" style="display:none;margin:4px 14px 0;gap:6px">',
-    '    <span class="mm-btn" data-ph-a="clock-add" data-k="60" style="cursor:pointer;padding:5px 10px;border:1px solid rgba(248,200,48,.4);color:#f8c830;font-size:11px">+1小时</span>',
-    '    <span class="mm-btn" data-ph-a="clock-add" data-k="360" style="cursor:pointer;padding:5px 10px;border:1px solid rgba(248,200,48,.4);color:#f8c830;font-size:11px">+6小时</span>',
-    '    <span class="mm-btn" data-ph-a="clock-add" data-k="1440" style="cursor:pointer;padding:5px 10px;border:1px solid rgba(248,200,48,.4);color:#f8c830;font-size:11px">+1天</span>',
+    '  <div id="mmPhGameClock" data-ph-a="clock-adj" title="点「拨时」展开快进钮；参考时间每楼约半小时"><span class="ckcap">NOW</span><b id="mmPhGameClockTxt">…</b><span class="ckadj">拨时 ▾</span></div>',
+    '  <div id="mmPhClockAdj">',
+    '    <span class="mm-btn ckbtn" data-ph-a="clock-add" data-k="60">+1小时</span>',
+    '    <span class="mm-btn ckbtn" data-ph-a="clock-add" data-k="360">+6小时</span>',
+    '    <span class="mm-btn ckbtn" data-ph-a="clock-add" data-k="1440">+1天</span>',
     '  </div>',
     '  <div id="mmPhWorldWg" data-ph-a="ph-open" data-ph-tgt="events" title="打开事件与详情">',
     '    <div style="display:flex;align-items:center;gap:8px"><span class="wgcap" style="margin-left:0">世界</span><span class="wgnm" style="font-size:12.5px" id="mmPh电影">…</span></div>',
@@ -553,8 +558,9 @@
   const headTitle = root.querySelector('#mmPhTitle');
   const desktop = root.querySelector('#mmDesktop');
   const appbar = root.querySelector('#mmPhAppbar');
-  const 桌面组件 = [root.querySelector('#mmPhWidget'), root.querySelector('#mmPhWorldWg'), root.querySelector('#mmPhFightbar')];
-  const 组件显隐 = show => { for (const w of 桌面组件) if (w) w.style.display = show ? (w.id === 'mmPhFightbar' ? 'flex' : 'block') : 'none'; };
+  const 桌面组件 = [root.querySelector('#mmPhWidget'), root.querySelector('#mmPhWorldWg'), root.querySelector('#mmPhFightbar'), root.querySelector('#mmPhGameClock'), root.querySelector('#mmPhClockAdj')];
+  const 时钟条开 = { v: false };
+  const 组件显隐 = show => { for (const w of 桌面组件) if (w) w.style.display = show ? (w.id === 'mmPhFightbar' ? 'flex' : (w.id === 'mmPhClockAdj' ? (时钟条开.v ? 'flex' : 'none') : 'block')) : 'none'; };
   let 当前app = '';
   function 开app(app) {
     当前app = app;
@@ -622,6 +628,8 @@
       else if (a === 'pref-cal') { Promise.resolve(桥.读偏好()).then(p => 桥.写偏好(p.pm, b.getAttribute('data-k') === '1')).then(() => fill偏好()); }
       else if (a === 'sendall') { 确定发送(); }
       else if (a === 'pend-del') { const i = Number(b.getAttribute('data-i')); const 名 = 当前聊天名; 待发读().then(待 => { const 行 = 待[名] || []; if (行[i]) { 行.splice(i, 1); if (!行.length) delete 待[名]; 待发缓存 = 待; 待发存(); } fill聊天(); }); }
+      else if (a === 'clock-adj') { 时钟条开.v = !时钟条开.v; const adj = topDoc.getElementById('mmPhClockAdj'); if (adj) adj.style.display = 时钟条开.v ? 'flex' : 'none'; }
+      else if (a === 'clock-add') { const k = Number(b.getAttribute('data-k')) || 0; if (!k) return; if (!桥 || !桥.拨时钟) { try { topWin.toastr ? topWin.toastr.warning('引擎桥未就绪，稍后再试。', '美漫 · 拨时') : 0; } catch (_) { } return; } Promise.resolve(桥.拨时钟(k >= 1440 ? { 加天: k / 1440 } : { 加分: k })).then(r => { fill世界(); if (r && r.err) { try { topWin.toastr ? topWin.toastr.warning(r.err, '美漫 · 拨时') : 0; } catch (_) { } return; } try { topWin.toastr ? topWin.toastr.success('已拨至 ' + ((r && r.显示) || '?'), '美漫 · 拨时') : 0; } catch (_) { } }); }
     } catch (e) { console.warn(TAG, 'click 处理', e); }
   };
   function 收起() { root.style.display = 'none'; }
@@ -1010,18 +1018,8 @@
     } catch (_) { }
   })();
 
-  // —— 状态栏时钟（真实时间，20s 走针；重建时清旧针防双针） ——
+  // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
-  (function () {
-    const tick = () => {
-      const e = topDoc.getElementById('mmPhClock');
-      if (!e) return;
-      const d = new Date();
-      e.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
-    };
-    tick();
-    topWin.__mmPhoneClockIv = setInterval(tick, 20000);
-  })();
 
-  console.info(TAG, '手机面板 v0.2.15 就绪（游戏时钟·剧情驱动推进＋玩家直控）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.16 就绪（NOW 游戏时钟美化框＋直控拨表修复＋状态栏去真实时钟）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
