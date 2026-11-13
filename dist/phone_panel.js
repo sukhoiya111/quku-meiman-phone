@@ -391,6 +391,7 @@
     '    <div class="mm-sectitle" id="mmPhPrefAnchor">手机偏好</div>',
     '    <div class="mm-mode-row"><span class="ml">主动消息</span><span class="seg" id="mmPmSeg"></span></div>',
     '    <div class="mm-mode-row"><span class="ml">自动记日程</span><span class="seg" id="mmCalSeg"></span></div>',
+    '    <div class="mm-mode-row"><span class="ml">自动归档搁置事件</span><span class="seg" id="mmArcSeg"></span></div>',
     '    <div class="mm-hint">主动消息＝NPC 有时自己来信（挡位越高越常来，连续失败会自动暂停，换一下挡位即重开）；自动记日程＝聊天里说定了的事自动进日程应用，记错了去日程里改。</div>',
     '    <div class="mm-sectitle" style="margin-top:10px">成长与加点（升级得到的点数在这里分配，0-10）</div>',
     '    <div class="mm-xprow">',
@@ -631,6 +632,7 @@
       else if (a === 'sched-save') { const i = b.getAttribute('data-i'); const d = topDoc.getElementById('mmSeD' + i), t = topDoc.getElementById('mmSeT' + i); Promise.resolve(桥.日程操作('edit', i, d && d.value, t && t.value)).then(() => { 日程编辑中 = -1; fill日程(); }); }
       else if (a === 'pref-pm') { const k = b.getAttribute('data-k'); Promise.resolve(桥.写偏好(k, undefined)).then(() => { fill偏好(); try { topWin.toastr ? topWin.toastr.success('主动消息：' + k, '美漫 · 手机') : 0; } catch (_) { } }); }
       else if (a === 'pref-cal') { Promise.resolve(桥.读偏好()).then(p => 桥.写偏好(p.pm, b.getAttribute('data-k') === '1')).then(() => fill偏好()); }
+      else if (a === 'pref-arc') { Promise.resolve(桥.读偏好()).then(p => 桥.写偏好(undefined, undefined, b.getAttribute('data-k') === '1')).then(() => fill偏好()); }
       else if (a === 'sendall') { 确定发送(); }
       else if (a === 'pend-del') { const i = Number(b.getAttribute('data-i')); const 名 = 当前聊天名; 待发读().then(待 => { const 行 = 待[名] || []; if (行[i]) { 行.splice(i, 1); if (!行.length) delete 待[名]; 待发缓存 = 待; 待发存(); } fill聊天(); }); }
       else if (a === 'clock-adj') { 时钟条开.v = !时钟条开.v; const adj = topDoc.getElementById('mmPhClockAdj'); if (adj) adj.style.display = 时钟条开.v ? 'flex' : 'none'; }
@@ -833,11 +835,12 @@
   }
   function fill偏好() {
     const 桥 = topWin.__mmPhone桥;
-    const 段 = topDoc.getElementById('mmPmSeg'), 段2 = topDoc.getElementById('mmCalSeg');
-    if (!桥 || !桥.读偏好 || !段 || !段2) return;
+    const 段 = topDoc.getElementById('mmPmSeg'), 段2 = topDoc.getElementById('mmCalSeg'), 段3 = topDoc.getElementById('mmArcSeg');
+    if (!桥 || !桥.读偏好 || !段 || !段2 || !段3) return;
     Promise.resolve(桥.读偏好()).then(p => {
       段.innerHTML = ['关', '低', '正常'].map(k => '<span tabindex="0" role="button" class="mm-btn' + (p.pm === k ? ' mm-go' : '') + '" data-ph-a="pref-pm" data-k="' + k + '" style="min-width:0;padding:0 12px">' + k + '</span>').join('');
       段2.innerHTML = '<span tabindex="0" role="button" class="mm-btn' + (p.cal ? ' mm-go' : '') + '" data-ph-a="pref-cal" data-k="' + (p.cal ? '0' : '1') + '" style="min-width:0;padding:0 14px">' + (p.cal ? '开' : '关') + '</span>';
+      段3.innerHTML = '<span tabindex="0" role="button" class="mm-btn' + (p.autoArc !== false ? ' mm-go' : '') + '" data-ph-a="pref-arc" data-k="' + (p.autoArc !== false ? '0' : '1') + '" style="min-width:0;padding:0 14px">' + (p.autoArc !== false ? '开' : '关') + '</span>';
     }).catch(e => console.warn(TAG, '偏好', e));
   }
   setInterval(() => { try { if (root.style.display === 'flex') 刷角标(); } catch (_) { } }, 20000);
@@ -1027,5 +1030,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.21 就绪（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.22 就绪（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
