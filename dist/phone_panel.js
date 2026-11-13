@@ -320,6 +320,7 @@
     '  <div class="mm-app" data-ph-page="persona">',
     '    <div class="mm-idrow"><span class="nm" id="mmPhNm2">…</span><span class="tag" id="mmPhTag2"></span><span style="margin-left:auto;border:1px solid rgba(201,168,106,.28);border-radius:2px;padding:1px 10px;color:#c9a86a;font-size:12px" id="mmPhLv2"></span></div>',
     '    <div class="mm-kv" style="margin-bottom:2px"><b>能力</b><span id="mmPh能力" style="color:#fff;font-weight:600"></span></div>',
+    '    <div class="mm-kv" style="margin-bottom:2px"><b>缺点</b><span id="mmPh缺点" style="color:#d9d4c7;font-size:11.5px;line-height:1.5"></span></div>',
     '    <div class="mm-grid">',
     '      <div class="mm-cell"><b data-mm-statv="攻击">…</b><span>攻击</span></div>',
     '      <div class="mm-cell"><b data-mm-statv="防御">…</b><span>防御</span></div>',
@@ -886,7 +887,7 @@
       };
       const 效果盒 = topDoc.getElementById('mmPh状态效果');
       if (效果盒) 效果盒.innerHTML = Array.isArray(效果原) ? (效果原.length ? 效果原.map(效果卡).join('') : '<span style="color:#6e6c68;font-size:11px">无</span>') : (效果原 ? 效果卡(效果原) : '<span style="color:#6e6c68;font-size:11px">无</span>');
-      set('mmPh来历', 玩.来历 || '（未记录）'); set('mmPh外貌', 玩.外貌 || '（未记录）');
+      set('mmPh来历', 玩.来历 || '（未记录）'); set('mmPh外貌', 玩.外貌 || '（未记录）'); set('mmPh缺点', 玩.性格缺点 || '（未记录）');
       const 条 = (条id, 值id, 值, 上限) => {
         const 上 = Number(上限) || 0, v = Number(值) || 0;
         const el = topDoc.getElementById(条id); if (el) el.style.width = (上 > 0 ? Math.max(0, Math.min(100, v / 上 * 100)) : 0) + '%';
@@ -958,7 +959,6 @@
     return _读(st => {
       const 玩 = st.玩家 || {};
       const set = (id, v) => { const el = topDoc.getElementById(id); if (el) el.textContent = v; };
-      set('mmPh技能摘要', 玩.技能摘要 || '（暂无）');
       // v0.2.0 首开填充：成长数字全套（与引擎 就地刷新成长显示 同口径——statv/成长点/升级钮/点池，
       // 首开没有动作触发引擎刷新，必须自己填齐；引擎后再动作仍由引擎就地刷新接管）
       const lv = Number(玩.等级) || 1, gp = Number(玩.成长点);
@@ -1030,5 +1030,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.22 就绪（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.23 就绪（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
