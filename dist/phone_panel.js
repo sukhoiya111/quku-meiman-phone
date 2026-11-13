@@ -296,7 +296,7 @@
     APPS.map(a => '    ' + 瓦(a[0])).join('\n'),
     '  </div>',
     // 桌面小组件：世界速览（点开＝事件页，世界详情行都在那边）
-    '  <div id="mmPhGameClock" data-ph-a="clock-adj" title="点「拨时」展开快进钮；参考时间每楼约半小时"><div class="ckrow"><span class="ckcap">NOW</span><span class="ckadj">拨时 ▾</span></div><div class="cktime"><b id="mmPhGameClockTxt">…</b><span class="ckloc" id="mmPhGameClockLoc"></span></div></div>',
+    '  <div id="mmPhGameClock" data-ph-a="clock-adj" title="点「改时间」快进 1 小时 / 6 小时 / 1 天"><div class="ckrow"><span class="ckcap">现在</span><span class="ckadj">改时间 ▾</span></div><div class="cktime"><b id="mmPhGameClockTxt">…</b><span class="ckloc" id="mmPhGameClockLoc"></span></div></div>',
     '  <div id="mmPhClockAdj">',
     '    <span class="mm-btn ckbtn" data-ph-a="clock-add" data-k="60">+1小时</span>',
     '    <span class="mm-btn ckbtn" data-ph-a="clock-add" data-k="360">+6小时</span>',
@@ -304,7 +304,7 @@
     '  </div>',
     '  <div id="mmPhWorldWg" data-ph-a="ph-open" data-ph-tgt="events" title="打开事件与详情">',
     '    <div style="display:flex;align-items:center;gap:8px"><span class="wgcap" style="margin-left:0">世界</span><span class="wgnm" style="font-size:12.5px" id="mmPh电影">…</span></div>',
-    '    <div class="wgline"><span>节点</span><b id="mmPh节点">…</b><span style="color:rgba(255,255,255,.22)">｜</span><span>阶段</span><b id="mmPh阶段">…</b></div>',
+    '    <div class="wgline"><span>时点</span><b id="mmPh节点">…</b><span style="color:rgba(255,255,255,.22)">｜</span><span>阶段</span><b id="mmPh阶段">…</b></div>',
     '    <div class="wgline"><span>干预度</span><b id="mmPh干预度">…</b><span class="wt2"><span class="wf2" id="mmPh干预条" style="background:repeating-linear-gradient(-55deg,#f8c830 0 6px,#c79a1e 6px 12px)"></span></span></div>',
     '  </div>',
     // 桌面小组件：角色速览（点开＝人物 App）
@@ -335,7 +335,7 @@
     '    <div id="mmPh状态效果"></div>',
     '    <div class="mm-kv" style="white-space:pre-line"><b>来历</b><span id="mmPh来历"></span></div>',
     '    <div class="mm-kv" style="white-space:pre-line"><b>外貌</b><span id="mmPh外貌"></span></div>',
-    '    <div class="mm-sectitle">事件日志</div>',
+    '    <div class="mm-sectitle">剧情记录</div>',
     '    <div class="mm-log" id="mmPh日志"><span style="color:#a09a8a">（暂无记录）</span></div>',
     '  </div>',
     // ② 背包
@@ -348,17 +348,17 @@
     '  </div>',
     // ⑥ 联系人
     '  <div class="mm-app" data-ph-page="contacts">',
-    '    <div class="mm-hint">这里列出全部关系记录——一次性路人删掉不影响剧情；带「注册」标的是花名册剧情人物、好感≥40 是重要关系，删除要点两次确认。好感框填数字后点「设」（-100～100，封顶 100）。</div>',
+    '    <div class="mm-hint">这里列出所有认识的人。带「剧情人物」标的是原作里有名有姓的角色；好感 ≥40 是重要关系，删这些要确认两次。改好感：填数字点「保存」。一次性路人删掉不影响剧情。</div>',
     '    <div data-mm-vmrels></div>',
-    '    <div style="margin-top:6px"><span tabindex="0" role="button" class="mm-btn mm-go" data-mm-a="vm-rel-clean">一键清路人</span><span class="mm-hint" data-mm-vmcleancount style="margin-left:8px"></span></div>',
+    '    <div style="margin-top:6px"><span tabindex="0" role="button" class="mm-btn mm-go" data-mm-a="vm-rel-clean">清理一次性路人</span><span class="mm-hint" data-mm-vmcleancount style="margin-left:8px"></span></div>',
     '  </div>',
     // ⑦ 事件（并世界详情：一览＋偏移记录）
     '  <div class="mm-app" data-ph-page="events">',
-    '    <div class="mm-kv"><b>节点</b><span id="mmPhEv节点" style="color:#f4f3ef;font-weight:600"></span><span style="margin:0 9px;color:rgba(255,255,255,.16)">｜</span><b>阶段</b><span id="mmPhEv阶段" style="color:#f4f3ef;font-weight:600"></span></div>',
-    '    <div class="mm-kv" style="white-space:pre-line"><b>世界事件一览</b><span id="mmPh事件一览"></span></div>',
-    '    <div class="mm-hint">运转中事件与未收悬钩全量在此。删除＝本档不再追踪该事件（引擎会拦喂名式复活，误删可恢复）。进度框填新档位后点「设」。</div>',
+    '    <div class="mm-kv"><b>时点</b><span id="mmPhEv节点" style="color:#f4f3ef;font-weight:600"></span><span style="margin:0 9px;color:rgba(255,255,255,.16)">｜</span><b>阶段</b><span id="mmPhEv阶段" style="color:#f4f3ef;font-weight:600"></span></div>',
+    '    <div class="mm-kv" style="white-space:pre-line"><b>事件清单</b><span id="mmPh事件一览"></span></div>',
+    '    <div class="mm-hint">进行中的世界事件都列在这里。想改进度：在框里写新阶段，点「保存」。「加进日程」会把它记进日程提醒你。「不再追踪」只是从列表拿掉，剧情照常发展，点列表底部的名字能找回来。</div>',
     '    <div data-mm-vmev></div>',
-    '    <div class="mm-kv" style="white-space:pre-line;color:#b3ad9f;font-size:11.5px;margin-top:8px"><b>最近偏移记录</b><span id="mmPh偏移"></span></div>',
+    '    <div class="mm-kv" style="white-space:pre-line;color:#b3ad9f;font-size:11.5px;margin-top:8px"><b>世界线变动记录</b><span id="mmPh偏移"></span></div>',
     '  </div>',
     // ⑥ 消息（收件箱：谁发来消息、未读、一键进聊天）
     '  <div class="mm-app" data-ph-page="messages">',
@@ -367,11 +367,11 @@
     '  </div>',
     // ⑦ 日程（小本本：说定了的事都在这；可改可勾可删）
     '  <div class="mm-app" data-ph-page="schedule">',
-    '    <div class="mm-hint">你答应过的事都在这——聊天里说定了会自动记一条；这里也能记一笔、改时间、勾掉、删掉。拖过头的会标红顶到最上面。</div>',
+    '    <div class="mm-hint">你答应过的事都在这——聊天里说定了会自动记一条；这里也能自己加一条、改时间、标记完成、删掉。拖过时间没做的会标红顶到最上面。</div>',
     '    <div style="display:flex;gap:6px;margin:8px 0;flex-wrap:wrap">',
     '      <input id="mmSchedD" placeholder="时间（如 周六下午／待定）" style="flex:1 1 120px;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11.5px;padding:7px 9px">',
     '      <input id="mmSchedT" placeholder="做什么" style="flex:1 1 120px;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11.5px;padding:7px 9px">',
-    '      <span tabindex="0" role="button" class="mm-btn mm-go" data-ph-a="sched-add" style="min-width:64px">＋ 记一笔</span>',
+    '      <span tabindex="0" role="button" class="mm-btn mm-go" data-ph-a="sched-add" style="min-width:64px">＋ 加日程</span>',
     '    </div>',
     '    <div id="mmPhSched"><span style="color:#6e6c68;font-size:11px">（日程是空的）</span></div>',
     '  </div>',
@@ -392,7 +392,7 @@
     '    <div class="mm-mode-row"><span class="ml">主动消息</span><span class="seg" id="mmPmSeg"></span></div>',
     '    <div class="mm-mode-row"><span class="ml">自动记日程</span><span class="seg" id="mmCalSeg"></span></div>',
     '    <div class="mm-hint">主动消息＝NPC 有时自己来信（挡位越高越常来，连续失败会自动暂停，换一下挡位即重开）；自动记日程＝聊天里说定了的事自动进日程应用，记错了去日程里改。</div>',
-    '    <div class="mm-sectitle" style="margin-top:10px">成长与加点（0-10，升级自动获得的点数在此分配）</div>',
+    '    <div class="mm-sectitle" style="margin-top:10px">成长与加点（升级得到的点数在这里分配，0-10）</div>',
     '    <div class="mm-xprow">',
     '      <span class="xl">升级</span>',
     '      <span class="xw"><span class="xf" data-mm-xp></span></span>',
@@ -404,18 +404,18 @@
     '    <div class="mm-stat"><span class="mm-k">防御</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="stat" data-mm-k="防御" data-mm-d="-1">−</span><span class="mm-v" data-mm-statv="防御">…</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="stat" data-mm-k="防御" data-mm-d="1">＋</span></div>',
     '    <div class="mm-stat"><span class="mm-k">敏捷</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="stat" data-mm-k="敏捷" data-mm-d="-1">−</span><span class="mm-v" data-mm-statv="敏捷">…</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="stat" data-mm-k="敏捷" data-mm-d="1">＋</span></div>',
     '    <div class="mm-stat"><span class="mm-k">魅力</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="stat" data-mm-k="魅力" data-mm-d="-1">−</span><span class="mm-v" data-mm-statv="魅力">…</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="stat" data-mm-k="魅力" data-mm-d="1">＋</span></div>',
-    '    <div class="mm-sectitle" id="mmPhResAnchor" style="margin-top:10px">资源设值（0～上限，越界自动钳回）</div>',
-    '    <div class="mm-stat"><span class="mm-k">生命</span><input data-mm-resin="血量" style="width:64px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:3px 8px;border-radius:8px"><span tabindex="0" role="button" class="mm-btn" data-mm-a="vm-res" data-mm-k="血量">设</span><span class="mm-v" data-mm-resv="血量" style="color:#8b8676">…</span></div>',
-    '    <div class="mm-stat"><span class="mm-k">法力</span><input data-mm-resin="蓝量" style="width:64px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:3px 8px;border-radius:8px"><span tabindex="0" role="button" class="mm-btn" data-mm-a="vm-res" data-mm-k="蓝量">设</span><span class="mm-v" data-mm-resv="蓝量" style="color:#8b8676">…</span></div>',
-    '    <div class="mm-stat"><span class="mm-k">体力</span><input data-mm-resin="体力" style="width:64px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:3px 8px;border-radius:8px"><span tabindex="0" role="button" class="mm-btn" data-mm-a="vm-res" data-mm-k="体力">设</span><span class="mm-v" data-mm-resv="体力" style="color:#8b8676">…</span></div>',
+    '    <div class="mm-sectitle" id="mmPhResAnchor" style="margin-top:10px">调整生命 / 法力 / 体力（填数字点保存，超出范围自动修正）</div>',
+    '    <div class="mm-stat"><span class="mm-k">生命</span><input data-mm-resin="血量" style="width:64px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:3px 8px;border-radius:8px"><span tabindex="0" role="button" class="mm-btn" data-mm-a="vm-res" data-mm-k="血量">保存</span><span class="mm-v" data-mm-resv="血量" style="color:#8b8676">…</span></div>',
+    '    <div class="mm-stat"><span class="mm-k">法力</span><input data-mm-resin="蓝量" style="width:64px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:3px 8px;border-radius:8px"><span tabindex="0" role="button" class="mm-btn" data-mm-a="vm-res" data-mm-k="蓝量">保存</span><span class="mm-v" data-mm-resv="蓝量" style="color:#8b8676">…</span></div>',
+    '    <div class="mm-stat"><span class="mm-k">体力</span><input data-mm-resin="体力" style="width:64px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:3px 8px;border-radius:8px"><span tabindex="0" role="button" class="mm-btn" data-mm-a="vm-res" data-mm-k="体力">保存</span><span class="mm-v" data-mm-resv="体力" style="color:#8b8676">…</span></div>',
     '    <div class="mm-sectitle" style="margin-top:10px">模式开关（随时可切）</div>',
     '    <div class="mm-mode-row"><span class="ml">成长节奏</span><span class="seg"><span tabindex="0" role="button" class="mm-btn" data-mm-a="growth-mode" data-mm-mode="困难">困难·原版</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="growth-mode" data-mm-mode="简单">简单·双倍</span></span></div>',
     '    <div class="mm-mode-row"><span class="ml">世界态度</span><span class="seg"><span tabindex="0" role="button" class="mm-btn" data-mm-a="hard-mode" data-mm-mode="普通">普通</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="hard-mode" data-mm-mode="困难">困难模式</span></span></div>',
-    '    <div class="mm-mode-row"><span class="ml">乙女向</span><span class="seg"><span tabindex="0" role="button" class="mm-btn" data-mm-a="otome-mode" data-mm-mode="关">关</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="otome-mode" data-mm-mode="开">乙女向</span></span></div>',
-    '    <div class="mm-hint" style="margin-top:12px">技能增删改｜与加点页同一本账：新增耗 5 点成长点，改／删免费。</div>',
+    '    <div class="mm-mode-row"><span class="ml">乙女向剧情</span><span class="seg"><span tabindex="0" role="button" class="mm-btn" data-mm-a="otome-mode" data-mm-mode="关">关</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="otome-mode" data-mm-mode="开">开</span></span></div>',
+    '    <div class="mm-hint" style="margin-top:12px">新增技能花 5 点成长点，改和删不花点。</div>',
     '    <div data-mm-vmskill></div>',
     '    <div id="mmVarSkillForm"></div>',
-    '    <span tabindex="0" role="button" class="mm-btn mm-go" data-mm-a="skill-form" data-mm-form="mmVarSkillForm">新增／编辑技能</span>',
+    '    <span tabindex="0" role="button" class="mm-btn mm-go" data-mm-a="skill-form" data-mm-form="mmVarSkillForm">新增或改技能</span>',
     '  </div>',
     // ⑥ 聊天（v3.53c 一期：玩家主动发起；入口在联系人页每张关系卡的「私聊」钮）
     '  <div class="mm-app" data-ph-page="chat">',
@@ -634,7 +634,7 @@
       else if (a === 'sendall') { 确定发送(); }
       else if (a === 'pend-del') { const i = Number(b.getAttribute('data-i')); const 名 = 当前聊天名; 待发读().then(待 => { const 行 = 待[名] || []; if (行[i]) { 行.splice(i, 1); if (!行.length) delete 待[名]; 待发缓存 = 待; 待发存(); } fill聊天(); }); }
       else if (a === 'clock-adj') { 时钟条开.v = !时钟条开.v; const adj = topDoc.getElementById('mmPhClockAdj'); if (adj) adj.style.display = 时钟条开.v ? 'flex' : 'none'; }
-      else if (a === 'clock-add') { const k = Number(b.getAttribute('data-k')) || 0; if (!k) return; if (!桥 || !桥.拨时钟) { try { topWin.toastr ? topWin.toastr.warning('引擎桥未就绪，稍后再试。', '美漫 · 拨时') : 0; } catch (_) { } return; } Promise.resolve(桥.拨时钟(k >= 1440 ? { 加天: k / 1440 } : { 加分: k })).then(r => { fill世界(); if (r && r.err) { try { topWin.toastr ? topWin.toastr.warning(r.err, '美漫 · 拨时') : 0; } catch (_) { } return; } try { topWin.toastr ? topWin.toastr.success('已拨至 ' + ((r && r.显示) || '?'), '美漫 · 拨时') : 0; } catch (_) { } }); }
+      else if (a === 'clock-add') { const k = Number(b.getAttribute('data-k')) || 0; if (!k) return; if (!桥 || !桥.拨时钟) { try { topWin.toastr ? topWin.toastr.warning('引擎桥未就绪，稍后再试。', '美漫 · 拨时') : 0; } catch (_) { } return; } Promise.resolve(桥.拨时钟(k >= 1440 ? { 加天: k / 1440 } : { 加分: k })).then(r => { fill世界(); if (r && r.err) { try { topWin.toastr ? topWin.toastr.warning(r.err, '美漫 · 拨时') : 0; } catch (_) { } return; } try { topWin.toastr ? topWin.toastr.success('游戏时间已改为 ' + ((r && r.显示) || '?'), '美漫 · 改时间') : 0; } catch (_) { } }); }
     } catch (e) { console.warn(TAG, 'click 处理', e); }
   };
   function 收起() { root.style.display = 'none'; }
@@ -820,11 +820,11 @@
     Promise.resolve(桥.读日程()).then(r => {
       const 表 = (r && r.表) || [];
       const 行 = x => {
-        if (日程编辑中 === x.i) return '<div class="mm-scrow"><input id="mmSeD' + x.i + '" value="' + esc(x.d) + '" style="flex:0 1 96px;min-width:0;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11px;padding:5px 7px"><input id="mmSeT' + x.i + '" value="' + esc(x.t) + '" style="flex:1 1 110px;min-width:0;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11px;padding:5px 7px"><span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-save" data-i="' + x.i + '" style="min-width:34px;padding:0 8px">存</span></div>';
+        if (日程编辑中 === x.i) return '<div class="mm-scrow"><input id="mmSeD' + x.i + '" value="' + esc(x.d) + '" style="flex:0 1 96px;min-width:0;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11px;padding:5px 7px"><input id="mmSeT' + x.i + '" value="' + esc(x.t) + '" style="flex:1 1 110px;min-width:0;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11px;padding:5px 7px"><span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-save" data-i="' + x.i + '" style="min-width:34px;padding:0 8px">保存</span></div>';
         const 源 = x.src === '约定' ? '（聊天约定）' : x.src === '任务' ? '（事件接下）' : x.src === '手动' ? '（手动）' : '';
         return '<div class="mm-scrow' + (x.s === '逾期' ? ' over' : '') + (x.s === '完成' ? ' done' : '') + '"><span class="scmain"><span class="sd">' + esc(x.d || '待定') + '</span>' + esc(x.t) + (x.w ? ' <span class="who">·' + esc(x.w) + '</span>' : '') + ' <span class="who">' + 源 + '</span></span>'
           + '<span class="scbtns"><span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-edit" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">改</span>'
-          + '<span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-done" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">' + (x.s === '完成' ? '恢复' : '勾') + '</span>'
+          + '<span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-done" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">' + (x.s === '完成' ? '恢复' : '完成') + '</span>'
           + '<span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-del" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">删</span></span></div>';
       };
       盒.innerHTML = 表.length ? 表.map((x, i) => 行(Object.assign({}, x, { i }))).join('') : '<span style="color:#6e6c68;font-size:11px">（日程是空的——聊天里说定了的事会自动出现）</span>';
@@ -1027,5 +1027,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.19 就绪（NOW 表盘式美化框：时间/地点分行＋拨时胶囊＋直控拨表修复＋状态栏去真实时钟＋旧实例监听空转守护）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.20 就绪（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
