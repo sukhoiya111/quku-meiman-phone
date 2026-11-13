@@ -634,7 +634,7 @@
       else if (a === 'sendall') { 确定发送(); }
       else if (a === 'pend-del') { const i = Number(b.getAttribute('data-i')); const 名 = 当前聊天名; 待发读().then(待 => { const 行 = 待[名] || []; if (行[i]) { 行.splice(i, 1); if (!行.length) delete 待[名]; 待发缓存 = 待; 待发存(); } fill聊天(); }); }
       else if (a === 'clock-adj') { 时钟条开.v = !时钟条开.v; const adj = topDoc.getElementById('mmPhClockAdj'); if (adj) adj.style.display = 时钟条开.v ? 'flex' : 'none'; }
-      else if (a === 'clock-add') { const k = Number(b.getAttribute('data-k')) || 0; if (!k) return; if (!桥 || !桥.拨时钟) { try { topWin.toastr ? topWin.toastr.warning('引擎桥未就绪，稍后再试。', '美漫 · 拨时') : 0; } catch (_) { } return; } Promise.resolve(桥.拨时钟(k >= 1440 ? { 加天: k / 1440 } : { 加分: k })).then(r => { fill世界(); if (r && r.err) { try { topWin.toastr ? topWin.toastr.warning(r.err, '美漫 · 拨时') : 0; } catch (_) { } return; } try { topWin.toastr ? topWin.toastr.success('游戏时间已改为 ' + ((r && r.显示) || '?'), '美漫 · 改时间') : 0; } catch (_) { } }); }
+      else if (a === 'clock-add') { const k = Number(b.getAttribute('data-k')) || 0; if (!k) return; if (!桥 || !桥.拨时钟) { try { topWin.toastr ? topWin.toastr.warning('引擎桥未就绪，稍后再试。', '美漫 · 改时间') : 0; } catch (_) { } return; } Promise.resolve(桥.拨时钟(k >= 1440 ? { 加天: k / 1440 } : { 加分: k })).then(r => { fill世界(); if (r && r.err) { try { topWin.toastr ? topWin.toastr.warning(r.err, '美漫 · 改时间') : 0; } catch (_) { } return; } try { topWin.toastr ? topWin.toastr.success('游戏时间已改为 ' + ((r && r.显示) || '?'), '美漫 · 改时间') : 0; } catch (_) { } }); }
     } catch (e) { console.warn(TAG, 'click 处理', e); }
   };
   function 收起() { root.style.display = 'none'; }
@@ -821,7 +821,7 @@
       const 表 = (r && r.表) || [];
       const 行 = x => {
         if (日程编辑中 === x.i) return '<div class="mm-scrow"><input id="mmSeD' + x.i + '" value="' + esc(x.d) + '" style="flex:0 1 96px;min-width:0;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11px;padding:5px 7px"><input id="mmSeT' + x.i + '" value="' + esc(x.t) + '" style="flex:1 1 110px;min-width:0;background:#0d1220;border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-size:11px;padding:5px 7px"><span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-save" data-i="' + x.i + '" style="min-width:34px;padding:0 8px">保存</span></div>';
-        const 源 = x.src === '约定' ? '（聊天约定）' : x.src === '任务' ? '（事件接下）' : x.src === '手动' ? '（手动）' : '';
+        const 源 = x.src === '约定' ? '（聊天约定）' : x.src === '任务' ? '（来自事件）' : x.src === '手动' ? '（手动）' : '';
         return '<div class="mm-scrow' + (x.s === '逾期' ? ' over' : '') + (x.s === '完成' ? ' done' : '') + '"><span class="scmain"><span class="sd">' + esc(x.d || '待定') + '</span>' + esc(x.t) + (x.w ? ' <span class="who">·' + esc(x.w) + '</span>' : '') + ' <span class="who">' + 源 + '</span></span>'
           + '<span class="scbtns"><span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-edit" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">改</span>'
           + '<span tabindex="0" role="button" class="mm-btn" data-ph-a="sched-done" data-i="' + x.i + '" style="min-width:30px;padding:0 8px">' + (x.s === '完成' ? '恢复' : '完成') + '</span>'
@@ -1027,5 +1027,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.20 就绪（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.21 就绪（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
