@@ -264,6 +264,10 @@
     '#mmPhMedMenu .mm-medpick.sel{background:linear-gradient(160deg,#ffd75e,#f8c830);color:#0a0f1c}',
     '#mmPhMedDesc{width:100%;margin-top:8px;background:#0d1220;color:#e8ecf4;border:1px solid rgba(255,255,255,.14);border-radius:2px;padding:7px 10px;font-size:12px;font-family:inherit;outline:none;resize:none}',
     '#mmPhMedSend{display:inline-flex;align-items:center;margin-top:8px;padding:6px 16px;background:linear-gradient(160deg,#ffd75e,#f8c830);color:#0a0f1c;font-weight:800;font-size:12px;cursor:pointer;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
+    '#mmPhInviteRow{display:none;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}',
+    '#mmPhInviteRow .mm-invtype{display:inline-flex;padding:5px 11px;font-size:11px;font-weight:700;color:#ffd75e;background:rgba(248,200,48,.1);cursor:pointer;user-select:none;clip-path:polygon(4px 0,100% 0,100% calc(100% - 4px),calc(100% - 4px) 100%,0 100%,0 4px)}',
+    '#mmPhInviteRow .mm-invtype.sel{background:linear-gradient(160deg,#ffd75e,#f8c830);color:#0a0f1c}',
+    '#mmPhInvTime{flex:1 1 120px;min-width:0;background:#0d1220;color:#e8ecf4;border:1px solid rgba(255,255,255,.14);border-radius:2px;padding:6px 9px;font-size:11.5px;font-family:inherit;outline:none}',
     '#mmPhChatIn{flex:1;background:#0d1220;color:#e8ecf4;border:1px solid rgba(255,255,255,.14);border-radius:2px;padding:9px 11px;font-size:12.5px;font-family:inherit;outline:none;resize:none;min-height:38px}',
     '#mmPhChatIn:focus{border-color:rgba(248,200,48,.75);box-shadow:0 0 0 3px rgba(248,200,48,.1)}',
     '#mmPhChatSend{flex:0 0 auto;display:flex;align-items:center;justify-content:center;padding:0 16px;background:linear-gradient(160deg,#ffd75e,#f8c830);color:#0a0f1c;border:none;font-weight:800;font-size:13px;cursor:pointer;clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}',
@@ -429,7 +433,7 @@
     '    <div class="mm-hint" id="mmPhChatHint">私信走你在设置页填的独立 API；对话会真实影响好感与关系。邀约对方按好感决定接不接受。</div>',
     '    <div id="mmPhThread"><span style="color:#6e6c68;font-size:11px">（从联系人页点「私聊」开始对话）</span></div>',
     '    <div id="mmPhChatRow"><span tabindex="0" role="button" id="mmPhPlus" data-ph-a="ph-plus" title="发图片／视频">＋</span><textarea id="mmPhChatIn" rows="1" placeholder="输入私信…（Enter 发送）"></textarea><span tabindex="0" role="button" id="mmPhChatSend" data-ph-a="ph-chatsend">发送</span></div>',
-    '    <div id="mmPhMedMenu"><span class="mm-medpick" data-ph-a="ph-med" data-t="图片">📷 图片</span><span class="mm-medpick" data-ph-a="ph-med" data-t="视频">🎬 视频</span><textarea id="mmPhMedDesc" rows="2" placeholder="描述这张图片／视频的内容（发给对方看的说明）"></textarea><span tabindex="0" role="button" id="mmPhMedSend" data-ph-a="ph-med-send">确认发送</span></div>',
+    '    <div id="mmPhMedMenu"><span class="mm-medpick" data-ph-a="ph-med" data-t="图片">📷 图片</span><span class="mm-medpick" data-ph-a="ph-med" data-t="视频">🎬 视频</span><span class="mm-medpick" data-ph-a="ph-med" data-t="邀约">📩 邀约</span><div id="mmPhInviteRow"><span class="mm-invtype" data-ph-a="ph-invtype" data-t="约出来见面">约出来见面</span><span class="mm-invtype" data-ph-a="ph-invtype" data-t="组队行动">组队行动</span><span class="mm-invtype" data-ph-a="ph-invtype" data-t="问个情报">问个情报</span><span class="mm-invtype" data-ph-a="ph-invtype" data-t="道歉">道歉</span><input id="mmPhInvTime" placeholder="时间（如 周六下午两点／待定）"></div><textarea id="mmPhMedDesc" rows="2" placeholder="写内容说明（图片／视频写内容；邀约写你想做什么）"></textarea><span tabindex="0" role="button" id="mmPhMedSend" data-ph-a="ph-med-send">确认发送</span></div>',
     '  </div>',
     '</div>',
     '<div id="mmPhHomebar" data-ph-a="ph-gohome" title="回桌面"></div>',
@@ -637,12 +641,28 @@
       else if (a === 'pref-cal') { Promise.resolve(桥.读偏好()).then(p => 桥.写偏好(p.pm, b.getAttribute('data-k') === '1')).then(() => fill偏好()); }
       else if (a === 'pref-arc') { Promise.resolve(桥.读偏好()).then(p => 桥.写偏好(undefined, undefined, b.getAttribute('data-k') === '1')).then(() => fill偏好()); }
       else if (a === 'ph-plus') { const m = topDoc.getElementById('mmPhMedMenu'); if (m) m.style.display = m.style.display === 'block' ? 'none' : 'block'; }
-      else if (a === 'ph-med') { const t2 = b.getAttribute('data-t'); for (const pk of topDoc.querySelectorAll('#mmPhMedMenu .mm-medpick')) pk.classList.toggle('sel', pk.getAttribute('data-t') === t2); }
+      else if (a === 'ph-med') { const t2 = b.getAttribute('data-t'); for (const pk of topDoc.querySelectorAll('#mmPhMedMenu .mm-medpick')) pk.classList.toggle('sel', pk.getAttribute('data-t') === t2); const inv = topDoc.getElementById('mmPhInviteRow'); if (inv) inv.style.display = t2 === '邀约' ? 'flex' : 'none'; }
+      else if (a === 'ph-invtype') { const t3 = b.getAttribute('data-t'); for (const it of topDoc.querySelectorAll('#mmPhInviteRow .mm-invtype')) it.classList.toggle('sel', it.getAttribute('data-t') === t3); }
       else if (a === 'ph-med-send') {
         const 类型 = (topDoc.querySelector('#mmPhMedMenu .mm-medpick.sel') || {}).getAttribute ? topDoc.querySelector('#mmPhMedMenu .mm-medpick.sel').getAttribute('data-t') : '';
         const 描述 = ((topDoc.getElementById('mmPhMedDesc') || {}).value || '').trim();
-        if (!类型 || !描述) { try { topWin.toastr ? topWin.toastr.info('先选图片／视频，再写一句内容描述。', '美漫 · 私信') : 0; } catch (_) { } return; }
+        if (!类型 || !描述) { try { topWin.toastr ? topWin.toastr.info('先选图片／视频／邀约，再写一句内容说明。', '美漫 · 私信') : 0; } catch (_) { } return; }
         if (!当前聊天名) return;
+        if (类型 === '邀约') {
+          const 类型2 = (topDoc.querySelector('#mmPhInviteRow .mm-invtype.sel') || {}).getAttribute ? topDoc.querySelector('#mmPhInviteRow .mm-invtype.sel').getAttribute('data-t') : '';
+          const 时间 = ((topDoc.getElementById('mmPhInvTime') || {}).value || '').trim() || '待定';
+          if (!类型2) { try { topWin.toastr ? topWin.toastr.info('先选邀约类型。', '美漫 · 私信') : 0; } catch (_) { } return; }
+          待发读().then(async 待 => {
+            (待[当前聊天名] = 待[当前聊天名] || []).push({ t: '「' + 类型2 + '」——' + 描述 + '（时间：' + 时间 + '）', k: 类型2 });
+            待发缓存 = 待; await 待发存();
+            const menu = topDoc.getElementById('mmPhMedMenu'); if (menu) menu.style.display = 'none';
+            const d = topDoc.getElementById('mmPhMedDesc'); if (d) d.value = '';
+            const tm = topDoc.getElementById('mmPhInvTime'); if (tm) tm.value = '';
+            fill聊天();
+            try { topWin.toastr ? topWin.toastr.info('邀约已放入待发——对方答应会自动记进日程', '美漫 · 私信') : 0; } catch (_) { }
+          });
+          return;
+        }
         待发读().then(async 待 => {
           (待[当前聊天名] = 待[当前聊天名] || []).push({ t: '[' + 类型 + '：' + 描述 + ']', m: 类型 });
           待发缓存 = 待; await 待发存();
@@ -1048,5 +1068,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.24 就绪（聊天页贴底＋去快语＋＋号媒体发送：图片／视频描述式入待发队列）（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.25 就绪（＋号加「📩 邀约」：四类型＋时间＋描述→对方答应自动入日程）（聊天页贴底＋去快语＋＋号媒体发送：图片／视频描述式入待发队列）（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
