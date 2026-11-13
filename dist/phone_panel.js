@@ -153,6 +153,7 @@
     '@keyframes mmAppIn{from{opacity:0;transform:scale(.985) translateY(7px)}to{opacity:1;transform:none}}',
     '@keyframes mmFadeUp{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}',
     '#mmPhoneRoot .mm-app{display:none;padding:10px 17px 22px;background:rgba(6,9,16,.975);min-height:100%}',
+    '#mmPhoneRoot .mm-app[data-ph-page="chat"].on{display:flex;flex-direction:column;height:100%;padding-bottom:10px}',
     '#mmPhoneRoot .mm-app.on{display:block;animation:mmAppIn .28s cubic-bezier(.22,.8,.26,1)}',
     '#mmPhoneRoot .mm-app.on>*{animation:mmFadeUp .34s cubic-bezier(.22,.8,.26,1) backwards}',
     '#mmPhoneRoot .mm-app.on>*:nth-child(2){animation-delay:.025s}',
@@ -243,7 +244,7 @@
     '#mmPhoneRoot span[data-mm-a^="vm-"]{border:none!important;color:#eef2f8!important;background:rgba(255,255,255,.08)!important;padding:6px 14px!important;min-height:28px;transition:background .14s,color .14s;font-weight:700;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)!important;border-radius:0!important}',
     '#mmPhoneRoot span[data-mm-a^="vm-"]:hover{background:rgba(248,200,48,.18)!important;color:#ffd75e!important}',
     // —— 聊天页（v3.53c 一期：玩家主动发起/邀约）——
-    '#mmPhThread{display:flex;flex-direction:column;gap:7px;padding:4px 2px 10px;min-height:200px}',
+    '#mmPhThread{display:flex;flex-direction:column;gap:7px;padding:4px 2px 10px;flex:1 1 auto;min-height:140px;overflow-y:auto}',
     '#mmPhThread .mm-bub{max-width:82%;padding:9px 13px;font-size:12px;line-height:1.55;white-space:pre-line;word-break:break-word;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
     '#mmPhThread .mm-bub{position:relative}',
     '#mmPhThread .mm-bub.me.mm-pend{opacity:.72;box-shadow:inset 0 0 0 1px rgba(248,200,48,.55)}',
@@ -255,10 +256,14 @@
     '#mmPhThread .mm-bub.ta{align-self:flex-start;background:#171b28;color:#e8ecf4;border-bottom-left-radius:2px;box-shadow:inset 0 0 0 1px rgba(248,200,48,.18)}',
     '#mmPhThread .mm-bub.sys{align-self:center;background:none;color:#f8c830;font-size:10px;padding:2px 6px;letter-spacing:.06em}',
     '#mmPhThread .mm-bub.me.ta-wait{opacity:.65}',
-    '#mmPhInvites{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 6px}',
-    '#mmPhInvites .mm-inv{font-size:11.5px;padding:6px 14px;color:#ffd75e;background:rgba(248,200,48,.1);cursor:pointer;user-select:none;clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);transition:background .14s}',
-    '#mmPhInvites .mm-inv:hover{background:rgba(248,200,48,.2)}',
-    '#mmPhChatRow{display:flex;gap:7px;align-items:stretch}',
+    '#mmPhChatRow{display:flex;gap:7px;align-items:stretch;flex:0 0 auto;margin-top:7px}',
+    '#mmPhPlus{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:38px;background:rgba(248,200,48,.12);color:#f8c830;font-size:19px;font-weight:800;cursor:pointer;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);transition:background .14s}',
+    '#mmPhPlus:hover{background:rgba(248,200,48,.22)}',
+    '#mmPhMedMenu{display:none;flex:0 0 auto;margin-top:7px;padding:9px 11px;background:linear-gradient(165deg,rgba(19,26,44,.9),rgba(8,12,22,.94));box-shadow:inset 0 0 0 1px rgba(248,200,48,.22);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}',
+    '#mmPhMedMenu .mm-medpick{display:inline-flex;align-items:center;padding:6px 13px;margin-right:7px;font-size:11.5px;font-weight:700;color:#ffd75e;background:rgba(248,200,48,.1);cursor:pointer;user-select:none;clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px)}',
+    '#mmPhMedMenu .mm-medpick.sel{background:linear-gradient(160deg,#ffd75e,#f8c830);color:#0a0f1c}',
+    '#mmPhMedDesc{width:100%;margin-top:8px;background:#0d1220;color:#e8ecf4;border:1px solid rgba(255,255,255,.14);border-radius:2px;padding:7px 10px;font-size:12px;font-family:inherit;outline:none;resize:none}',
+    '#mmPhMedSend{display:inline-flex;align-items:center;margin-top:8px;padding:6px 16px;background:linear-gradient(160deg,#ffd75e,#f8c830);color:#0a0f1c;font-weight:800;font-size:12px;cursor:pointer;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
     '#mmPhChatIn{flex:1;background:#0d1220;color:#e8ecf4;border:1px solid rgba(255,255,255,.14);border-radius:2px;padding:9px 11px;font-size:12.5px;font-family:inherit;outline:none;resize:none;min-height:38px}',
     '#mmPhChatIn:focus{border-color:rgba(248,200,48,.75);box-shadow:0 0 0 3px rgba(248,200,48,.1)}',
     '#mmPhChatSend{flex:0 0 auto;display:flex;align-items:center;justify-content:center;padding:0 16px;background:linear-gradient(160deg,#ffd75e,#f8c830);color:#0a0f1c;border:none;font-weight:800;font-size:13px;cursor:pointer;clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}',
@@ -423,10 +428,8 @@
     '  <div class="mm-app" data-ph-page="chat">',
     '    <div class="mm-hint" id="mmPhChatHint">私信走你在设置页填的独立 API；对话会真实影响好感与关系。邀约对方按好感决定接不接受。</div>',
     '    <div id="mmPhThread"><span style="color:#6e6c68;font-size:11px">（从联系人页点「私聊」开始对话）</span></div>',
-    '    <div id="mmPhInvites">' +
-      ['约出来见面', '组队行动', '问个情报', '道歉'].map(t => '<span class="mm-inv" tabindex="0" role="button" data-ph-a="ph-invite" data-ph-t="' + t + '">✉ ' + t + '</span>').join('') +
-    '</div>',
-    '    <div id="mmPhChatRow"><textarea id="mmPhChatIn" rows="1" placeholder="输入私信…（Enter 发送）"></textarea><span tabindex="0" role="button" id="mmPhChatSend" data-ph-a="ph-chatsend">发送</span></div>',
+    '    <div id="mmPhChatRow"><span tabindex="0" role="button" id="mmPhPlus" data-ph-a="ph-plus" title="发图片／视频">＋</span><textarea id="mmPhChatIn" rows="1" placeholder="输入私信…（Enter 发送）"></textarea><span tabindex="0" role="button" id="mmPhChatSend" data-ph-a="ph-chatsend">发送</span></div>',
+    '    <div id="mmPhMedMenu"><span class="mm-medpick" data-ph-a="ph-med" data-t="图片">📷 图片</span><span class="mm-medpick" data-ph-a="ph-med" data-t="视频">🎬 视频</span><textarea id="mmPhMedDesc" rows="2" placeholder="描述这张图片／视频的内容（发给对方看的说明）"></textarea><span tabindex="0" role="button" id="mmPhMedSend" data-ph-a="ph-med-send">确认发送</span></div>',
     '  </div>',
     '</div>',
     '<div id="mmPhHomebar" data-ph-a="ph-gohome" title="回桌面"></div>',
@@ -624,7 +627,6 @@
       }
       else if (a === 'ph-refresh') { 当前app ? 开app(当前app) : fill全部(); }
       else if (a === 'ph-chat') { 开聊天页(b.getAttribute('data-ph-k') || ''); } // v3.53c 联系人卡「私聊」入口
-      else if (a === 'ph-invite') { const inp = topDoc.getElementById('mmPhChatIn'); if (inp) { inp.value = '「' + (b.getAttribute('data-ph-t') || '') + '」——'; inp.focus(); } }
       else if (a === 'ph-chatsend') { 发私信流程(); }
       else if (a === 'sched-add') { const d = topDoc.getElementById('mmSchedD'), t = topDoc.getElementById('mmSchedT'); const dv = ((d && d.value) || '').trim() || '待定', tv = ((t && t.value) || '').trim(); if (!tv) { try { topWin.toastr ? topWin.toastr.info('先写要做什么。', '美漫 · 日程') : 0; } catch (_) { } return; } Promise.resolve(桥.日程增(dv, tv, '', '手动')).then(r => { if (r && r.err) { try { topWin.toastr ? topWin.toastr.warning(r.err, '美漫 · 日程') : 0; } catch (_) { } } if (d) d.value = ''; if (t) t.value = ''; fill日程(); }); }
       else if (a === 'sched-del') { Promise.resolve(桥.日程操作('del', b.getAttribute('data-i'))).then(() => fill日程()); }
@@ -634,6 +636,22 @@
       else if (a === 'pref-pm') { const k = b.getAttribute('data-k'); Promise.resolve(桥.写偏好(k, undefined)).then(() => { fill偏好(); try { topWin.toastr ? topWin.toastr.success('主动消息：' + k, '美漫 · 手机') : 0; } catch (_) { } }); }
       else if (a === 'pref-cal') { Promise.resolve(桥.读偏好()).then(p => 桥.写偏好(p.pm, b.getAttribute('data-k') === '1')).then(() => fill偏好()); }
       else if (a === 'pref-arc') { Promise.resolve(桥.读偏好()).then(p => 桥.写偏好(undefined, undefined, b.getAttribute('data-k') === '1')).then(() => fill偏好()); }
+      else if (a === 'ph-plus') { const m = topDoc.getElementById('mmPhMedMenu'); if (m) m.style.display = m.style.display === 'block' ? 'none' : 'block'; }
+      else if (a === 'ph-med') { const t2 = b.getAttribute('data-t'); for (const pk of topDoc.querySelectorAll('#mmPhMedMenu .mm-medpick')) pk.classList.toggle('sel', pk.getAttribute('data-t') === t2); }
+      else if (a === 'ph-med-send') {
+        const 类型 = (topDoc.querySelector('#mmPhMedMenu .mm-medpick.sel') || {}).getAttribute ? topDoc.querySelector('#mmPhMedMenu .mm-medpick.sel').getAttribute('data-t') : '';
+        const 描述 = ((topDoc.getElementById('mmPhMedDesc') || {}).value || '').trim();
+        if (!类型 || !描述) { try { topWin.toastr ? topWin.toastr.info('先选图片／视频，再写一句内容描述。', '美漫 · 私信') : 0; } catch (_) { } return; }
+        if (!当前聊天名) return;
+        待发读().then(async 待 => {
+          (待[当前聊天名] = 待[当前聊天名] || []).push({ t: '[' + 类型 + '：' + 描述 + ']', m: 类型 });
+          待发缓存 = 待; await 待发存();
+          const menu = topDoc.getElementById('mmPhMedMenu'); if (menu) menu.style.display = 'none';
+          const d = topDoc.getElementById('mmPhMedDesc'); if (d) d.value = '';
+          fill聊天();
+          try { topWin.toastr ? topWin.toastr.info('媒体已放入待发（' + (待[当前聊天名] || []).length + ' 条）——回「消息」页点「确定发送」', '美漫 · 私信') : 0; } catch (_) { }
+        });
+      }
       else if (a === 'sendall') { 确定发送(); }
       else if (a === 'pend-del') { const i = Number(b.getAttribute('data-i')); const 名 = 当前聊天名; 待发读().then(待 => { const 行 = 待[名] || []; if (行[i]) { 行.splice(i, 1); if (!行.length) delete 待[名]; 待发缓存 = 待; 待发存(); } fill聊天(); }); }
       else if (a === 'clock-adj') { 时钟条开.v = !时钟条开.v; const adj = topDoc.getElementById('mmPhClockAdj'); if (adj) adj.style.display = 时钟条开.v ? 'flex' : 'none'; }
@@ -677,7 +695,7 @@
         if (!待行.length) return;
         const 空 = 线程盒.querySelector('span'); if (空 && 空.textContent.includes('还没有对话')) 空.remove();
         线程盒.querySelectorAll('.mm-pend, [data-mm-pendhint]').forEach(x => x.remove()); // 双保险：追加前清旧待发块（双闭包场景幂等）
-        线程盒.insertAdjacentHTML('beforeend', 待行.map((x, i) => '<div class="mm-bub me mm-pend"><div class="mm-pendtag">✍️ 待发</div>' + esc(String(x.t)) + '<span tabindex="0" role="button" class="mm-pendx" data-ph-a="pend-del" data-i="' + i + '" title="撤回">✕</span></div>').join('') + '<div class="mm-hint" data-mm-pendhint>有 ' + 待行.length + ' 条待发——回「消息」页点「确定发送」一次性发出。</div>');
+        线程盒.insertAdjacentHTML('beforeend', 待行.map((x, i) => '<div class="mm-bub me mm-pend"><div class="mm-pendtag">✍️ 待发' + (x.m ? ' · ' + (x.m === '图片' ? '📷' : '🎬') : '') + '</div>' + esc(String(x.t)) + '<span tabindex="0" role="button" class="mm-pendx" data-ph-a="pend-del" data-i="' + i + '" title="撤回">✕</span></div>').join('') + '<div class="mm-hint" data-mm-pendhint>有 ' + 待行.length + ' 条待发——回「消息」页点「确定发送」一次性发出。</div>'); // v0.2.24 媒体待发带 📷/🎬 标
         const sc3 = root.querySelector('#mmPhoneScreen'); if (sc3) sc3.scrollTop = sc3.scrollHeight;
       }).catch(() => { });
       const sc = root.querySelector('#mmPhoneScreen'); if (sc) sc.scrollTop = sc.scrollHeight;
@@ -1030,5 +1048,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.23 就绪（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.24 就绪（聊天页贴底＋去快语＋＋号媒体发送：图片／视频描述式入待发队列）（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
