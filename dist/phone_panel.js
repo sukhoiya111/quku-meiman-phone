@@ -287,7 +287,12 @@
     APPS.map(a => '    ' + 瓦(a[0])).join('\n'),
     '  </div>',
     // 桌面小组件：世界速览（点开＝事件页，世界详情行都在那边）
-    '  <div id="mmPhClock" title="参考时间：每楼约推进半小时，仅供玩家参考"><span class="ckcap">NOW</span><b id="mmPhClockTxt">…</b></div>',
+    '  <div id="mmPhGameClock" data-ph-a="clock-adj" title="点开快进按钮；参考时间每楼约半小时"><span class="ckcap">NOW</span><b id="mmPhGameClockTxt">…</b></div>',
+    '  <div id="mmPhClockAdj" style="display:none;margin:4px 14px 0;gap:6px">',
+    '    <span class="mm-btn" data-ph-a="clock-add" data-k="60" style="cursor:pointer;padding:5px 10px;border:1px solid rgba(248,200,48,.4);color:#f8c830;font-size:11px">+1小时</span>',
+    '    <span class="mm-btn" data-ph-a="clock-add" data-k="360" style="cursor:pointer;padding:5px 10px;border:1px solid rgba(248,200,48,.4);color:#f8c830;font-size:11px">+6小时</span>',
+    '    <span class="mm-btn" data-ph-a="clock-add" data-k="1440" style="cursor:pointer;padding:5px 10px;border:1px solid rgba(248,200,48,.4);color:#f8c830;font-size:11px">+1天</span>',
+    '  </div>',
     '  <div id="mmPhWorldWg" data-ph-a="ph-open" data-ph-tgt="events" title="打开事件与详情">',
     '    <div style="display:flex;align-items:center;gap:8px"><span class="wgcap" style="margin-left:0">世界</span><span class="wgnm" style="font-size:12.5px" id="mmPh电影">…</span></div>',
     '    <div class="wgline"><span>节点</span><b id="mmPh节点">…</b><span style="color:rgba(255,255,255,.22)">｜</span><span>阶段</span><b id="mmPh阶段">…</b></div>',
@@ -901,13 +906,8 @@
       const sy = st.system || {};
       const set = (id, v) => { const el = topDoc.getElementById(id); if (el) el.textContent = v; };
       set('mmPh电影', sy.当前电影 || '—'); set('mmPh节点', sy.当前节点 || '—'); set('mmPh阶段', sy.当前阶段 || '—');
-      let 参考时分 = '';
-      try {
-        const 楼 = (topWin.SillyTavern.getContext().chat || []).length;
-        const 分 = (480 + 楼 * 30) % 1440; // 08:00 起步、每楼 +30 分钟（玩家参考口径，不进提示词）
-        参考时分 = String(Math.floor(分 / 60)).padStart(2, '0') + ':' + String(分 % 60).padStart(2, '0');
-      } catch (_) { }
-      set('mmPhClockTxt', [sy.当前日期, 参考时分, sy.当前地点].filter(Boolean).join(' · ') || '—'); // v0.2.14 精确到分钟（参考）
+      const 时钟源 = sy.当前时间 || ''; // v0.2.15 读正典 system.当前时间（年月日 时:分）
+      set('mmPhGameClockTxt', [时钟源, sy.当前地点].filter(Boolean).join(' · ') || '—');
       set('mmPhEv节点', sy.当前节点 || '—'); set('mmPhEv阶段', sy.当前阶段 || '—'); // 事件页"节点/阶段"行（独立 id 防与桌面组件重 id）
       set('mmPh事件一览', sy.事件一览 || '（暂无）'); set('mmPh偏移', st.世界线 && st.世界线.偏移记录 ? st.世界线.偏移记录 : '（无）');
       set('mmPh干预度', st.世界线 && st.世界线.干预度 !== undefined ? st.世界线.干预度 : '…');
@@ -1023,5 +1023,5 @@
     topWin.__mmPhoneClockIv = setInterval(tick, 20000);
   })();
 
-  console.info(TAG, '手机面板 v0.2.14 就绪（桌面时钟·精确到分钟）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.15 就绪（游戏时钟·剧情驱动推进＋玩家直控）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
