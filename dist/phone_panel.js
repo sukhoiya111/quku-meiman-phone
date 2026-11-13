@@ -103,7 +103,7 @@
     '#mmPhGameClock .ckadj{flex:0 0 auto;font-size:10px;font-weight:800;letter-spacing:.12em;color:#0a0f1c;background:linear-gradient(160deg,#ffd75e,#f8c830);padding:4px 11px;clip-path:polygon(4px 0,100% 0,100% calc(100% - 4px),calc(100% - 4px) 100%,0 100%,0 4px)}',
     '#mmPhGameClock .cktime{display:flex;align-items:baseline;gap:10px;min-width:0}',
     '#mmPhGameClock b{color:#eef2f8;font-size:15px;font-weight:800;letter-spacing:.03em;font-variant-numeric:tabular-nums;white-space:nowrap;flex:0 0 auto}',
-    '#mmPhGameClock .ckloc{font-size:10.5px;color:#9aa3b5;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1 1 auto}',
+    '#mmPhGameClock .ckloc{font-size:10px;color:#9aa3b5;letter-spacing:.03em;line-height:1.4;min-width:0;flex:1 1 auto}',
     '#mmPhGameClock .ckloc:empty{display:none}',
     '#mmPhClockAdj{display:none;margin:5px 14px 0;gap:7px;flex-wrap:wrap}',
     '#mmPhClockAdj .ckbtn{min-height:0;padding:6px 15px;border-radius:999px;border:1px solid rgba(248,200,48,.45);color:#f8c830;font-size:11px;font-weight:700;background:rgba(248,200,48,.08);cursor:pointer}',
@@ -1027,5 +1027,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.18 就绪（NOW 表盘式美化框：时间/地点分行＋拨时胶囊＋直控拨表修复＋状态栏去真实时钟＋旧实例监听空转守护）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.19 就绪（NOW 表盘式美化框：时间/地点分行＋拨时胶囊＋直控拨表修复＋状态栏去真实时钟＋旧实例监听空转守护）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
