@@ -560,7 +560,7 @@
   const appbar = root.querySelector('#mmPhAppbar');
   const 桌面组件 = [root.querySelector('#mmPhWidget'), root.querySelector('#mmPhWorldWg'), root.querySelector('#mmPhFightbar'), root.querySelector('#mmPhGameClock'), root.querySelector('#mmPhClockAdj')];
   const 时钟条开 = { v: false };
-  const 组件显隐 = show => { for (const w of 桌面组件) if (w) w.style.display = show ? (w.id === 'mmPhFightbar' ? 'flex' : (w.id === 'mmPhClockAdj' ? (时钟条开.v ? 'flex' : 'none') : 'block')) : 'none'; };
+  const 组件显隐 = show => { for (const w of 桌面组件) if (w) w.style.display = show ? ((w.id === 'mmPhFightbar' || w.id === 'mmPhGameClock') ? 'flex' : (w.id === 'mmPhClockAdj' ? (时钟条开.v ? 'flex' : 'none') : 'block')) : 'none'; };
   let 当前app = '';
   function 开app(app) {
     当前app = app;
@@ -598,6 +598,7 @@
   // ---------- 手机自有动作（data-ph-a） ----------
   const clickListener = ev => {
     try {
+      if (!root || !root.isConnected) return; // v0.2.17：旧实例监听器空转（重建后旧闭包挂主文档捕获态＝一次点击双实例各拨一次钟，+120 分实锤）
       const b = ev.target && ev.target.closest ? ev.target.closest('[data-ph-a]') : null;
       if (!b) return;
       topWin.__mmPhone调试 = topWin.__mmPhone调试 || { 收到: 0 };
@@ -1021,5 +1022,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.16 就绪（NOW 游戏时钟美化框＋直控拨表修复＋状态栏去真实时钟）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.17 就绪（NOW 游戏时钟美化框＋直控拨表修复＋状态栏去真实时钟＋旧实例监听空转守护）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
