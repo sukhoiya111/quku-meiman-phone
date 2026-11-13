@@ -96,11 +96,15 @@
     '#mmPhoneRoot .mm-med .mk{font-size:9.5px;color:#f8c830;letter-spacing:.14em;font-weight:800;margin-bottom:4px}',
     '#mmPhoneRoot .mm-med .md{font-size:12px;color:#eef2f8;line-height:1.5;text-align:left}',
     // —— 玻璃组件通用面（切角面板＋金发丝框）——
-    '#mmPhGameClock{margin:7px 14px 0;padding:11px 16px;border-radius:2px;background:linear-gradient(160deg,rgba(24,30,48,.92),rgba(10,14,26,.94));border:1px solid rgba(248,200,48,.30);display:flex;align-items:center;gap:10px;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);cursor:pointer;transition:transform .16s ease}',
+    '#mmPhGameClock{margin:7px 14px 0;padding:11px 16px 12px;border-radius:2px;background:linear-gradient(160deg,rgba(24,30,48,.92),rgba(10,14,26,.94));border:1px solid rgba(248,200,48,.30);display:flex;flex-direction:column;gap:7px;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);cursor:pointer;transition:transform .16s ease}',
     '#mmPhGameClock:active{transform:scale(.985)}',
+    '#mmPhGameClock .ckrow{display:flex;align-items:center;justify-content:space-between}',
     '#mmPhGameClock .ckcap{font-size:9.5px;color:#f8c830;letter-spacing:.24em;font-weight:800;flex:0 0 auto}',
-    '#mmPhGameClock b{color:#eef2f8;font-size:12.5px;font-weight:700;letter-spacing:.04em;font-variant-numeric:tabular-nums;flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}',
     '#mmPhGameClock .ckadj{flex:0 0 auto;font-size:10px;font-weight:800;letter-spacing:.12em;color:#0a0f1c;background:linear-gradient(160deg,#ffd75e,#f8c830);padding:4px 11px;clip-path:polygon(4px 0,100% 0,100% calc(100% - 4px),calc(100% - 4px) 100%,0 100%,0 4px)}',
+    '#mmPhGameClock .cktime{display:flex;align-items:baseline;gap:10px;min-width:0}',
+    '#mmPhGameClock b{color:#eef2f8;font-size:15px;font-weight:800;letter-spacing:.03em;font-variant-numeric:tabular-nums;white-space:nowrap;flex:0 0 auto}',
+    '#mmPhGameClock .ckloc{font-size:10.5px;color:#9aa3b5;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1 1 auto}',
+    '#mmPhGameClock .ckloc:empty{display:none}',
     '#mmPhClockAdj{display:none;margin:5px 14px 0;gap:7px;flex-wrap:wrap}',
     '#mmPhClockAdj .ckbtn{min-height:0;padding:6px 15px;border-radius:999px;border:1px solid rgba(248,200,48,.45);color:#f8c830;font-size:11px;font-weight:700;background:rgba(248,200,48,.08);cursor:pointer}',
     '#mmPhClockAdj .ckbtn:hover{background:rgba(248,200,48,.18);color:#ffd75e}',
@@ -292,7 +296,7 @@
     APPS.map(a => '    ' + 瓦(a[0])).join('\n'),
     '  </div>',
     // 桌面小组件：世界速览（点开＝事件页，世界详情行都在那边）
-    '  <div id="mmPhGameClock" data-ph-a="clock-adj" title="点「拨时」展开快进钮；参考时间每楼约半小时"><span class="ckcap">NOW</span><b id="mmPhGameClockTxt">…</b><span class="ckadj">拨时 ▾</span></div>',
+    '  <div id="mmPhGameClock" data-ph-a="clock-adj" title="点「拨时」展开快进钮；参考时间每楼约半小时"><div class="ckrow"><span class="ckcap">NOW</span><span class="ckadj">拨时 ▾</span></div><div class="cktime"><b id="mmPhGameClockTxt">…</b><span class="ckloc" id="mmPhGameClockLoc"></span></div></div>',
     '  <div id="mmPhClockAdj">',
     '    <span class="mm-btn ckbtn" data-ph-a="clock-add" data-k="60">+1小时</span>',
     '    <span class="mm-btn ckbtn" data-ph-a="clock-add" data-k="360">+6小时</span>',
@@ -915,8 +919,9 @@
       const sy = st.system || {};
       const set = (id, v) => { const el = topDoc.getElementById(id); if (el) el.textContent = v; };
       set('mmPh电影', sy.当前电影 || '—'); set('mmPh节点', sy.当前节点 || '—'); set('mmPh阶段', sy.当前阶段 || '—');
-      const 时钟源 = sy.当前时间 || ''; // v0.2.15 读正典 system.当前时间（年月日 时:分）
-      set('mmPhGameClockTxt', [时钟源, sy.当前地点].filter(Boolean).join(' · ') || '—');
+      const 时钟源 = sy.当前时间 || ''; // v0.2.15 读正典 system.当前时间（年月日 时:分）；v0.2.18 时间/地点分行显示防截断
+      set('mmPhGameClockTxt', 时钟源 || '—');
+      set('mmPhGameClockLoc', sy.当前地点 || '');
       set('mmPhEv节点', sy.当前节点 || '—'); set('mmPhEv阶段', sy.当前阶段 || '—'); // 事件页"节点/阶段"行（独立 id 防与桌面组件重 id）
       set('mmPh事件一览', sy.事件一览 || '（暂无）'); set('mmPh偏移', st.世界线 && st.世界线.偏移记录 ? st.世界线.偏移记录 : '（无）');
       set('mmPh干预度', st.世界线 && st.世界线.干预度 !== undefined ? st.世界线.干预度 : '…');
@@ -1022,5 +1027,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.17 就绪（NOW 游戏时钟美化框＋直控拨表修复＋状态栏去真实时钟＋旧实例监听空转守护）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.18 就绪（NOW 表盘式美化框：时间/地点分行＋拨时胶囊＋直控拨表修复＋状态栏去真实时钟＋旧实例监听空转守护）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
