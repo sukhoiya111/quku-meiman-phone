@@ -210,6 +210,11 @@
     '#mmPhoneRoot input:focus{border-color:rgba(248,200,48,.75);box-shadow:0 0 0 3px rgba(248,200,48,.12)}',
     '#mmPhoneRoot .mm-papi{padding:14px 15px;background:linear-gradient(165deg,rgba(19,26,44,.7),rgba(8,12,22,.8));border-radius:2px;box-shadow:inset 0 0 0 1px rgba(248,200,48,.18);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}',
     '#mmPhoneRoot .mm-papi .mm-p-row{margin-bottom:12px}',
+    '#mmPhoneRoot #mmApiModel{width:100%;background:#0d1220;color:#e8ecf4;border:1px solid rgba(255,255,255,.14);border-radius:2px;padding:8px 10px;font-size:12.5px;font-family:inherit;outline:none}',
+    '#mmPhoneRoot #mmApiModel:focus{border-color:rgba(248,200,48,.75)}',
+    '#mmPhoneRoot #mmApiModelFetch{display:inline-flex;align-items:center;padding:6px 14px;margin-left:8px;background:rgba(248,200,48,.12);color:#f8c830;font-weight:700;font-size:11.5px;cursor:pointer;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}',
+    '#mmPhoneRoot #mmApiModelFetch:hover{background:rgba(248,200,48,.22)}',
+    '#mmPhoneRoot .mm-p-flex{display:flex;align-items:center;gap:6px}',
     '#mmPhoneRoot .mm-papi label{display:block;font-size:10px;letter-spacing:.14em;color:#f8c830;margin-bottom:6px;font-weight:800}',
     '#mmPhoneRoot .mm-papi input,#mmPhoneRoot .mm-papi select{width:100%;padding:10px 12px;background:#0d1220;border:1px solid rgba(255,255,255,.14);border-radius:2px;outline:none}',
     '#mmPhoneRoot .mm-papi input:focus{border-color:rgba(248,200,48,.75);box-shadow:0 0 0 3px rgba(248,200,48,.12)}',
@@ -396,6 +401,7 @@
     '        <div class="mm-p-row"><div class="mm-kv" style="margin:0 0 10px">变量解析默认跟随酒馆当前连接。额外端点跑不通时，解析与帮填都不会自动改用正文连接——会弹窗提示你删掉端点再重试。</div></div>',
     '        <div class="mm-p-row"><label>API 地址（OpenAI 兼容，含 /v1）</label><input id="mmApiUrl" placeholder="留空＝跟随酒馆当前连接"></div>',
     '        <div class="mm-p-row"><label>API Key</label><input id="mmApiKey" type="password" placeholder="sk-…"></div>',
+    '        <div class="mm-p-row"><label>从端点拉取模型（填好地址＋Key 点拉取，下拉选择）</label><div class="mm-p-flex"><select id="mmApiModel"><option value="">（先点「拉取」）</option></select><span tabindex="0" role="button" id="mmApiModelFetch" data-mm-a="parse-api-fetch">↻ 拉取</span></div></div>',
     '        <div class="mm-p-row"><label>手动填模型名（与下拉二选一）</label><input id="mmApiModelManual" placeholder="例：gpt-4o-mini / deepseek-chat"></div>',
     '        <div class="mm-p-btns"><span tabindex="0" role="button" class="mm-btn mm-go" data-mm-a="parse-api-save">保存解析设置</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="parse-retry">↻ 重试解析上一楼</span></div>',
     '        <div class="mm-echo" id="mmApiEcho"></div>',
@@ -1071,5 +1077,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.26 就绪（背包页新增消耗品计数器：AI 自动登记＋手动增改删＋告急注入）（＋号加「📩 邀约」：四类型＋时间＋描述→对方答应自动入日程）（聊天页贴底＋去快语＋＋号媒体发送：图片／视频描述式入待发队列）（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.27 就绪（解析设置补齐：从端点拉取模型下拉＋拉取钮＋已存模型回填）（背包页新增消耗品计数器：AI 自动登记＋手动增改删＋告急注入）（＋号加「📩 邀约」：四类型＋时间＋描述→对方答应自动入日程）（聊天页贴底＋去快语＋＋号媒体发送：图片／视频描述式入待发队列）（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
