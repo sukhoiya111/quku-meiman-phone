@@ -239,8 +239,8 @@
     '#mmPhoneRoot details summary:active{opacity:.7}',
     '#mmPhoneRoot details summary::-webkit-details-marker{display:none}',
     // —— 引擎代渲染内容统一（行卡化＋金色 overline；!important 压引擎内联）——
-    '#mmPhoneRoot [data-mm-vmrels]>div:first-child,#mmPhoneRoot [data-mm-vmeq]>div:first-child,#mmPhoneRoot [data-mm-vmwk]>div:first-child,#mmPhoneRoot [data-mm-vmev]>div:first-child,#mmPhoneRoot [data-mm-vmst]>div:first-child,#mmPhoneRoot [data-mm-vmskill]>div:first-child{color:#f8c830!important;letter-spacing:.16em!important;font-size:10.5px!important;font-weight:800!important;border-bottom:1px solid rgba(248,200,48,.25)!important;margin:15px 2px 8px!important;padding-bottom:3px!important;transform:skewX(-6deg)}',
-    '#mmPhoneRoot [data-mm-vmrels]>div+div,#mmPhoneRoot [data-mm-vmeq]>div+div,#mmPhoneRoot [data-mm-vmwk]>div+div,#mmPhoneRoot [data-mm-vmev]>div+div,#mmPhoneRoot [data-mm-vmst]>div+div,#mmPhoneRoot [data-mm-vmskill]>div+div{background:linear-gradient(165deg,rgba(19,26,44,.65),rgba(8,12,22,.75));box-shadow:inset 0 0 0 1px rgba(248,200,48,.14);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);padding:8px 12px;margin:6px 0}',
+    '#mmPhoneRoot [data-mm-vmrels]>div:first-child,#mmPhoneRoot [data-mm-vmeq]>div:first-child,#mmPhoneRoot [data-mm-vmwk]>div:first-child,#mmPhoneRoot [data-mm-vmev]>div:first-child,#mmPhoneRoot [data-mm-vmst]>div:first-child,#mmPhoneRoot [data-mm-vmskill]>div:first-child,#mmPhoneRoot [data-mm-vmsup]>div:first-child{color:#f8c830!important;letter-spacing:.16em!important;font-size:10.5px!important;font-weight:800!important;border-bottom:1px solid rgba(248,200,48,.25)!important;margin:15px 2px 8px!important;padding-bottom:3px!important;transform:skewX(-6deg)}',
+    '#mmPhoneRoot [data-mm-vmrels]>div+div,#mmPhoneRoot [data-mm-vmeq]>div+div,#mmPhoneRoot [data-mm-vmwk]>div+div,#mmPhoneRoot [data-mm-vmev]>div+div,#mmPhoneRoot [data-mm-vmst]>div+div,#mmPhoneRoot [data-mm-vmskill]>div+div,#mmPhoneRoot [data-mm-vmsup]>div+div{background:linear-gradient(165deg,rgba(19,26,44,.65),rgba(8,12,22,.75));box-shadow:inset 0 0 0 1px rgba(248,200,48,.14);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);padding:8px 12px;margin:6px 0}',
     '#mmPhoneRoot span[data-mm-a^="vm-"]{border:none!important;color:#eef2f8!important;background:rgba(255,255,255,.08)!important;padding:6px 14px!important;min-height:28px;transition:background .14s,color .14s;font-weight:700;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)!important;border-radius:0!important}',
     '#mmPhoneRoot span[data-mm-a^="vm-"]:hover{background:rgba(248,200,48,.18)!important;color:#ffd75e!important}',
     // —— 聊天页（v3.53c 一期：玩家主动发起/邀约）——
@@ -355,6 +355,9 @@
     '    <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap"><input data-mm-eqin="名称" placeholder="装备名" style="flex:1 1 90px;background:#111318;border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:1px 4px"><input data-mm-eqin="说明" placeholder="说明（可空）" style="flex:1 1 110px;background:#111318;border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:1px 4px"><span tabindex="0" role="button" class="mm-btn mm-go" data-mm-a="vm-eq-add">添加</span></div>',
     '    <div data-mm-vmwk></div>',
     '    <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap"><input data-mm-wkin="描述" placeholder="弱点描述" style="flex:1 1 110px;background:#111318;border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:1px 4px"><input data-mm-wkin="类别" placeholder="类别（可空）" style="flex:0 1 76px;background:#111318;border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:1px 4px"><input data-mm-wkin="效果" placeholder="效果（可空）" style="flex:1 1 90px;background:#111318;border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:1px 4px"><span tabindex="0" role="button" class="mm-btn mm-go" data-mm-a="vm-wk-add">添加</span></div>',
+    '    <div class="mm-sectitle" style="margin-top:10px">消耗品（会用完的小东西，AI 自动登记）</div>',
+    '    <div data-mm-vmsup></div>',
+    '    <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap"><input data-mm-supname placeholder="物品名（如 步枪弹）" style="flex:1 1 110px;background:#111318;border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:1px 4px"><input data-mm-supin="__add__" placeholder="数量" style="flex:0 1 60px;background:#111318;border:1px solid rgba(255,255,255,.14);color:#d9d4c7;font-size:11.5px;padding:1px 4px"><span tabindex="0" role="button" class="mm-btn mm-go" data-mm-a="vm-sup-add">添加</span></div>',
     '  </div>',
     // ⑥ 联系人
     '  <div class="mm-app" data-ph-page="contacts">',
@@ -1068,5 +1071,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.25 就绪（＋号加「📩 邀约」：四类型＋时间＋描述→对方答应自动入日程）（聊天页贴底＋去快语＋＋号媒体发送：图片／视频描述式入待发队列）（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.26 就绪（背包页新增消耗品计数器：AI 自动登记＋手动增改删＋告急注入）（＋号加「📩 邀约」：四类型＋时间＋描述→对方答应自动入日程）（聊天页贴底＋去快语＋＋号媒体发送：图片／视频描述式入待发队列）（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
