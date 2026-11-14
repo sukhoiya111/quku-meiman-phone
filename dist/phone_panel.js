@@ -411,6 +411,7 @@
     '    <div class="mm-mode-row"><span class="ml">主动消息</span><span class="seg" id="mmPmSeg"></span></div>',
     '    <div class="mm-mode-row"><span class="ml">自动记日程</span><span class="seg" id="mmCalSeg"></span></div>',
     '    <div class="mm-mode-row"><span class="ml">自动归档搁置事件</span><span class="seg" id="mmArcSeg"></span></div>',
+    '    <div class="mm-mode-row"><span class="ml">帮填调用方式</span><span class="seg" id="mmFillSeg"></span></div>',
     '    <div class="mm-hint">主动消息＝NPC 有时自己来信（挡位越高越常来，连续失败会自动暂停，换一下挡位即重开）；自动记日程＝聊天里说定了的事自动进日程应用，记错了去日程里改。</div>',
     '    <div class="mm-sectitle" style="margin-top:10px">成长与加点（升级得到的点数在这里分配，0-10）</div>',
     '    <div class="mm-xprow">',
@@ -649,6 +650,8 @@
       else if (a === 'pref-pm') { const k = b.getAttribute('data-k'); Promise.resolve(桥.写偏好(k, undefined)).then(() => { fill偏好(); try { topWin.toastr ? topWin.toastr.success('主动消息：' + k, '美漫 · 手机') : 0; } catch (_) { } }); }
       else if (a === 'pref-cal') { Promise.resolve(桥.读偏好()).then(p => 桥.写偏好(p.pm, b.getAttribute('data-k') === '1')).then(() => fill偏好()); }
       else if (a === 'pref-arc') { Promise.resolve(桥.读偏好()).then(p => 桥.写偏好(undefined, undefined, b.getAttribute('data-k') === '1')).then(() => fill偏好()); }
+      else if (a === 'pref-aifill') { Promise.resolve(桥.读偏好()).then(p => 桥.写偏好(undefined, undefined, undefined, b.getAttribute('data-k'))).then(() => fill偏好()); }
+      else if (a === 'pref-aifill-note') { try { topWin.toastr ? topWin.toastr.info('跟随酒馆＝帮填走酒馆生成管线（经过你的预设路由），会消耗正文模型配额；独立 API＝帮填单独调用，不进预设。', '美漫 · 帮填') : 0; } catch (_) { } }
       else if (a === 'ph-plus') { const m = topDoc.getElementById('mmPhMedMenu'); if (m) m.style.display = m.style.display === 'block' ? 'none' : 'block'; }
       else if (a === 'ph-med') { const t2 = b.getAttribute('data-t'); for (const pk of topDoc.querySelectorAll('#mmPhMedMenu .mm-medpick')) pk.classList.toggle('sel', pk.getAttribute('data-t') === t2); const inv = topDoc.getElementById('mmPhInviteRow'); if (inv) inv.style.display = t2 === '邀约' ? 'flex' : 'none'; }
       else if (a === 'ph-invtype') { const t3 = b.getAttribute('data-t'); for (const it of topDoc.querySelectorAll('#mmPhInviteRow .mm-invtype')) it.classList.toggle('sel', it.getAttribute('data-t') === t3); }
@@ -889,6 +892,8 @@
       段.innerHTML = ['关', '低', '正常'].map(k => '<span tabindex="0" role="button" class="mm-btn' + (p.pm === k ? ' mm-go' : '') + '" data-ph-a="pref-pm" data-k="' + k + '" style="min-width:0;padding:0 12px">' + k + '</span>').join('');
       段2.innerHTML = '<span tabindex="0" role="button" class="mm-btn' + (p.cal ? ' mm-go' : '') + '" data-ph-a="pref-cal" data-k="' + (p.cal ? '0' : '1') + '" style="min-width:0;padding:0 14px">' + (p.cal ? '开' : '关') + '</span>';
       段3.innerHTML = '<span tabindex="0" role="button" class="mm-btn' + (p.autoArc !== false ? ' mm-go' : '') + '" data-ph-a="pref-arc" data-k="' + (p.autoArc !== false ? '0' : '1') + '" style="min-width:0;padding:0 14px">' + (p.autoArc !== false ? '开' : '关') + '</span>';
+      const 段4 = topDoc.getElementById('mmFillSeg');
+      if (段4) 段4.innerHTML = '<span tabindex="0" role="button" class="mm-btn' + (p.aiFillVia !== '跟随酒馆' ? ' mm-go' : '') + '" data-ph-a="pref-aifill" data-k="独立" style="min-width:0;padding:0 12px">独立 API</span><span tabindex="0" role="button" class="mm-btn' + (p.aiFillVia === '跟随酒馆' ? ' mm-go' : '') + '" data-ph-a="pref-aifill" data-k="跟随酒馆" style="min-width:0;padding:0 12px">跟随酒馆</span>';
     }).catch(e => console.warn(TAG, '偏好', e));
   }
   setInterval(() => { try { if (root.style.display === 'flex') 刷角标(); } catch (_) { } }, 20000);
@@ -1077,5 +1082,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.28 就绪（解析设置挂 mmParseApiD 回填钩子——已存模型 reload 后回填下拉）（解析设置补齐：从端点拉取模型下拉＋拉取钮＋已存模型回填）（背包页新增消耗品计数器：AI 自动登记＋手动增改删＋告急注入）（＋号加「📩 邀约」：四类型＋时间＋描述→对方答应自动入日程）（聊天页贴底＋去快语＋＋号媒体发送：图片／视频描述式入待发队列）（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.29 就绪（解析设置加「帮填调用方式」单选：独立 API／跟随酒馆——跟随走 ST 管线经预设路由，消耗正文配额）（解析设置挂 mmParseApiD 回填钩子——已存模型 reload 后回填下拉）（解析设置补齐：从端点拉取模型下拉＋拉取钮＋已存模型回填）（背包页新增消耗品计数器：AI 自动登记＋手动增改删＋告急注入）（＋号加「📩 邀约」：四类型＋时间＋描述→对方答应自动入日程）（聊天页贴底＋去快语＋＋号媒体发送：图片／视频描述式入待发队列）（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
