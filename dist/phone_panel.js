@@ -29,7 +29,7 @@
     'cursor:pointer;user-select:none;box-shadow:inset 0 0 0 1px rgba(248,200,48,.45);transition:transform .15s ease,box-shadow .15s}',
     '#mmPhoneFab:hover{box-shadow:inset 0 0 0 1px rgba(248,200,48,.9),0 0 18px rgba(248,200,48,.18)}#mmPhoneFab:active{transform:scale(.94)}',
     // —— 机身（bezel）——
-    '#mmPhoneRoot{position:fixed;right:16px;bottom:30px;z-index:9999;width:332px;max-width:calc(100vw - 20px);',
+    '#mmPhoneRoot{position:fixed;right:16px;bottom:30px;z-index:9999;width:332px;max-width:calc(100vw - 20px);will-change:transform;',
     'height:min(684px,calc(100vh - 130px));display:none;flex-direction:column;padding:7px;',
     'background:#05070d;border-radius:38px;',
     'box-shadow:0 34px 90px rgba(0,0,0,.78),0 2px 12px rgba(0,0,0,.5),inset 0 0 0 1px rgba(140,170,220,.14);',
@@ -151,16 +151,9 @@
     '#mmPhHomebar:hover{background:rgba(238,242,248,.8);width:120px}',
     // —— 应用页（近实底＋缩放淡入＋级联）——
     '@keyframes mmAppIn{from{opacity:0;transform:scale(.985) translateY(7px)}to{opacity:1;transform:none}}',
-    '@keyframes mmFadeUp{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}',
     '#mmPhoneRoot .mm-app{display:none;padding:10px 17px 22px;background:rgba(6,9,16,.975);min-height:100%}',
     '#mmPhoneRoot .mm-app[data-ph-page="chat"].on{display:flex;flex-direction:column;height:100%;padding-bottom:10px}',
     '#mmPhoneRoot .mm-app.on{display:block;animation:mmAppIn .28s cubic-bezier(.22,.8,.26,1)}',
-    '#mmPhoneRoot .mm-app.on>*{animation:mmFadeUp .34s cubic-bezier(.22,.8,.26,1) backwards}',
-    '#mmPhoneRoot .mm-app.on>*:nth-child(2){animation-delay:.025s}',
-    '#mmPhoneRoot .mm-app.on>*:nth-child(3){animation-delay:.05s}',
-    '#mmPhoneRoot .mm-app.on>*:nth-child(4){animation-delay:.075s}',
-    '#mmPhoneRoot .mm-app.on>*:nth-child(5){animation-delay:.1s}',
-    '#mmPhoneRoot .mm-app.on>*:nth-child(n+6){animation-delay:.12s}',
     // —— 数据行与条（斜切分段条）——
     '#mmPhoneRoot .mm-sum{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 2px 4px;font-variant-numeric:tabular-nums}',
     '#mmPhoneRoot .mm-vbar{display:flex;align-items:center;gap:7px;min-width:80px}',
@@ -405,6 +398,18 @@
     '        <div class="mm-p-row"><label>手动填模型名（与下拉二选一）</label><input id="mmApiModelManual" placeholder="例：gpt-4o-mini / deepseek-chat"></div>',
     '        <div class="mm-p-btns"><span tabindex="0" role="button" class="mm-btn mm-go" data-mm-a="parse-api-save">保存解析设置</span><span tabindex="0" role="button" class="mm-btn" data-mm-a="parse-retry">↻ 重试解析上一楼</span></div>',
     '        <div class="mm-echo" id="mmApiEcho"></div>',
+    '      </div>',
+    '      <details open id="mmDmApiD">',
+    '        <summary>▸ 私信 API（可选，留空＝与解析 API 相同） <span style="color:#a09a8a;font-size:11px">让私信单独走一套模型／API</span></summary>',
+    '        <div class="mm-papi" style="margin-top:7px">',
+    '        <div class="mm-p-row"><label>API 地址（OpenAI 兼容，含 /v1）</label><input id="mmDmUrl" placeholder="留空＝与解析 API 相同"></div>',
+    '        <div class="mm-p-row"><label>API Key</label><input id="mmDmKey" type="password" placeholder="sk-…"></div>',
+    '        <div class="mm-p-row"><label>从端点拉取模型（填好地址＋Key 点拉取）</label><div class="mm-p-flex"><select id="mmDmModel"><option value="">（先点「拉取」）</option></select><span tabindex="0" role="button" id="mmDmModelFetch" data-mm-a="dm-api-fetch">↻ 拉取</span></div></div>',
+    '        <div class="mm-p-row"><label>手动填模型名（与下拉二选一）</label><input id="mmDmModelManual" placeholder="例：gpt-4o-mini / deepseek-chat"></div>',
+    '        <div class="mm-p-btns"><span tabindex="0" role="button" class="mm-btn mm-go" data-mm-a="dm-api-save">保存私信设置</span></div>',
+    '        <div class="mm-echo" id="mmDmEcho"></div>',
+    '        </div>',
+    '      </details>',
     '      </div>',
     '    </details>',
     '    <div class="mm-sectitle" id="mmPhPrefAnchor">手机偏好</div>',
@@ -1058,20 +1063,25 @@
     head.addEventListener('pointerdown', ev => {
       if (ev.target.closest('[data-ph-a]')) return;
       const r = root.getBoundingClientRect();
+      root.style.right = 'auto'; root.style.bottom = 'auto';
+      root.style.left = r.left + 'px'; root.style.top = r.top + 'px'; // v0.2.30 基点固定一次，move 只走 transform
       拖 = { sx: ev.clientX, sy: ev.clientY, ol: r.left, ot: r.top };
       ev.preventDefault();
     });
     topDoc.addEventListener('pointermove', ev => {
       if (!拖) return;
-      const nl = 拖.ol + (ev.clientX - 拖.sx), nt = 拖.ot + (ev.clientY - 拖.sy);
-      root.style.left = Math.max(0, Math.min(topWin.innerWidth - 80, nl)) + 'px';
-      root.style.top = Math.max(0, Math.min(topWin.innerHeight - 60, nt)) + 'px';
-      root.style.right = 'auto'; root.style.bottom = 'auto';
+      const nl = Math.max(0, Math.min(topWin.innerWidth - 80, 拖.ol + (ev.clientX - 拖.sx)));
+      const nt = Math.max(0, Math.min(topWin.innerHeight - 60, 拖.ot + (ev.clientY - 拖.sy)));
+      拖.nl = nl; 拖.nt = nt;
+      root.style.transform = 'translate3d(' + (nl - 拖.ol) + 'px,' + (nt - 拖.ot) + 'px,0)';
     });
     topDoc.addEventListener('pointerup', () => {
       if (!拖) return;
+      const nl = isFinite(拖.nl) ? 拖.nl : 拖.ol, nt = isFinite(拖.nt) ? 拖.nt : 拖.ot;
+      root.style.transform = '';
+      root.style.left = nl + 'px'; root.style.top = nt + 'px'; // 落位写回 left/top
       拖 = null;
-      try { const r = root.getBoundingClientRect(); localStorage.setItem('mmPhonePos', JSON.stringify({ l: r.left, t: r.top })); } catch (_) { }
+      try { localStorage.setItem('mmPhonePos', JSON.stringify({ l: nl, t: nt })); } catch (_) { }
     });
     try {
       const 存 = JSON.parse(localStorage.getItem('mmPhonePos') || 'null');
@@ -1082,5 +1092,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.29 就绪（解析设置加「帮填调用方式」单选：独立 API／跟随酒馆——跟随走 ST 管线经预设路由，消耗正文配额）（解析设置挂 mmParseApiD 回填钩子——已存模型 reload 后回填下拉）（解析设置补齐：从端点拉取模型下拉＋拉取钮＋已存模型回填）（背包页新增消耗品计数器：AI 自动登记＋手动增改删＋告急注入）（＋号加「📩 邀约」：四类型＋时间＋描述→对方答应自动入日程）（聊天页贴底＋去快语＋＋号媒体发送：图片／视频描述式入待发队列）（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.30 就绪（解析设置新增私信 API 子区：独立配置或留空跟随解析，保存后私信走独立端点）（解析设置加「帮填调用方式」单选：独立 API／跟随酒馆——跟随走 ST 管线经预设路由，消耗正文配额）（解析设置挂 mmParseApiD 回填钩子——已存模型 reload 后回填下拉）（解析设置补齐：从端点拉取模型下拉＋拉取钮＋已存模型回填）（背包页新增消耗品计数器：AI 自动登记＋手动增改删＋告急注入）（＋号加「📩 邀约」：四类型＋时间＋描述→对方答应自动入日程）（聊天页贴底＋去快语＋＋号媒体发送：图片／视频描述式入待发队列）（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
 })();
