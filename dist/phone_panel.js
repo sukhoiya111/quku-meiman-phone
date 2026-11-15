@@ -41,7 +41,7 @@
     '#mmPhIsland{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:80px;height:20px;border-radius:10px;background:#000;z-index:12;pointer-events:none}',
     '#mmPhIsland:after{content:"";position:absolute;right:6px;top:6px;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#232c3e,#04050a 70%)}',
     // —— 状态栏（拖拽手柄）——
-    '#mmPhoneHead{display:flex;align-items:center;gap:8px;height:32px;flex:0 0 auto;padding:0 18px;cursor:move;user-select:none;position:relative;z-index:11}',
+    '#mmPhoneHead{touch-action:none;display:flex;align-items:center;gap:8px;height:32px;flex:0 0 auto;padding:0 18px;cursor:move;user-select:none;position:relative;z-index:11}',
     '#mmPhoneHead .st{margin-left:auto;display:flex;align-items:center;gap:5px;color:#eef2f8}',
     '#mmPhoneHead .st svg{display:block}',
     '#mmPhoneHead .btp{font-size:10.5px;color:#eef2f8;font-variant-numeric:tabular-nums}',
@@ -618,6 +618,7 @@
     fill人物(); fill世界(); fill战斗(); // 桌面三组件刷新（回桌面必经路径）
   }
   topDoc.addEventListener('click', ev => {
+    if (!root || !root.isConnected) return; // v0.2.32 同上守卫
     const t = ev.target && ev.target.closest ? ev.target.closest('[data-ph-app]') : null;
     if (t) { 开app(t.getAttribute('data-ph-app')); }
   });
@@ -799,6 +800,7 @@
     const 名单 = Object.keys(待).filter(k => (待[k] || []).length);
     if (!名单.length) { try { topWin.toastr ? topWin.toastr.info('队列为空', '美漫 · 私信') : 0; } catch (_) { } return; }
     群发中 = true;
+    try {
     let 成功 = 0; const 失败 = [];
     for (const 名 of 名单) {
       const 行 = 待[名];
@@ -810,12 +812,13 @@
       if (当前app === 'chat' && 当前聊天名 === 名) fill聊天();
     }
     待发缓存 = 待; await 待发存();
-    群发中 = false;
+    } finally { 群发中 = false; } // v0.2.32 中段抛错不锁死发送钮
     fill消息(); fill聊天(); 刷角标();
     try { topWin.toastr ? topWin.toastr[失败.length ? 'warning' : 'success'](失败.length ? '已发 ' + 成功 + ' 人；失败（已放回待发）：' + 失败.join('、') : '📨 已发出，等他们回复…', '美漫 · 私信') : 0; } catch (_) { }
   }
   // Enter 发送（Shift+Enter 换行）
   topDoc.addEventListener('keydown', ev => {
+    if (!root || !root.isConnected) return; // v0.2.32：旧实例监听器空转（同 clickListener v0.2.17 家族——重建后双入队实锤）
     if (ev.key !== 'Enter' || ev.shiftKey) return;
     const 输 = ev.target && ev.target.id === 'mmPhChatIn' ? ev.target : null;
     if (!输 || 当前app !== 'chat') return;
@@ -900,7 +903,8 @@
       if (段4) 段4.innerHTML = '<span tabindex="0" role="button" class="mm-btn' + (p.aiFillVia !== '跟随酒馆' ? ' mm-go' : '') + '" data-ph-a="pref-aifill" data-k="独立" style="min-width:0;padding:0 12px">独立 API</span><span tabindex="0" role="button" class="mm-btn' + (p.aiFillVia === '跟随酒馆' ? ' mm-go' : '') + '" data-ph-a="pref-aifill" data-k="跟随酒馆" style="min-width:0;padding:0 12px">跟随酒馆</span>';
     }).catch(e => console.warn(TAG, '偏好', e));
   }
-  setInterval(() => { try { if (root.style.display === 'flex') 刷角标(); } catch (_) { } }, 20000);
+  try { if (topWin.__mmPhBadgeIv) clearInterval(topWin.__mmPhBadgeIv); } catch (_) { } // v0.2.32 旧实例轮询清理（原每次重建累积一个常驻 interval）
+  topWin.__mmPhBadgeIv = setInterval(() => { try { if (root.style.display === 'flex') 刷角标(); } catch (_) { } }, 20000);
 
   // ---------- 各应用填充（数据面＝__mmPhone桥，显示面＝JS 填，不靠宏） ----------
   function fill人物() {
@@ -1064,26 +1068,28 @@
       const r = root.getBoundingClientRect();
       root.style.right = 'auto'; root.style.bottom = 'auto';
       root.style.left = r.left + 'px'; root.style.top = r.top + 'px'; // v0.2.30 基点固定一次，move 只走 transform
-      拖 = { sx: ev.clientX, sy: ev.clientY, ol: r.left, ot: r.top };
+      if (拖 && 拖.pid !== undefined && 拖.pid !== ev.pointerId) return; // v0.2.32 双指第二指不覆写基点
+      拖 = { sx: ev.clientX, sy: ev.clientY, ol: r.left, ot: r.top, pid: ev.pointerId };
       ev.preventDefault();
     });
     topDoc.addEventListener('pointermove', ev => {
-      if (!拖) return;
+      if (!拖 || (拖.pid !== undefined && ev.pointerId !== 拖.pid)) return;
       const nl = Math.max(0, Math.min(topWin.innerWidth - 80, 拖.ol + (ev.clientX - 拖.sx)));
       const nt = Math.max(0, Math.min(topWin.innerHeight - 60, 拖.ot + (ev.clientY - 拖.sy)));
       拖.nl = nl; 拖.nt = nt;
       root.style.transform = 'translate3d(' + (nl - 拖.ol) + 'px,' + (nt - 拖.ot) + 'px,0)';
     });
+    topDoc.addEventListener('pointercancel', () => { 拖 = null; }); // v0.2.32 手势被滚动/系统劫持时立即放手（防 transform 悬挂）
     topDoc.addEventListener('pointerup', () => {
       if (!拖) return;
       const nl = isFinite(拖.nl) ? 拖.nl : 拖.ol, nt = isFinite(拖.nt) ? 拖.nt : 拖.ot;
       root.style.transform = '';
       root.style.left = nl + 'px'; root.style.top = nt + 'px'; // 落位写回 left/top
       拖 = null;
-      try { localStorage.setItem('mmPhonePos', JSON.stringify({ l: nl, t: nt })); } catch (_) { }
+      try { lsSet('mmPhonePos', JSON.stringify({ l: nl, t: nt })); } catch (_) { }
     });
     try {
-      const 存 = JSON.parse(localStorage.getItem('mmPhonePos') || 'null');
+      const 存 = JSON.parse((lsGet('mmPhonePos')) || 'null');
       if (存 && isFinite(存.l) && isFinite(存.t)) { root.style.left = 存.l + 'px'; root.style.top = 存.t + 'px'; root.style.right = 'auto'; root.style.bottom = 'auto'; }
     } catch (_) { }
   })();
@@ -1091,5 +1097,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.30 就绪（解析设置新增私信 API 子区：独立配置或留空跟随解析，保存后私信走独立端点）（解析设置加「帮填调用方式」单选：独立 API／跟随酒馆——跟随走 ST 管线经预设路由，消耗正文配额）（解析设置挂 mmParseApiD 回填钩子——已存模型 reload 后回填下拉）（解析设置补齐：从端点拉取模型下拉＋拉取钮＋已存模型回填）（背包页新增消耗品计数器：AI 自动登记＋手动增改删＋告急注入）（＋号加「📩 邀约」：四类型＋时间＋描述→对方答应自动入日程）（聊天页贴底＋去快语＋＋号媒体发送：图片／视频描述式入待发队列）（死填充清除＋人物页缺点行）（＋自动归档搁置事件开关）（文案体检：按钮改白话＋NOW→现在＋拨时→改时间＋事件页重写说明）（私信待发队列制：入队/撤回/批量发送·待发箱本机暂存）');
+  console.info(TAG, '手机面板 v0.2.32 就绪（v0.2.32 三席联审修复：keydown/导航旧实例守卫＋面板头拖拽 pointercancel/pointerId/touch-action＋刷角标轮询登记清理＋群发 try/finally；v0.2.30-31 私信 API 子区＋设置页结构修复；历史全录见 git log）');
 })();
