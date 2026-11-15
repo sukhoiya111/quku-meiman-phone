@@ -410,7 +410,6 @@
     '        <div class="mm-echo" id="mmDmEcho"></div>',
     '        </div>',
     '      </details>',
-    '      </div>',
     '    </details>',
     '    <div class="mm-sectitle" id="mmPhPrefAnchor">手机偏好</div>',
     '    <div class="mm-mode-row"><span class="ml">主动消息</span><span class="seg" id="mmPmSeg"></span></div>',
