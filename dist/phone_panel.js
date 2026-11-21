@@ -790,7 +790,8 @@
     const 名单 = Object.keys(待).filter(k => (待[k] || []).length);
     if (!名单.length) { try { topWin.toastr ? topWin.toastr.info('队列为空', '美漫 · 私信') : 0; } catch (_) { } return; }
     群发中 = true;
-    try { fill消息(); } catch (_) { } // v0.2.34：横幅立刻切「发送中…」——批量发送含限速等待最长数分钟，零反馈＝玩家"点不动"体感根源（修复③）
+    try { const 横0 = topDoc.querySelector('#mmPhInbox [data-ph-a="sendall"]'); if (横0) { const 徽 = 横0.querySelector('span'); 横0.innerHTML = (徽 ? 徽.outerHTML : '') + '📨 发送中…（限速排队，别急着再点）'; } } catch (_) { } // v0.2.35：点击瞬间同步换文案（fill消息 异步走桥读＝400ms 级延迟，烟雾实测不即时）
+    try { fill消息(); } catch (_) { }
     try {
     let 成功 = 0; const 失败 = [];
     for (const 名 of 名单) {
@@ -1089,5 +1090,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.34 就绪（v0.2.34 玩家反馈"确定发送点不动"修复：①sendall 浮动 promise 加 catch 不再静默吞错②桥未就绪由静默改提示③点下立旗即刷横幅「发送中…」——批量含限速等待最长数分钟零反馈＝体感点不动根源④逐人调用 try/catch 单人失败不再炸整批；（v0.2.33 邀约自然语言化：「邀约」四类型展开撤除，改「📩 约对方」一键引导＋引擎意图识别）（v0.2.32 三席联审修复：keydown/导航旧实例守卫＋面板头拖拽 pointercancel/pointerId/touch-action＋刷角标轮询登记清理＋群发 try/finally；v0.2.30-31 私信 API 子区＋设置页结构修复；历史全录见 git log）');
+  console.info(TAG, '手机面板 v0.2.35 就绪（v0.2.34 玩家反馈"确定发送点不动"修复：①sendall 浮动 promise 加 catch 不再静默吞错②桥未就绪由静默改提示③点下立旗即刷横幅「发送中…」——批量含限速等待最长数分钟零反馈＝体感点不动根源④逐人调用 try/catch 单人失败不再炸整批；（v0.2.33 邀约自然语言化：「邀约」四类型展开撤除，改「📩 约对方」一键引导＋引擎意图识别）（v0.2.32 三席联审修复：keydown/导航旧实例守卫＋面板头拖拽 pointercancel/pointerId/touch-action＋刷角标轮询登记清理＋群发 try/finally；v0.2.30-31 私信 API 子区＋设置页结构修复；历史全录见 git log）');
 })();
