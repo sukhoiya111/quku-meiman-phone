@@ -783,13 +783,13 @@
   let 待发渲染序 = 0;
   let 群发中 = false;
   async function 确定发送(横0传入) {
-    if (群发中) { try { topWin.toastr ? topWin.toastr.info('正在发送…', '美漫 · 私信') : 0; } catch (_) { } return; }
+    if (群发中 || topWin.__mmPhone群发中) { try { topWin.toastr ? topWin.toastr.info('正在发送…', '美漫 · 私信') : 0; } catch (_) { } return; } // v0.2.37：重入闸读全局标志——双实例各自闭包旗＝两边各发一遍（军规131 面板层变体实锤）
     const 桥 = topWin.__mmPhone桥;
     if (!桥 || !桥.发私信) { try { topWin.toastr ? topWin.toastr.warning('手机引擎还没就绪——等几秒再点，或把面板收起重开。', '美漫 · 私信') : 0; } catch (_) { } return; } // v0.2.34：静默 return 改提示（修复②）
     const 待 = await 待发读();
     const 名单 = Object.keys(待).filter(k => (待[k] || []).length);
     if (!名单.length) { try { topWin.toastr ? topWin.toastr.info('队列为空', '美漫 · 私信') : 0; } catch (_) { } return; }
-    群发中 = true;
+    群发中 = true; topWin.__mmPhone群发中 = true; // v0.2.37：双实例共享发送态
     try { const 横0 = 横0传入 || topDoc.querySelector('#mmPhInbox [data-ph-a="sendall"]'); if (横0 && 横0.isConnected) { const 徽 = 横0.querySelector('span'); 横0.innerHTML = (徽 ? 徽.outerHTML : '') + '📨 发送中…（限速排队，别急着再点）'; } else { try { fill消息(); } catch (_) { } } } catch (_) { } // v0.2.36：优先被点元素＋ isConnected 校验，失效回退 fill消息
     try { fill消息(); } catch (_) { }
     try {
@@ -805,7 +805,7 @@
       if (当前app === 'chat' && 当前聊天名 === 名) fill聊天();
     }
     待发缓存 = 待; await 待发存();
-    } finally { 群发中 = false; } // v0.2.32 中段抛错不锁死发送钮
+    } finally { 群发中 = false; topWin.__mmPhone群发中 = false; } // v0.2.37：全局态同步释放
     fill消息(); fill聊天(); 刷角标();
     try { topWin.toastr ? topWin.toastr[失败.length ? 'warning' : 'success'](失败.length ? '已发 ' + 成功 + ' 人；失败（已放回待发）：' + 失败.join('、') : '📨 已发出，等他们回复…', '美漫 · 私信') : 0; } catch (_) { }
   }
@@ -849,7 +849,8 @@
   function fill消息() {
     const 桥 = topWin.__mmPhone桥; const 盒 = topDoc.getElementById('mmPhInbox');
     if (!桥 || !盒 || !桥.读私信总览) return;
-    Promise.all([Promise.resolve(桥.读私信总览()), 待发读(), Promise.resolve(群发中), 已读值()]).then(([r, 待, 群发, 已读]) => {
+    // v0.2.37：横幅文案读全局发送态——任一实例在发都显示「发送中…」
+    Promise.all([Promise.resolve(桥.读私信总览()), 待发读(), Promise.resolve(topWin.__mmPhone群发中 === true || 群发中), 已读值()]).then(([r, 待, 群发, 已读]) => {
       const rows = (r && r.rows) || [];
       rows.forEach(x => { x.未读 = Math.max(0, (x.线长 || 0) - (Number(已读[x.名]) || 0)); });
       const 待条数 = Object.keys(待).reduce((a, k) => a + (待[k] || []).length, 0);
@@ -1090,5 +1091,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.36 就绪（v0.2.34 玩家反馈"确定发送点不动"修复：①sendall 浮动 promise 加 catch 不再静默吞错②桥未就绪由静默改提示③点下立旗即刷横幅「发送中…」——批量含限速等待最长数分钟零反馈＝体感点不动根源④逐人调用 try/catch 单人失败不再炸整批；（v0.2.33 邀约自然语言化：「邀约」四类型展开撤除，改「📩 约对方」一键引导＋引擎意图识别）（v0.2.32 三席联审修复：keydown/导航旧实例守卫＋面板头拖拽 pointercancel/pointerId/touch-action＋刷角标轮询登记清理＋群发 try/finally；v0.2.30-31 私信 API 子区＋设置页结构修复；历史全录见 git log）');
+  console.info(TAG, '手机面板 v0.2.37 就绪（v0.2.34 玩家反馈"确定发送点不动"修复：①sendall 浮动 promise 加 catch 不再静默吞错②桥未就绪由静默改提示③点下立旗即刷横幅「发送中…」——批量含限速等待最长数分钟零反馈＝体感点不动根源④逐人调用 try/catch 单人失败不再炸整批；（v0.2.33 邀约自然语言化：「邀约」四类型展开撤除，改「📩 约对方」一键引导＋引擎意图识别）（v0.2.32 三席联审修复：keydown/导航旧实例守卫＋面板头拖拽 pointercancel/pointerId/touch-action＋刷角标轮询登记清理＋群发 try/finally；v0.2.30-31 私信 API 子区＋设置页结构修复；历史全录见 git log）');
 })();
