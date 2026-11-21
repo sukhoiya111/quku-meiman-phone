@@ -679,7 +679,7 @@
           try { topWin.toastr ? topWin.toastr.info('媒体已放入待发（' + (待[当前聊天名] || []).length + ' 条）——回「消息」页点「确定发送」', '美漫 · 私信') : 0; } catch (_) { }
         });
       }
-      else if (a === 'sendall') { 确定发送(); }
+      else if (a === 'sendall') { 确定发送().catch(e => { try { topWin.toastr ? topWin.toastr.warning('发送失败：' + String(e && e.message || e).slice(0, 80) + '（已放回待发）', '美漫 · 私信') : 0; } catch (_) { } }); } // v0.2.34：浮动 async 加 catch——内部任何抛错不再静默吞（玩家"点不动"修复①）
       else if (a === 'pend-del') { const i = Number(b.getAttribute('data-i')); const 名 = 当前聊天名; 待发读().then(待 => { const 行 = 待[名] || []; if (行[i]) { 行.splice(i, 1); if (!行.length) delete 待[名]; 待发缓存 = 待; 待发存(); } fill聊天(); }); }
       else if (a === 'clock-adj') { 时钟条开.v = !时钟条开.v; const adj = topDoc.getElementById('mmPhClockAdj'); if (adj) adj.style.display = 时钟条开.v ? 'flex' : 'none'; }
       else if (a === 'clock-add') { const k = Number(b.getAttribute('data-k')) || 0; if (!k) return; if (!桥 || !桥.拨时钟) { try { topWin.toastr ? topWin.toastr.warning('引擎桥未就绪，稍后再试。', '美漫 · 改时间') : 0; } catch (_) { } return; } Promise.resolve(桥.拨时钟(k >= 1440 ? { 加天: k / 1440 } : { 加分: k })).then(r => { fill世界(); if (r && r.err) { try { topWin.toastr ? topWin.toastr.warning(r.err, '美漫 · 改时间') : 0; } catch (_) { } return; } try { topWin.toastr ? topWin.toastr.success('游戏时间已改为 ' + ((r && r.显示) || '?'), '美漫 · 改时间') : 0; } catch (_) { } }); }
@@ -785,18 +785,20 @@
   async function 确定发送() {
     if (群发中) { try { topWin.toastr ? topWin.toastr.info('正在发送…', '美漫 · 私信') : 0; } catch (_) { } return; }
     const 桥 = topWin.__mmPhone桥;
-    if (!桥 || !桥.发私信) return;
+    if (!桥 || !桥.发私信) { try { topWin.toastr ? topWin.toastr.warning('手机引擎还没就绪——等几秒再点，或把面板收起重开。', '美漫 · 私信') : 0; } catch (_) { } return; } // v0.2.34：静默 return 改提示（修复②）
     const 待 = await 待发读();
     const 名单 = Object.keys(待).filter(k => (待[k] || []).length);
     if (!名单.length) { try { topWin.toastr ? topWin.toastr.info('队列为空', '美漫 · 私信') : 0; } catch (_) { } return; }
     群发中 = true;
+    try { fill消息(); } catch (_) { } // v0.2.34：横幅立刻切「发送中…」——批量发送含限速等待最长数分钟，零反馈＝玩家"点不动"体感根源（修复③）
     try {
     let 成功 = 0; const 失败 = [];
     for (const 名 of 名单) {
       const 行 = 待[名];
       const 合并 = 行.map(x => x.t).join('\n');
       const k0 = (行.find(x => x.k) || {}).k || '';
-      const r = await Promise.resolve(桥.发私信(名, 合并, k0));
+      let r = null;
+      try { r = await Promise.resolve(桥.发私信(名, 合并, k0)); } catch (eT) { r = { err: String(eT && eT.message || eT).slice(0, 80) }; } // v0.2.34：调用抛错按单人失败处理，不再炸整批（修复④）
       if (r && r.err) { 失败.push(名); continue; } // M18：失败原样留在箱里，绝不静默吞
       delete 待[名]; 成功++;
       if (当前app === 'chat' && 当前聊天名 === 名) fill聊天();
@@ -1087,5 +1089,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.33 就绪（v0.2.33 邀约自然语言化：「邀约」四类型展开撤除，改「📩 约对方」一键引导＋引擎意图识别）（v0.2.32 三席联审修复：keydown/导航旧实例守卫＋面板头拖拽 pointercancel/pointerId/touch-action＋刷角标轮询登记清理＋群发 try/finally；v0.2.30-31 私信 API 子区＋设置页结构修复；历史全录见 git log）');
+  console.info(TAG, '手机面板 v0.2.34 就绪（v0.2.34 玩家反馈"确定发送点不动"修复：①sendall 浮动 promise 加 catch 不再静默吞错②桥未就绪由静默改提示③点下立旗即刷横幅「发送中…」——批量含限速等待最长数分钟零反馈＝体感点不动根源④逐人调用 try/catch 单人失败不再炸整批；（v0.2.33 邀约自然语言化：「邀约」四类型展开撤除，改「📩 约对方」一键引导＋引擎意图识别）（v0.2.32 三席联审修复：keydown/导航旧实例守卫＋面板头拖拽 pointercancel/pointerId/touch-action＋刷角标轮询登记清理＋群发 try/finally；v0.2.30-31 私信 API 子区＋设置页结构修复；历史全录见 git log）');
 })();
