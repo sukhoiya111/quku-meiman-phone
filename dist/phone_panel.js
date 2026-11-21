@@ -1091,5 +1091,5 @@
   // —— v0.2.16 状态栏真实时钟已取消（驾驶员令：只认游戏时间；NOW 行＝正典时钟）——清旧版本遗留走针
   try { if (topWin.__mmPhoneClockIv) clearInterval(topWin.__mmPhoneClockIv); } catch (_) { }
 
-  console.info(TAG, '手机面板 v0.2.37 就绪（v0.2.34 玩家反馈"确定发送点不动"修复：①sendall 浮动 promise 加 catch 不再静默吞错②桥未就绪由静默改提示③点下立旗即刷横幅「发送中…」——批量含限速等待最长数分钟零反馈＝体感点不动根源④逐人调用 try/catch 单人失败不再炸整批；（v0.2.33 邀约自然语言化：「邀约」四类型展开撤除，改「📩 约对方」一键引导＋引擎意图识别）（v0.2.32 三席联审修复：keydown/导航旧实例守卫＋面板头拖拽 pointercancel/pointerId/touch-action＋刷角标轮询登记清理＋群发 try/finally；v0.2.30-31 私信 API 子区＋设置页结构修复；历史全录见 git log）');
+  console.info(TAG, '手机面板 v0.2.38 就绪（v0.2.34 玩家反馈"确定发送点不动"修复：①sendall 浮动 promise 加 catch 不再静默吞错②桥未就绪由静默改提示③点下立旗即刷横幅「发送中…」——批量含限速等待最长数分钟零反馈＝体感点不动根源④逐人调用 try/catch 单人失败不再炸整批；（v0.2.33 邀约自然语言化：「邀约」四类型展开撤除，改「📩 约对方」一键引导＋引擎意图识别）（v0.2.32 三席联审修复：keydown/导航旧实例守卫＋面板头拖拽 pointercancel/pointerId/touch-action＋刷角标轮询登记清理＋群发 try/finally；v0.2.30-31 私信 API 子区＋设置页结构修复；历史全录见 git log）');
 })();
