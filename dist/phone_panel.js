@@ -1,4 +1,4 @@
-// 美漫大世界 · 手机面板 v0.2.0（桌面＋App 形态）
+// 美漫大世界 · 手机面板 v0.2.39（桌面＋App 形态）
 // 一期三应用扩展为九应用：📋人物 🌍世界 ⚔️战斗 📈加点 🎒背包 📇联系人 📅事件 📜日志 ⚙️设置
 // 架构不变＝第二作用域：DOM 注入顶层文档（根带 mm-scope），动作全走引擎 data-mm-a 委托，本体零引擎逻辑复制。
 // 数据面：__mmPhone桥（读玩家状态/四维池/渲染变量管理/本卡）。手机自有动作一律 data-ph-a 前缀。
@@ -799,7 +799,7 @@
       const 合并 = 行.map(x => x.t).join('\n');
       const k0 = (行.find(x => x.k) || {}).k || '';
       let r = null;
-      try { r = await Promise.resolve(桥.发私信(名, 合并, k0)); } catch (eT) { r = { err: String(eT && eT.message || eT).slice(0, 80) }; } // v0.2.34：调用抛错按单人失败处理，不再炸整批（修复④）
+      try { r = await Promise.race([Promise.resolve(桥.发私信(名, 合并, k0)), new Promise(res => setTimeout(() => res({ err: '发送超时（15 秒无响应，已放回待发）' }), 15000))]); } catch (eT) { r = { err: String(eT && eT.message || eT).slice(0, 80) }; } // v0.2.39：TT 链路挂起兜底——锁必释放
       if (r && r.err) { 失败.push(名); continue; } // M18：失败原样留在箱里，绝不静默吞
       delete 待[名]; 成功++;
       if (当前app === 'chat' && 当前聊天名 === 名) fill聊天();
